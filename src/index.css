@@ -1,0 +1,383 @@
+  /* ==========================================
+     MONTSERRAT & NUNITO IMPORT
+     ================================---------- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&family=Abril-Fatface&display=swap');
+
+@import "tailwindcss";
+
+:root {
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+  /* ==========================================
+     TYPOGRAPHY SYSTEM
+     ================================---------- */
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* ==========================================
+     COLOR SYSTEM: Primary Blue (#2b558c)
+     ================================---------- */
+  --color-primary-50:  #f0f4f9;
+  --color-primary-100: #d9e4f1;
+  --color-primary-200: #b3c9e4;
+  --color-primary-300: #8caed6;
+  --color-primary-400: #5587c4;
+  --color-primary-500: #2b558c; /* Base Primary */
+  --color-primary-600: #224470;
+  --color-primary-700: #193355;
+  --color-primary-800: #112239;
+  --color-primary-900: #08111d;
+
+  /* Brand Accent */
+  --color-tangerine: #fe8500;
+
+  /* ==========================================
+     COLOR SYSTEM: Neutral Grays (Cool Slate Tone)
+     ================================---------- */
+  --color-gray-50:  #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* ==========================================
+     SEMANTIC ALIASES
+     ================================---------- */
+  --bg-main: var(--color-primary-50);
+  --bg-surface: #ffffff;
+  --text-main: var(--color-gray-800);
+  --text-muted: var(--color-gray-500);
+  --border-color: var(--color-gray-200);
+}
+
+/* ==========================================
+   GLOBAL TYPOGRAPHY APPLICATION
+   ================================---------- */
+body {
+  overflow-x: clip;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-main);
+  background-color: var(--bg-main);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-800);
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+button { cursor: pointer; }
+
+::selection {
+  background-color: var(--color-primary-700);
+  color: var(--color-primary-200);
+}
+
+/* ==========================================
+   NAVIGATION STYLES
+   ================================---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+.site-header {
+  position: relative;
+  margin: 24px 32px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 48px;
+}
+
+.logo a {
+  text-decoration: none;
+  color: var(--color-primary-500);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-heading);
+}
+
+.logo img {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+}
+
+  .company-name{
+    display: none;
+  }
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  font-family: abril-fatface, var(--font-heading);
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.nav-links a {
+  width: fit-content;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: var(--font-weight-medium);
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.active {
+  color: var(--color-primary-500);
+}
+
+.nav-links a.active {
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (min-width: 769px) {
+
+  .company-name{
+    display: inline;
+  }
+
+  .nav-links a {
+    position: relative;
+  }
+
+  .nav-links a::after {
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    background-color: var(--color-primary-500);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+}
+
+.nav-actions {
+  display: contents;
+}
+
+.mobile-menu-cta {
+  display: none;
+}
+
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 3px;
+}
+
+.menu-toggle-bar {
+  display: block;
+  width: 24px;
+  height: 3px;
+  border-radius: 5px;
+  background-color: var(--color-primary-500);
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.menu-toggle.is-open .menu-toggle-bar:first-child {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.is-open .menu-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.is-open .menu-toggle-bar:last-child {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    margin: 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .desktop-menu-cta {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    padding: 88px 10vw;
+    overflow-y: auto;
+    background: var(--color-gray-800);
+    transform: translateX(100%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.45s;
+  }
+
+  .nav-links.is-open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .nav-links a {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: auto;
+    padding: 16px 0;
+    color: var(--color-gray-100);
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: var(--font-weight-bold);
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible {
+    color: var(--color-gray-100);
+  }
+
+  .nav-links a:not(:last-of-type)::after {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 1px;
+    margin-top: 16px;
+    background: var(--color-gray-300);
+  }
+
+  .mobile-menu-cta {
+    display: block;
+    margin-top: 32px;
+  }
+
+  .nav-links .mobile-menu-cta button {
+    min-width: 220px;
+    min-height: 64px;
+    justify-content: center;
+    padding: 18px 30px;
+    background: var(--color-primary-500);
+    color: var(--color-gray-100);
+  }
+
+  .nav-links .mobile-menu-cta button .arrow {
+    background: var(--color-primary-500);
+  }
+
+  .menu-toggle.is-open {
+    position: fixed;
+    z-index: 11;
+    top: 16px;
+    right: 16px;
+  }
+
+  .menu-toggle.is-open .menu-toggle-bar {
+    background-color: var(--color-gray-100);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-links a,
+  .nav-links a::after,
+  .menu-toggle-bar,
+  .nav-links {
+    transition: none;
+  }
+}
+
+  /* ==========================================
+     HERO STYLES
+     ================================---------- */
+
+.hero{
+  padding-inline: clamp(8px, 5vw, 32px);
+  padding-top: clamp(24px, 4vw, 56px);
+  padding-bottom: clamp(12px, 2vw, 24px);
+}
+.hero-content{
+  max-width: 800px;
+}
+.hero-content h1{
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-transform: uppercase;
+  font-weight: clamp(var(--font-weight-medium), calc(2vw + 600), var(--font-weight-black));
+  color: var(--color-primary-700);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+.hero-content p{
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.75rem;
+  margin-bottom: 32px;
+}

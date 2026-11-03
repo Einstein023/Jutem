@@ -1,0 +1,125 @@
+.construction-tape {
+  position: relative;
+  left: 50%;
+  isolation: isolate;
+  width: calc(100vw + clamp(6rem, 12vw, 12rem));
+  height: clamp(10rem, 15vw, 24rem);
+  margin: 0.5rem 0 1.25rem;
+  overflow: hidden;
+  transform: translateX(-50%);
+}
+
+.construction-tape__band {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  overflow: hidden;
+  border: 2px solid var(--color-gray-800);
+  background-color: var(--color-tangerine);
+  color: var(--color-gray-800);
+  transform-origin: center;
+}
+
+.construction-tape__band::before,
+.construction-tape__band::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-gray-800) 0 8px,
+    transparent 8px 16px
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.construction-tape__band::before {
+  top: 0;
+}
+
+.construction-tape__band::after {
+  bottom: 0;
+}
+
+.construction-tape__band--back {
+  top: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(-6deg);
+}
+
+.construction-tape__band--front {
+  top: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%) rotate(6deg);
+}
+
+.construction-tape__track {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  width: max-content;
+  animation: construction-tape-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+.construction-tape__band--front .construction-tape__track {
+  animation-direction: reverse;
+}
+
+.construction-tape__word {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 16px;
+  padding-inline: 8px;
+  font-family: var(--font-heading);
+  font-size: 1.875rem;
+  font-weight: var(--font-weight-black);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.construction-tape__separator {
+  font-size: 0.7em;
+  line-height: 1;
+}
+
+@keyframes construction-tape-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 640px) {
+  .construction-tape {
+    height: 9rem;
+  }
+
+  .construction-tape__band {
+    height: 2.5rem;
+  }
+
+  .construction-tape__band--back {
+    transform: translate(-50%, -50%) rotate(-8deg);
+  }
+
+  .construction-tape__band--front {
+    transform: translate(-50%, -50%) rotate(8deg);
+  }
+
+  .construction-tape__word {
+    font-size: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .construction-tape__track {
+    animation: none;
+  }
+}
