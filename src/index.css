@@ -5,6 +5,12 @@
 
 @import "tailwindcss";
 
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 :root {
 
     box-sizing: border-box;
@@ -59,7 +65,7 @@
   /* ==========================================
      SEMANTIC ALIASES
      ================================---------- */
-  --bg-main: var(--color-primary-50);
+  --bg-main: var(--color-primary-100);
   --bg-surface: #ffffff;
   --text-main: var(--color-gray-800);
   --text-muted: var(--color-gray-500);
@@ -70,7 +76,7 @@
    GLOBAL TYPOGRAPHY APPLICATION
    ================================---------- */
 body {
-  overflow-x: clip;
+  min-height: 100%;
   font-family: var(--font-body);
   font-weight: var(--font-weight-regular);
   color: var(--text-main);
@@ -107,12 +113,17 @@ button { cursor: pointer; }
 }
 
 .site-header {
-  position: relative;
-  margin: 24px 32px;
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  width: 100%;
+  margin: 0;
+  padding: 18px clamp(24px, 5vw, 92px);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  min-height: 48px;
+  min-height: 88px;
+  background-color: var(--color-primary-100);
 }
 
 .logo a {
@@ -142,13 +153,14 @@ button { cursor: pointer; }
 .nav-links {
   display: flex;
   justify-content: center;
-  gap: 32px;
+  gap: clamp(20px, 3vw, 40px);
 }
 
 .nav-links a {
   width: fit-content;
   text-decoration: none;
   color: var(--text-muted);
+  text-transform: uppercase;
   font-size: 1rem;
   font-weight: var(--font-weight-medium);
   transition: color 0.3s ease;
@@ -165,6 +177,15 @@ button { cursor: pointer; }
 }
 
 @media (min-width: 769px) {
+
+  .logo,
+  .nav-actions {
+    flex: 1 1 0;
+  }
+
+  .nav-actions {
+    justify-content: flex-end;
+  }
 
   .company-name{
     display: inline;
@@ -194,7 +215,9 @@ button { cursor: pointer; }
 }
 
 .nav-actions {
-  display: contents;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .mobile-menu-cta {
@@ -244,7 +267,9 @@ button { cursor: pointer; }
 
 @media (max-width: 768px) {
   .site-header {
-    margin: 16px;
+    margin: 0;
+    padding: 12px 16px;
+    min-height: 72px;
     flex-wrap: wrap;
   }
 
@@ -266,13 +291,19 @@ button { cursor: pointer; }
     position: fixed;
     z-index: 10;
     inset: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     gap: 0;
-    padding: 88px 10vw;
+    padding: max(88px, calc(72px + env(safe-area-inset-top))) 10vw max(32px, env(safe-area-inset-bottom));
+    overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior: contain;
     background: var(--color-gray-800);
     transform: translateX(100%);
     visibility: hidden;
@@ -335,17 +366,24 @@ button { cursor: pointer; }
 
   .menu-toggle.is-open {
     position: fixed;
-    z-index: 11;
-    top: 16px;
-    right: 16px;
+    z-index: 30;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    border-radius: 50%;
+    background-color: var(--color-gray-800);
   }
 
   .menu-toggle.is-open .menu-toggle-bar {
     background-color: var(--color-gray-100);
   }
+
+  .menu-toggle.is-open:focus-visible {
+    outline-color: var(--color-gray-100);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-links,
   .nav-links a,
   .nav-links a::after,
   .menu-toggle-bar,
@@ -359,9 +397,16 @@ button { cursor: pointer; }
      ================================---------- */
 
 .hero{
+  background-image:
+    linear-gradient(rgb(0 0 0 / 38%), rgb(0 0 0 / 38%)),
+    url("/hero-bg5.webp");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(100px);
   height: clamp(60vh, 80vh, 100dvh);
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   min-height: calc(100dvh - 6rem);
   position: relative;
   isolation: isolate;
@@ -381,23 +426,40 @@ button { cursor: pointer; }
 .hero-content{
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  /* mix-blend-mode: exclusion; */
+  isolation: isolate;
   max-width: 800px;
   padding-block: clamp(1.5rem, 4vh, 3rem);
 }
 .hero-content h1{
   font-size: clamp(2.5rem, 6vw, 4rem);
   text-transform: uppercase;
-  font-weight: clamp(var(--font-weight-medium), calc(2vw + 600), var(--font-weight-black));
-  color: var(--color-primary-700);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-50);
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+  position: relative;
 }
-.hero-content p{
+.hero-content-p{
+  position: absolute;
+  top: 45%;
+  left: 58%;
+  width: 500px;
   font-size: 1.25rem;
-  color: var(--text-muted);
+  color: var(--color-primary-100);
   line-height: 1.75rem;
   margin-bottom: clamp(1.5rem, 3vh, 2rem);
+}
+
+.hero-content-btm{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {

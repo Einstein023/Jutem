@@ -9,17 +9,12 @@ export default function Nav() {
   useEffect(() => {
     if (!menuOpen) return undefined
 
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-
     const handleKeyDown = (event) => {
       if (event.key === "Escape") closeMenu()
     }
 
     window.addEventListener("keydown", handleKeyDown)
-
     return () => {
-      document.body.style.overflow = previousOverflow
       window.removeEventListener("keydown", handleKeyDown)
     }
   }, [menuOpen])
@@ -62,9 +57,9 @@ export default function Nav() {
           aria-controls="primary-navigation"
           onClick={() => setMenuOpen((isOpen) => !isOpen)}
         >
-          <span className="menu-toggle-bar" />
-          <span className="menu-toggle-bar" />
-          <span className="menu-toggle-bar" />
+          <span className="menu-toggle-bar" aria-hidden="true" />
+          <span className="menu-toggle-bar" aria-hidden="true" />
+          <span className="menu-toggle-bar" aria-hidden="true" />
         </button>
       </div>
     </header>

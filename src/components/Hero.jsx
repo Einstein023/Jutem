@@ -36,9 +36,9 @@ export default function Hero() {
             </div>
             <div className="hero-content">
                 <h1>Welcome to JUTEM CONSTRUCTION</h1>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores atque molestiae consequatur deserunt autem hic, velit aliquid? Omnis, harum laborum?</p>
-                <Button />
+                {/* <Button /> */}
             </div>
+                <p className="hero-content-p">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores atque molestiae consequatur deserunt autem hic, velit aliquid? Omnis, harum laborum?</p>
         </section>
     )
 }
