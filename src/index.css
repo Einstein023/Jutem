@@ -359,12 +359,30 @@ button { cursor: pointer; }
      ================================---------- */
 
 .hero{
+  height: clamp(60vh, 80vh, 100dvh);
+  display: flex;
+  align-items: center;
+  min-height: calc(100dvh - 6rem);
+  position: relative;
+  isolation: isolate;
   padding-inline: clamp(8px, 5vw, 32px);
-  padding-top: clamp(24px, 4vw, 56px);
-  padding-bottom: clamp(12px, 2vw, 24px);
+  padding-block: clamp(2rem, 7vh, 5rem);
+}
+.hero-trail {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-trail .content {
+  pointer-events: auto;
 }
 .hero-content{
+  position: relative;
+  z-index: 1;
   max-width: 800px;
+  padding-block: clamp(1.5rem, 4vh, 3rem);
 }
 .hero-content h1{
   font-size: clamp(2.5rem, 6vw, 4rem);
@@ -379,5 +397,16 @@ button { cursor: pointer; }
   font-size: 1.25rem;
   color: var(--text-muted);
   line-height: 1.75rem;
-  margin-bottom: 32px;
+  margin-bottom: clamp(1.5rem, 3vh, 2rem);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: calc(100dvh - 5rem);
+    padding-block: clamp(1.5rem, 5vh, 3rem);
+  }
+
+  .hero-content {
+    padding-block: 1rem;
+  }
 }
