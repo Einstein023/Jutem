@@ -18,20 +18,22 @@ const StyledWrapper = styled.div`
   button {
     --primary-color: #2b558c;
     --secondary-color: #f0f4f9;
-    --hover-color:#193355;
+    --hover-color: #242424;
     --arrow-width: 10px;
     --arrow-stroke: 2px;
     box-sizing: border-box;
     border: 0;
-    border-radius: 6px;
+    border-radius: 999px;
+    corner-shape: squircle;
     color: var(--secondary-color);
-    padding: 10px 20px;
+    padding: 14px 28px;
     background: var(--primary-color);
     display: flex;
+    text-transform: uppercase;
     transition: 0.2s background;
     align-items: center;
     gap: 0.6em;
-    font-weight: bold;
+    font-weight: normal;
   }
 
   button .arrow-wrapper {
