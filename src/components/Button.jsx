@@ -24,6 +24,7 @@ const StyledWrapper = styled.div`
     box-sizing: border-box;
     border: 0;
     border-radius: 999px;
+    corner-shape: squircle;
     color: var(--secondary-color);
     padding: 14px 28px;
     background: var(--primary-color);
