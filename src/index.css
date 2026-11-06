@@ -5,6 +5,7 @@
 
 @import "tailwindcss";
 
+/* Keep horizontal overflow clipped while allowing normal vertical page scrolling. */
 html {
   min-height: 100%;
   overflow-x: hidden;
@@ -77,6 +78,7 @@ html {
    ================================---------- */
 body {
   min-height: 100%;
+  overflow-x: hidden;
   font-family: var(--font-body);
   font-weight: var(--font-weight-regular);
   color: var(--text-main);
@@ -113,6 +115,7 @@ button { cursor: pointer; }
 }
 
 .nav-fixed {
+  /* Desktop navigation overlays the hero instead of taking up page space. */
   position: absolute;
   z-index: 20;
   inset: 0 0 auto;
@@ -129,6 +132,7 @@ button { cursor: pointer; }
 }
 
 .nav-container {
+  /* Equal side columns keep the link group centered between the logo and CTA. */
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -274,15 +278,48 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 1023px) {
+  .nav-fixed {
+    /* Keep the mobile header available while scrolling. */
+    position: fixed;
+    inset: 0 0 auto;
+    width: 100vw;
+    max-width: 100%;
+  }
+
   .site-header {
+    --mobile-nav-top: calc(72px + env(safe-area-inset-top, 0px));
+
     margin: 0;
-    padding: 12px 16px;
-    min-height: 72px;
+    padding: max(12px, env(safe-area-inset-top, 0px)) 16px 12px;
+    min-height: var(--mobile-nav-top);
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 300ms ease-in-out,
+      border-color 300ms ease-in-out;
+  }
+
+  .site-header.is-menu-open {
+    position: relative;
+    isolation: isolate;
+    background-color: transparent;
+    border-bottom-color: #747474;
+  }
+
+  .site-header.is-menu-open::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-color: #00000080;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    content: "";
+    pointer-events: none;
   }
 
   .nav-container {
     display: flex;
     justify-content: space-between;
+    min-width: 0;
   }
 
   .nav-actions {
@@ -302,60 +339,57 @@ button { cursor: pointer; }
   .nav-links {
     position: fixed;
     z-index: 10;
-    inset: 0;
+    inset: var(--mobile-nav-top) auto 0 0;
     width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    max-height: 100dvh;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    padding: max(88px, calc(72px + env(safe-area-inset-top))) 10vw max(32px, env(safe-area-inset-bottom));
+    justify-content: flex-start;
+    gap: clamp(2rem, 5vh, 3rem);
+    padding: 20px 6.5vw max(32px, env(safe-area-inset-bottom));
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: var(--color-gray-800);
-    transform: translateX(100%);
+    background-color: #00000080;
+    background-image: linear-gradient(155deg, rgb(18 18 18 / 68%), rgb(7 7 7 / 82%));
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid #747474;
+    border-top: 0;
+    opacity: 0;
+    transform: translateY(-12px);
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.45s;
+    transition:
+      transform 400ms ease-in-out,
+      opacity 300ms ease-in-out,
+      visibility 0s linear 400ms;
   }
 
   .nav-links.is-open {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translateY(0);
     visibility: visible;
     pointer-events: auto;
-    transition-delay: 0s;
+    transition-delay: 0s, 0s, 0s;
   }
 
   .nav-links a {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: block;
     width: auto;
-    padding: 16px 0;
+    padding: 12px 0;
     color: var(--color-gray-100);
     font-family: var(--font-heading);
-    font-size: 2.25rem;
-    font-weight: var(--font-weight-bold);
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-medium);
     line-height: 1.15;
-    text-transform: uppercase;
+    text-transform: none;
   }
 
   .nav-links a:hover,
   .nav-links a:focus-visible {
     color: var(--color-gray-100);
-  }
-
-  .nav-links a:not(:last-of-type)::after {
-    content: "";
-    display: block;
-    width: 24px;
-    height: 1px;
-    margin-top: 16px;
-    background: var(--color-gray-300);
   }
 
   .mobile-menu-cta {
@@ -377,16 +411,21 @@ button { cursor: pointer; }
   }
 
   .menu-toggle.is-open {
+    /* Keep the close control above the menu and inside the device safe area. */
     position: fixed;
     z-index: 30;
     top: max(16px, env(safe-area-inset-top));
-    right: max(16px, env(safe-area-inset-right));
-    border-radius: 50%;
-    background-color: var(--color-gray-800);
+    right: max(16px, env(safe-area-inset-right, 0px));
+    width: 44px;
+    min-width: 44px;
+    margin: 0;
+    border: 1px solid #747474;
+    border-radius: 4px;
+    background-color: #00000080;
   }
 
   .menu-toggle.is-open .menu-toggle-bar {
-    background-color: var(--color-gray-100);
+    background-color: var(--color-primary-50);
   }
 
   .menu-toggle.is-open:focus-visible {
@@ -395,11 +434,12 @@ button { cursor: pointer; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Remove menu transitions for users who request reduced motion. */
+  .site-header,
   .nav-links,
   .nav-links a,
   .nav-links a::after,
-  .menu-toggle-bar,
-  .nav-links {
+  .menu-toggle-bar {
     transition: none;
   }
 }
@@ -421,6 +461,7 @@ button { cursor: pointer; }
   padding-top: calc(88px + clamp(1rem, 3vh, 2rem));
 }
 .hero-background {
+  /* Layer gradients over the background image to improve text contrast. */
   background-image: linear-gradient(0deg, #00000080, #0000 37%), linear-gradient(#00000080, #0000 16%), linear-gradient(#00000080, #00000080),
     url("/hero-bg7.webp");
   background-position: center;
@@ -478,6 +519,7 @@ button { cursor: pointer; }
   position: relative;
 }
 .hero-content-p{
+  /* Offset the body copy from the heading on larger screens. */
   align-self: flex-end;
   margin-left: 40rem;
   width: 32rem;
@@ -501,6 +543,7 @@ button { cursor: pointer; }
   }
 
   .hero-background {
+    /* Crop the image to the upper portion of the hero on mobile and tablet. */
     inset: 0 0 auto;
     height: 60svh;
   }
