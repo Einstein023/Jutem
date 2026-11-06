@@ -1,21 +1,49 @@
-import Button from "./Button";
+import { useEffect, useState } from "react";
 import ImageTrail from "./ImageTrail";
 
+const slideshowImages = [
+    "/slideshow-image/hero-bg1.jpg",
+    "/slideshow-image/hero-bg2.jpg",
+    "/slideshow-image/hero-bg3.jpg",
+    "/slideshow-image/hero-bg4.jpg",
+    "/slideshow-image/hero-bg5.jpg",
+    "/slideshow-image/hero-bg6.jpg",
+    "/slideshow-image/hero-bg7.webp"
+];
+
 const constructionImages = [
-    "https://picsum.photos/id/287/300/300",
-    "https://picsum.photos/id/1001/300/300",
-    "https://picsum.photos/id/1025/300/300",
-    "https://picsum.photos/id/1026/300/300",
-    "https://picsum.photos/id/1027/300/300",
-    "https://picsum.photos/id/1028/300/300",
-    "https://picsum.photos/id/1029/300/300",
-    "https://picsum.photos/id/1030/300/300"
+    "/trail-images/trail-01.jpg",
+    "/trail-images/trail-02.jpg",
+    "/trail-images/trail-03.jpg",
+    "/trail-images/trail-04.jpg",
+    "/trail-images/trail-05.jpg",
+    "/trail-images/trail-06.jpg"
 ];
 
 export default function Hero() {
+    const [activeSlide, setActiveSlide] = useState(0);
+
+    useEffect(() => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+
+        const intervalId = window.setInterval(() => {
+            setActiveSlide(current => (current + 1) % slideshowImages.length);
+        }, 10000);
+
+        return () => window.clearInterval(intervalId);
+    }, []);
+
     return (
         <section className="hero">
-            <div className="hero-background" aria-hidden="true"></div>
+            <div className="hero-background" aria-hidden="true">
+                {slideshowImages.map((image, index) => (
+                    <div
+                        className={`hero-background-image${index === activeSlide ? " is-active" : ""}`}
+                        key={image}
+                        style={{ backgroundImage: `url("${image}")` }}
+                    />
+                ))}
+            </div>
             <div className="hero-trail" aria-hidden="true">
                 <ImageTrail
                     items={constructionImages}
