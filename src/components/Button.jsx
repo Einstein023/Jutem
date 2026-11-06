@@ -30,7 +30,7 @@ const StyledWrapper = styled.div`
     background: var(--primary-color);
     display: flex;
     text-transform: uppercase;
-    transition: 0.2s background;
+    transition: 0.3s background ease;
     align-items: center;
     gap: 0.6em;
     font-weight: normal;

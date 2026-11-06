@@ -493,14 +493,31 @@ button { cursor: pointer; }
   justify-content: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .hero {
     min-height: calc(100dvh - 5rem);
     padding-block: clamp(1.5rem, 5vh, 3rem);
     padding-top: calc(72px + clamp(1rem, 3vh, 1.5rem));
   }
 
+  .hero-background {
+    inset: 0 0 auto;
+    height: 60svh;
+  }
+
   .hero-content {
     padding-block: 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    letter-spacing: -0.06em;
+  }
+
+  .hero-content-p {
+    width: min(32rem, 100%);
+    margin-left: 0;
+    font-size: clamp(1rem, 4vw, 1.25rem);
+    line-height: 1.55;
   }
 }
