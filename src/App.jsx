@@ -7,11 +7,11 @@ function App() {
   const path = window.location.pathname.replace(/\/+$/, "")
 
   return (
-    <>
+    <main>
     <Nav />
     {path === "/about" ? <About /> : <Hero />}
     <ConstructionTape />
-    </>
+    </main>
   )
 }
 

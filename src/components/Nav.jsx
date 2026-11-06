@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Button from "./Button"
 
 export default function Nav() {
+  // Drives the mobile menu and its open/close button state.
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
@@ -9,6 +10,21 @@ export default function Nav() {
   useEffect(() => {
     if (!menuOpen) return undefined
 
+    const bodyOverflow = document.body.style.overflow
+    const rootOverflow = document.documentElement.style.overflow
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+
+    return () => {
+      document.body.style.overflow = bodyOverflow
+      document.documentElement.style.overflow = rootOverflow
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+
+    // Let keyboard users dismiss the open menu with Escape.
     const handleKeyDown = (event) => {
       if (event.key === "Escape") closeMenu()
     }
@@ -19,10 +35,12 @@ export default function Nav() {
     }
   }, [menuOpen])
 
+  // The wrapper positions the header over the hero.
   return (
     <div className="nav-fixed">
-      <header className="site-header">
+      <header className={`site-header${menuOpen ? " is-menu-open" : ""}`}>
         <div className="nav-container">
+          {/* Brand stays at the start of the desktop navigation row. */}
           <div className="logo">
             <a href="/" aria-label="JUTEM home">
               <span className="logo-text">
@@ -32,6 +50,7 @@ export default function Nav() {
             </a>
           </div>
 
+          {/* The same links become a full-screen menu on smaller screens. */}
           <nav
             id="primary-navigation"
             className={`nav-links${menuOpen ? " is-open" : ""}`}
@@ -39,12 +58,10 @@ export default function Nav() {
           >
             <a href="/about" onClick={closeMenu}>About</a>
             <a href="/services" onClick={closeMenu}>Services</a>
-            <a href="/contact" onClick={closeMenu}>Contact</a>
-            <div className="mobile-menu-cta">
-              <Button />
-            </div>
+            <a href="/contact" onClick={closeMenu}>Contact Us</a>
           </nav>
 
+          {/* Desktop CTA and mobile menu toggle share the right-hand area. */}
           <div className="nav-actions">
             <div className="desktop-menu-cta">
               <Button />
