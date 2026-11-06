@@ -10,6 +10,20 @@ export default function Nav() {
   useEffect(() => {
     if (!menuOpen) return undefined
 
+    const bodyOverflow = document.body.style.overflow
+    const rootOverflow = document.documentElement.style.overflow
+    document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
+
+    return () => {
+      document.body.style.overflow = bodyOverflow
+      document.documentElement.style.overflow = rootOverflow
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+
     // Let keyboard users dismiss the open menu with Escape.
     const handleKeyDown = (event) => {
       if (event.key === "Escape") closeMenu()
@@ -44,10 +58,7 @@ export default function Nav() {
           >
             <a href="/about" onClick={closeMenu}>About</a>
             <a href="/services" onClick={closeMenu}>Services</a>
-            <a href="/contact" onClick={closeMenu}>Contact</a>
-            <div className="mobile-menu-cta">
-              <Button />
-            </div>
+            <a href="/contact" onClick={closeMenu}>Contact Us</a>
           </nav>
 
           {/* Desktop CTA and mobile menu toggle share the right-hand area. */}
