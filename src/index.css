@@ -189,7 +189,7 @@ button { cursor: pointer; }
 .nav-links a:hover,
 .nav-links a:focus-visible,
 .nav-links a.active {
-  color: var(--color-primary-500);
+  color: var(--color-primary-200);
 }
 
 .nav-links a.active {
@@ -465,6 +465,7 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
   z-index: -1;
   position: absolute;
   inset: 0%;
+  background-color: var(--color-gray-900);
 }
 .hero-background-image {
   position: absolute;

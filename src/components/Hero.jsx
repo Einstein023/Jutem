@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import ImageTrail from "./ImageTrail";
 
 const slideshowImages = [
-    "/slideshow-image/hero-bg1.jpg",
-    "/slideshow-image/hero-bg2.jpg",
-    "/slideshow-image/hero-bg3.jpg",
-    "/slideshow-image/hero-bg4.jpg",
-    "/slideshow-image/hero-bg5.jpg",
-    "/slideshow-image/hero-bg6.jpg",
-    "/slideshow-image/hero-bg7.webp"
+    "/slideshow-image/hero-bg1.webp",
+    "/slideshow-image/hero-bg2.webp",
+    "/slideshow-image/hero-bg3.webp",
+    "/slideshow-image/hero-bg4.webp",
+    "/slideshow-image/hero-bg5.webp",
+    "/slideshow-image/hero-bg6.webp"
 ];
 
 const constructionImages = [
@@ -67,7 +66,7 @@ export default function Hero() {
             <div className="hero-content">
                 <h1>Welcome to Jutem Construction</h1>
                 {/* <Button /> */}
-                <p className="hero-content-p">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores atque molestiae consequatur deserunt autem hic, velit aliquid? Omnis, harum laborum?</p>
+                <p className="hero-content-p">From planning through completion, JUTEM brings skilled Nigerian professionals together to deliver dependable construction, renovation, finishing, and civil works for homes and businesses across Nigeria</p>
             </div>
             </div>
         </section>
