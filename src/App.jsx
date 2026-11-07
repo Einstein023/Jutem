@@ -10,11 +10,17 @@ function App() {
   return (
     <main>
     <Nav />
-    {path === "/about" ? <About /> : <Hero />}
-    <ConstructionTape />
-    <Services />
+   {path === "/about" ? (
+  <About />
+) : path === "/contact" ? (
+  <EnquiryPage />
+) : (
+  <Hero />
+)}
     </main>
   )
 }
+
+
 
 export default App
