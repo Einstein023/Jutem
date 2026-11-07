@@ -1,0 +1,109 @@
+.enquiry-page {
+  padding: 9rem 1.5rem 5rem;
+  background: var(--color-primary-50);
+}
+
+.enquiry-layout {
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  overflow: hidden;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 16px 40px rgb(17 34 57 / 12%);
+}
+
+.enquiry-card {
+  width: 100%;
+  margin: 0;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+}
+
+.enquiry-image {
+  width: 100%;
+  height: 100%;
+  min-height: 650px;
+  object-fit: cover;
+}
+
+@media (max-width: 760px) {
+  .enquiry-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .enquiry-image {
+    height: 280px;
+    min-height: 0;
+  }
+}
+
+.enquiry-eyebrow {
+  color: var(--color-tangerine);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.enquiry-card h1 {
+  margin-bottom: 0.5rem;
+}
+
+.enquiry-intro {
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+}
+
+.enquiry-form {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.enquiry-name-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.enquiry-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.enquiry-form input,
+.enquiry-form textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font: inherit;
+}
+
+.enquiry-form input:focus,
+.enquiry-form textarea:focus {
+  outline: 2px solid var(--color-primary-400);
+  border-color: transparent;
+}
+
+.enquiry-form button {
+  justify-self: start;
+  padding: 0.85rem 1.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--color-primary-500);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+}
+
+.enquiry-form button:hover {
+  background: var(--color-primary-700);
+}
+
+@media (max-width: 520px) {
+  .enquiry-name-fields {
+    grid-template-columns: 1fr;
+  }
+
+}
