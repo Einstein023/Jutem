@@ -1,8 +1,7 @@
 import Hero from "./components/Hero"
 import About from "./components/About"
 import Nav from "./components/Nav"
-import ConstructionTape from "./components/ConstructionTape"
-import Services from "./components/Services"
+import EnquiryPage from "./components/EnquiryPage"
 
 function App() {
   const path = window.location.pathname.replace(/\/+$/, "")
@@ -10,13 +9,13 @@ function App() {
   return (
     <main>
     <Nav />
-   {path === "/about" ? (
-  <About />
-) : path === "/contact" ? (
-  <EnquiryPage />
-) : (
-  <Hero />
-)}
+      {path === "/about" ? (
+        <About />
+      ) : path === "/contact" ? (
+        <EnquiryPage />
+      ) : (
+        <Hero />
+      )}
     </main>
   )
 }

@@ -64,8 +64,9 @@ Then open the network URL printed by Vite on the other device. Both devices must
 | --- | --- |
 | `/` | Home page |
 | `/about` | About page |
+| `/contact` | Enquiry form that opens a prefilled email draft |
 
-The navigation also includes Services and Contact links, but dedicated `/services` and `/contact` pages have not been implemented yet. At present, paths other than `/about` render the home-page content.
+The navigation also includes a Services link, but a dedicated `/services` page has not been implemented yet.
 
 ## Project structure
 
