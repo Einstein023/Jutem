@@ -88,7 +88,7 @@ const createTrail = (container, config) => {
         timeline.fromTo(
             img.el,
             {
-                opacity: 1,
+                opacity: 0.85,
                 scale: cfg.appearScale * scale,
                 zIndex,
                 x: cache.x - width / 2,

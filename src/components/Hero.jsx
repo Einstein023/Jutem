@@ -52,7 +52,7 @@ export default function Hero() {
                     zoom={1}
                     flash={0}
                     radius={15}
-                    lifetime={0.4}
+                    lifetime={0.25}
                     exitScale={0.2}
                     drift={0}
                     rotation={0}
