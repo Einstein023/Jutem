@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ImageTrail from "./ImageTrail";
+import ConstructionTape from "./ConstructionTape";
 
 const slideshowImages = [
     "/slideshow-image/hero-bg1.webp",
@@ -33,6 +34,7 @@ export default function Hero() {
     }, []);
 
     return (
+        <div>
         <section className="hero">
             <div className="hero-background" aria-hidden="true">
                 {slideshowImages.map((image, index) => (
@@ -70,5 +72,7 @@ export default function Hero() {
             </div>
             </div>
         </section>
+            <ConstructionTape />
+            </div>
     )
 }

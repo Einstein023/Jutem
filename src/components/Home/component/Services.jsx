@@ -1,6 +1,7 @@
+import './services.css';
 export default function Services() {
     return (
-        <section>
+        <section className="services-container">
             
         </section>
     )
