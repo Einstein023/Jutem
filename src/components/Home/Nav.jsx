@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Button from "./Button"
+import Button from "../Button"
 
 export default function Nav() {
   // Drives the mobile menu and its open/close button state.
