@@ -7,6 +7,7 @@ A responsive company website for JUTEM Global Resources, a Nigerian building and
 - **Home page** with a full-bleed construction image, introductory copy, and an interactive image trail.
 - **About page** with company information, values, a services overview, and a Managing Director profile.
 - **Responsive navigation** with a mobile dropdown, keyboard dismissal using `Escape`, and page-scroll locking while the menu is open.
+- **Lenis-powered smooth page scrolling**, automatically disabled when reduced motion is requested.
 - **Contact Us call to action** in the desktop navigation and on the About page.
 - **Construction-tape graphic** built as a reusable React component.
 - **Responsive styling** for desktop, tablet, and mobile layouts.
@@ -19,6 +20,7 @@ A responsive company website for JUTEM Global Resources, a Nigerian building and
 - JavaScript with JSX
 - CSS, with Tailwind CSS 4 included in the stylesheet setup
 - GSAP for image-trail animation
+- Lenis for smooth page scrolling
 - styled-components for the Contact Us button
 - Oxlint for linting
 

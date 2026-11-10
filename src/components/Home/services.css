@@ -1,4 +1,216 @@
 .services-container {
-    height: 100vh;
+    height: 100svh;
+    min-height: 100svh;
     width: 100%;
+    padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 3rem);
+    display: flex;
+}
+
+.services-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 2vh, 1.25rem);
+    width: min(100%, 1600px);
+    margin-inline: auto;
+}
+
+.services-header {
+    align-self: flex-end;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    text-align: right;
+}
+
+.service-container {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overscroll-behavior: auto;
+}
+
+.slider {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(96%, 84rem);
+    height: calc(100% - 1rem);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--color-primary-700);
+    will-change: transform, opacity;
+}
+
+.slide::after {
+    position: absolute;
+    z-index: 1;
+    inset: 30% 0 0;
+    background: linear-gradient(transparent, rgb(8 17 29 / 0.78));
+    content: "";
+    pointer-events: none;
+}
+
+.slider-image {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slide-title {
+    position: relative;
+    z-index: 2;
+    max-width: 18ch;
+    margin: 0;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    color: var(--color-primary-50);
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 4.4vw, 3.75rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    text-shadow: 0 2px 16px rgb(8 17 29 / 0.4);
+}
+
+.slide-title-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.slide-title-word {
+    display: inline-block;
+    will-change: transform;
+}
+
+.service-controls {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    min-height: 3.5rem;
+    color: var(--color-primary-800);
+    font-family: var(--font-heading);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold);
+}
+
+.service-controls button {
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-primary-500);
+    border-radius: 0.25rem;
+    color: var(--color-primary-800);
+    background: transparent;
+    font: inherit;
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.service-controls button:hover {
+    color: var(--color-primary-50);
+    background: var(--color-primary-700);
+}
+
+.service-controls button:disabled {
+    border-color: var(--color-gray-400);
+    color: var(--color-gray-500);
+    cursor: not-allowed;
+}
+
+.service-controls button:disabled:hover {
+    color: var(--color-gray-500);
+    background: transparent;
+}
+
+.service-controls button:active {
+    transform: translateY(1px);
+}
+
+.service-controls button:focus-visible {
+    outline: 3px solid var(--color-tangerine);
+    outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+    .services-container {
+        height: auto;
+        min-height: auto;
+        padding: 3rem 1rem 2rem;
+    }
+
+    .services-wrapper {
+        gap: 1.25rem;
+    }
+
+    .services-header {
+        font-size: clamp(2.25rem, 10vw, 3.5rem);
+    }
+
+    .service-container {
+        min-height: 36rem;
+    }
+
+    .slider {
+        min-height: 32rem;
+    }
+
+    .slide {
+        width: 96%;
+        height: calc(100% - 1rem);
+        border-radius: 0.375rem;
+    }
+
+    .slide-title {
+        max-width: 15ch;
+        font-size: clamp(1.75rem, 8vw, 2.75rem);
+    }
+}
+
+@media (max-width: 374px) {
+    .services-container {
+        padding-inline: 0.75rem;
+    }
+
+    .slide-title {
+        font-size: 1.65rem;
+    }
+
+    .service-controls {
+        gap: 0.5rem;
+    }
+
+    .service-controls button {
+        padding-inline: 0.7rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .service-controls button {
+        transition: none;
+    }
+
+    .slide,
+    .slide-title-word {
+        will-change: auto;
+    }
 }
