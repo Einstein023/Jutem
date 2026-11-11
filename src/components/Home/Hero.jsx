@@ -4,11 +4,11 @@ import ConstructionTape from "./ConstructionTape";
 
 const slideshowImages = [
     "/slideshow-image/hero-bg1.webp",
-    "/slideshow-image/hero-bg2.webp",
+    // "/slideshow-image/hero-bg2.webp",
     "/slideshow-image/hero-bg3.webp",
     "/slideshow-image/hero-bg4.webp",
     "/slideshow-image/hero-bg5.webp",
-    "/slideshow-image/hero-bg6.webp"
+    // "/slideshow-image/hero-bg6.webp"
 ];
 
 const constructionImages = [
@@ -66,13 +66,17 @@ export default function Hero() {
             </div>
             <div className="hero-wrapper">
             <div className="hero-content">
-                <h1>Welcome to Jutem Construction</h1>
+                <h1>Solid Foundations. Straightforward Service.</h1>
                 {/* <Button /> */}
-                <p className="hero-content-p">From planning through completion, JUTEM brings skilled Nigerian professionals together to deliver dependable construction, renovation, finishing, and civil works for homes and businesses across Nigeria</p>
+                <p className="hero-content-p">
+                    We bring skilled teams together to handle residential and commercial construction
+                     across Nigeria — focusing
+                     on clean execution, solid materials, and zero guesswork from start to finish.
+                </p>
             </div>
             </div>
         </section>
-        <ConstructionTape />
+        {/* <ConstructionTape /> */}
         </div>
     )
 }

@@ -1,0 +1,13 @@
+.home-about{
+    height: 100svh;
+    width: 100%;
+    padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 3rem);
+    margin-top: 100px;
+
+}
+.home-about h2{
+    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1;
+    letter-spacing: -0.06em;
+}

@@ -21,12 +21,14 @@ export default function Services() {
     const serviceContainerRef = useRef(null)
     const slideRefs = useRef([])
     const videoRefs = useRef([])
+    const scrollCursorRef = useRef(null)
     const previousSlideIndexRef = useRef(null)
     const slideDirectionRef = useRef("down")
     const isAnimatingRef = useRef(false)
     const wheelAccumulatorRef = useRef(0)
     const wheelDirectionRef = useRef(null)
     const touchStartRef = useRef(null)
+    const [isScrollCursorVisible, setIsScrollCursorVisible] = useState(false)
 
     useEffect(() => {
         const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -38,60 +40,57 @@ export default function Services() {
 
     useLayoutEffect(() => {
         const slides = slideRefs.current.filter(Boolean)
+        const getPosition = (index, activeIndex = frontSlideIndex) => (
+            (index - activeIndex + slideData.length) % slideData.length
+        )
+        const setStackPosition = (slide, index) => {
+            const depth = getPosition(index)
 
-        gsap.set(slides, {
-            xPercent: -50,
-            yPercent: -50,
-            opacity: 0,
-        })
+            gsap.set(slide, {
+                xPercent: -50 + depth * 1.2,
+                yPercent: -50 + depth * 2.5,
+                scale: 1 - depth * 0.025,
+                opacity: 1,
+            })
+        }
 
         const previousIndex = previousSlideIndexRef.current
         const incomingSlide = slides[frontSlideIndex]
-        const outgoingSlide = previousIndex === null ? null : slides[previousIndex]
+        if (!incomingSlide) return undefined
 
-        if (
-            prefersReducedMotion
-            || previousIndex === null
-            || previousIndex === frontSlideIndex
-            || !incomingSlide
-            || !outgoingSlide
-        ) {
-            gsap.set(incomingSlide, { opacity: 1 })
+        if (previousIndex === null || previousIndex === frontSlideIndex || prefersReducedMotion) {
+            slides.forEach((slide, index) => setStackPosition(slide, index))
             previousSlideIndexRef.current = frontSlideIndex
             isAnimatingRef.current = false
             return undefined
         }
 
-        const direction = slideDirectionRef.current
         gsap.set(incomingSlide, {
-            yPercent: direction === "down" ? -150 : 50,
+            xPercent: -50,
+            yPercent: slideDirectionRef.current === "down" ? -150 : 50,
+            scale: 0.94,
             opacity: 1,
         })
-        gsap.set(outgoingSlide, { opacity: 1 })
 
         const timeline = gsap.timeline({
             onComplete: () => {
-                gsap.set(outgoingSlide, {
-                    xPercent: -50,
-                    yPercent: -50,
-                    opacity: 0,
-                })
                 previousSlideIndexRef.current = frontSlideIndex
                 isAnimatingRef.current = false
             },
         })
 
-        timeline.to(incomingSlide, {
-            yPercent: -50,
-            duration: 0.9,
-            ease: "power3.inOut",
-        }, 0)
-        timeline.to(outgoingSlide, {
-            yPercent: direction === "down" ? 50 : -150,
-            opacity: 0,
-            duration: 0.75,
-            ease: "power3.inOut",
-        }, 0)
+        slides.forEach((slide, index) => {
+            const depth = getPosition(index)
+
+            timeline.to(slide, {
+                xPercent: -50 + depth * 1.2,
+                yPercent: -50 + depth * 2.5,
+                scale: 1 - depth * 0.025,
+                opacity: 1,
+                duration: 0.95,
+                ease: "power3.inOut",
+            }, 0)
+        })
 
         const activeTitleWords = incomingSlide.querySelectorAll(".slide-title-word")
         if (activeTitleWords?.length) {
@@ -109,6 +108,14 @@ export default function Services() {
 
         return () => timeline.kill()
     }, [frontSlideIndex, prefersReducedMotion])
+
+    const moveScrollCursor = (event) => {
+        if (event.pointerType === "touch" || !scrollCursorRef.current) return
+
+        scrollCursorRef.current.style.transform = (
+            `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
+        )
+    }
 
     useEffect(() => {
         videoRefs.current.forEach((video, index) => {
@@ -148,14 +155,17 @@ export default function Services() {
             if (event.deltaY === 0) return
 
             const direction = event.deltaY > 0 ? "down" : "up"
+            const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
+            const canChangeSlide = nextIndex >= 0 && nextIndex < slideData.length
 
             if (isAnimatingRef.current) {
+                container.setAttribute("data-lenis-prevent", "")
                 event.preventDefault()
                 return
             }
 
-            const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
-            if (nextIndex < 0 || nextIndex >= slideData.length) {
+            container.toggleAttribute("data-lenis-prevent", canChangeSlide)
+            if (!canChangeSlide) {
                 wheelAccumulatorRef.current = 0
                 wheelDirectionRef.current = null
                 return
@@ -193,7 +203,9 @@ export default function Services() {
 
             const direction = deltaY > 0 ? "down" : "up"
             const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
-            if (isAnimatingRef.current || (nextIndex >= 0 && nextIndex < slideData.length)) {
+            const canChangeSlide = nextIndex >= 0 && nextIndex < slideData.length
+            container.toggleAttribute("data-lenis-prevent", isAnimatingRef.current || canChangeSlide)
+            if (isAnimatingRef.current || canChangeSlide) {
                 event.preventDefault()
             }
         }
@@ -229,7 +241,7 @@ export default function Services() {
         <section className="services-container">
             <div className="services-wrapper">
                 <h2 className="services-header">Our Services/</h2>
-                <div className="service-container" ref={serviceContainerRef} data-lenis-prevent>
+                <div className="service-container" ref={serviceContainerRef}>
                     <div className="slider">
                         {slideData.map((slide, index) => {
                             const titleWords = slide.title.split(" ")
@@ -243,9 +255,20 @@ export default function Services() {
                                     ref={(element) => {
                                         slideRefs.current[index] = element
                                     }}
-                                    style={{ zIndex: isActive ? 2 : 1 }}
+                                    style={{
+                                        zIndex: slideData.length - position,
+                                        pointerEvents: isActive ? "auto" : "none",
+                                    }}
                                     aria-label={slide.title}
                                     aria-hidden={!isActive}
+                                    onPointerEnter={(event) => {
+                                        if (event.pointerType !== "touch") {
+                                            moveScrollCursor(event)
+                                            setIsScrollCursorVisible(true)
+                                        }
+                                    }}
+                                    onPointerMove={moveScrollCursor}
+                                    onPointerLeave={() => setIsScrollCursorVisible(false)}
                                 >
                                     {slide.type === "video" ? (
                                         <video
@@ -304,6 +327,14 @@ export default function Services() {
                         </button>
                     </div>
                 </div>
+            </div>
+            <div
+                className="service-scroll-cursor"
+                ref={scrollCursorRef}
+                data-visible={isScrollCursorVisible}
+                aria-hidden="true"
+            >
+                Scroll
             </div>
         </section>
     )

@@ -5,7 +5,7 @@ const Button = () => {
   return (
     <StyledWrapper>
       <button>
-        Contact Us
+        Talk To Us
         <div className="arrow-wrapper">
           <div className="arrow" />
         </div>

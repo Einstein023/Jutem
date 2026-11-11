@@ -1,124 +1,138 @@
-.construction-tape {
+.pitch-tape-section {
   position: relative;
-  left: 50%;
-  isolation: isolate;
-  width: calc(100vw + clamp(6rem, 12vw, 12rem));
-  height: clamp(10rem, 15vw, 24rem);
-  margin: 0.5rem 0 1.25rem;
+  width: 100%;
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  background-color: var(--color-gray-900, #0f1115);
   overflow: hidden;
-  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
-.construction-tape__band {
-  position: absolute;
-  left: 50%;
+/* ----------------------------------------------------
+   1. KREISSON-STYLE OVERSIZED EDITORIAL MARQUEE
+---------------------------------------------------- */
+.editorial-marquee {
+  display: flex;
+  width: 100vw;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+
+  -webkit-mask-image: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 1) 15%, 
+    rgba(0, 0, 0, 1) 85%, 
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 1) 15%, 
+    rgba(0, 0, 0, 1) 85%, 
+    transparent 100%
+  );
+}
+
+.editorial-marquee__track {
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 3rem;
+  width: max-content;
+  animation: marquee-slide-left 75s linear infinite;
+  will-change: transform;
+}
+
+.editorial-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 5rem);
+  padding-right: clamp(2rem, 4vw, 5rem);
+}
+
+.editorial-marquee__text {
+  font-family: var(--font-heading);
+  /* Massive display size inspired by Awwwards architectural sites */
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 800;
+  /* text-transform: uppercase; */
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: transparent;
+  /* color: rgba(15, 23, 42, 0.08); */
+  /* High-end outlined / stroked typography style */
+  -webkit-text-stroke: 1.5px var(--color-primary-200);
+  transition: color 0.5s ease-in-out, -webkit-text-stroke 0.4s ease;
+}
+
+/* Fill effect on hover for interactivity */
+.pitch-tape-section:hover .editorial-marquee__text {
+  color: var(--color-primary-100);
+  -webkit-text-stroke: 1.5px var(--color-primary-100);
+}
+
+.editorial-marquee__dot {
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: var(--color-primary-400, #facc15);
+}
+
+/* ----------------------------------------------------
+   2. BRANDED CONSTRUCTION TAPE (INTERSECTING ACCENT)
+---------------------------------------------------- */
+.construction-tape__band {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%); /* Dynamic angle across the massive text */
+  width: calc(100vw + 6rem);
+  height: clamp(3rem, 5vw, 4rem);
+  background-color: var(--color-primary-400, #facc15);
+  color: #0f1115;
+  display: flex;
+  align-items: center;
   overflow: hidden;
-  border: 2px solid var(--color-gray-800);
-  background-color: var(--color-primary-300);
-  color: var(--color-gray-800);
-  transform-origin: center;
-}
-
-.construction-tape__band::before,
-.construction-tape__band::after {
-  position: absolute;
-  right: 0;
-  left: 0;
-  height: 6px;
-  background: repeating-linear-gradient(
-    135deg,
-    var(--color-gray-800) 0 8px,
-    transparent 8px 16px
-  );
-  content: "";
-  pointer-events: none;
-}
-
-.construction-tape__band::before {
-  top: 0;
-}
-
-.construction-tape__band::after {
-  bottom: 0;
-}
-
-.construction-tape__band--back {
-  top: 50%;
-  z-index: 0;
-  transform: translate(-50%, -50%) rotate(-6deg);
-}
-
-.construction-tape__band--front {
-  top: 50%;
-  z-index: 1;
-  transform: translate(-50%, -50%) rotate(6deg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 .construction-tape__track {
   display: flex;
-  flex: 0 0 auto;
   align-items: center;
   width: max-content;
-  animation: construction-tape-scroll 48s linear infinite;
+  animation: marquee-slide-right 80s linear infinite;
   will-change: transform;
 }
 
-.construction-tape__band--front .construction-tape__track {
-  animation-direction: reverse;
-}
-
 .construction-tape__word {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 16px;
-  padding-inline: 8px;
   font-family: var(--font-heading);
-  font-size: 1.875rem;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.06em;
-  line-height: 1;
+  font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 1.5rem;
   white-space: nowrap;
 }
 
 .construction-tape__separator {
-  font-size: 0.7em;
-  line-height: 1;
+  opacity: 0.6;
+  margin-left: 1rem;
 }
 
-@keyframes construction-tape-scroll {
-  to {
-    transform: translateX(-50%);
-  }
+/* ----------------------------------------------------
+   KEYFRAMES FOR SEAMLESS LOOPS
+---------------------------------------------------- */
+@keyframes marquee-slide-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-@media (max-width: 640px) {
-  .construction-tape {
-    height: 9rem;
-  }
-
-  .construction-tape__band {
-    height: 2.5rem;
-  }
-
-  .construction-tape__band--back {
-    transform: translate(-50%, -50%) rotate(-8deg);
-  }
-
-  .construction-tape__band--front {
-    transform: translate(-50%, -50%) rotate(8deg);
-  }
-
-  .construction-tape__word {
-    font-size: 1.35rem;
-  }
+@keyframes marquee-slide-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .editorial-marquee__track,
   .construction-tape__track {
     animation: none;
   }

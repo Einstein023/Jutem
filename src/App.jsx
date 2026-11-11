@@ -26,7 +26,11 @@ function App() {
     const startLenis = () => {
       if (motionPreference.matches || lenis) return
 
-      lenis = new Lenis()
+      lenis = new Lenis({
+        lerp: 0.08,
+        smoothWheel: true,
+        wheelMultiplier: 0.85,
+      })
 
       const animate = (time) => {
         lenis.raf(time)

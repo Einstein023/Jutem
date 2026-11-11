@@ -4,6 +4,7 @@
     width: 100%;
     padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 3rem);
     display: flex;
+    margin: 150px 0 0;
 }
 
 .services-wrapper {
@@ -19,6 +20,7 @@
     width: auto;
     max-width: 100%;
     margin: 0;
+    margin-bottom: 1.5rem;
     font-size: clamp(2.5rem, 5.5vw, 4.5rem);
     font-weight: var(--font-weight-semibold);
     line-height: 1;
@@ -32,7 +34,6 @@
     flex: 1;
     flex-direction: column;
     min-height: 0;
-    overscroll-behavior: auto;
 }
 
 .slider {
@@ -54,6 +55,7 @@
     overflow: hidden;
     isolation: isolate;
     background: var(--color-primary-700);
+    cursor: auto;
     will-change: transform, opacity;
 }
 
@@ -151,11 +153,46 @@
     outline-offset: 3px;
 }
 
+.service-scroll-cursor {
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
+    display: grid;
+    width: 5.5rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--color-primary-50);
+    background: var(--color-primary-500);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.service-scroll-cursor[data-visible="true"] {
+    opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .slide {
+        cursor: none;
+    }
+}
+
 @media (max-width: 767px) {
     .services-container {
         height: auto;
         min-height: auto;
         padding: 3rem 1rem 2rem;
+    }
+
+    .service-scroll-cursor {
+        display: none;
     }
 
     .services-wrapper {
@@ -204,9 +241,19 @@
     }
 }
 
+@media (hover: none), (pointer: coarse) {
+    .service-scroll-cursor {
+        display: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .service-controls button {
         transition: none;
+    }
+
+    .service-scroll-cursor {
+        display: none;
     }
 
     .slide,
