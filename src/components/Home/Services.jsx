@@ -3,10 +3,10 @@ import gsap from "gsap"
 import "./services.css"
 
 const slideData = [
-    { title: "Building Construction", image: "/slider-assets/Construction.webp", type: "image" },
+    { title: "Building Construction", image: "/slider-assets/Construction.mp4", type: "video" },
     { title: "Interior Finishing", image: "/slider-assets/Interior-Finishing-Video.mp4", type: "video" },
     { title: "Maintenance & Renovation", image: "/slider-assets/Renovation-Video.mp4", type: "video" },
-    { title: "General Civil Works", image: "/slider-assets/Civil-Work.webp", type: "image" },
+    { title: "General Civil Works", image: "/slider-assets/Civil.mp4", type: "video" },
 ]
 
 const WHEEL_THRESHOLD = 100
