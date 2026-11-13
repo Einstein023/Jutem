@@ -5,12 +5,12 @@ import "./AboutServices.css"
    ABOUT + SERVICES PAGE  (/about and /services)
 
    What happens on this page, in the order you see it:
-   1. A rounded hero card with a sky, drifting clouds, grass and a project
-      board that rises up from behind the grass.
-   2. Scroll: the hero shrinks into a band at the top and its headline swaps.
-   3. A split panel opens underneath: tabs + text on the left, a service video
-      with floating "UI cards" on the right. The tabs auto-advance every 7s.
-   4. Who we are, the Managing Director, and a closing call to action.
+   1. A full-screen construction photo. The project board rises from behind the
+      ground in the foreground.
+   2. Each scroll moves one step: the first scroll shrinks the hero and opens the
+      tabs (Building), then one scroll per tab: Interior, Renovation, Civil Works.
+   3. Only after the 4th tab does the next scroll carry the page down to
+      "Who we are", the Managing Director, and the closing call to action.
 
    PLACEHOLDER: the tab labels, the three "points" for each service and the
    text inside the floating cards are sample wording. Replace them with
@@ -33,6 +33,7 @@ const ICONS = {
     drop: ["M12 2.7s6 6.1 6 10.3a6 6 0 0 1-12 0c0-4.2 6-10.3 6-10.3Z"],
     roller: ["M4 2h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z", "M20 5h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-8a1 1 0 0 0-1 1v2", "M10 14h3v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1Z"],
     arrow: ["M7 17 17 7", "M8 7h9v9"],
+    down: ["M12 5v14", "m19 12-7 7-7-7"],
 }
 
 function Icon({ name, size = 16 }) {
@@ -265,99 +266,30 @@ function ProjectBoard() {
     )
 }
 
-/* ---------- Grass ----------
-   Drawn once as SVG: three hills, each topped with hundreds of tiny blades.
-   A seeded random number generator makes the blades the same on every visit. */
-
-function seededRandom(seed) {
-    return () => {
-        seed = (seed + 0x6d2b79f5) | 0
-        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
-        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-    }
-}
-
-const GRASS_W = 1440
-const GRASS_H = 260
-
-const hillDefs = [
-    { id: "back", y: (x) => 112 - 34 * Math.sin(x / 230 + 0.6) - 16 * Math.sin(x / 97 + 2), top: "#9bd070", bottom: "#62a03e", blades: ["#b4e083", "#86bb57", "#6fa646"], count: 300, height: [12, 30] },
-    { id: "mid", y: (x) => 166 - 26 * Math.sin(x / 310 + 2.1) - 10 * Math.sin(x / 71), top: "#6aa843", bottom: "#438130", blades: ["#8cc45d", "#5f9a3c", "#4a8734"], count: 320, height: [12, 32] },
-    { id: "front", y: (x) => 214 - 14 * Math.sin(x / 400 + 4) - 7 * Math.sin(x / 53), top: "#44842f", bottom: "#245019", blades: ["#5fa043", "#3f7d2c", "#2f6a22"], count: 360, height: [14, 36] },
-]
-
-const grassLayers = hillDefs.map((hill, layer) => {
-    const random = seededRandom(layer * 977 + 13)
-    let hillPath = `M0 ${GRASS_H}`
-    for (let x = 0; x <= GRASS_W; x += 12) hillPath += ` L${x} ${hill.y(x).toFixed(1)}`
-    hillPath += ` L${GRASS_W} ${GRASS_H} Z`
-
-    const bladeBuckets = hill.blades.map(() => "")
-    for (let i = 0; i < hill.count; i++) {
-        const x = (i / hill.count) * GRASS_W + (random() - 0.5) * 8
-        const baseY = hill.y(x) + 3
-        const height = hill.height[0] + random() * (hill.height[1] - hill.height[0])
-        const lean = (random() - 0.5) * 14
-        const half = 1.2 + random() * 1.4
-        const bucket = Math.floor(random() * hill.blades.length)
-        bladeBuckets[bucket] +=
-            `M${(x - half).toFixed(1)} ${baseY.toFixed(1)}` +
-            `Q${(x + lean * 0.2).toFixed(1)} ${(baseY - height * 0.6).toFixed(1)} ${(x + lean).toFixed(1)} ${(baseY - height).toFixed(1)}` +
-            `Q${(x + lean * 0.4 + half).toFixed(1)} ${(baseY - height * 0.5).toFixed(1)} ${(x + half).toFixed(1)} ${baseY.toFixed(1)}Z`
-    }
-    return { ...hill, hillPath, bladeBuckets }
-})
-
-function Grass() {
-    return (
-        <svg className="abs-grass" viewBox={`0 0 ${GRASS_W} ${GRASS_H}`} preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-                {grassLayers.map((layer) => (
-                    <linearGradient id={`abs-hill-${layer.id}`} x1="0" y1="0" x2="0" y2="1" key={layer.id}>
-                        <stop offset="0" stopColor={layer.top} />
-                        <stop offset="1" stopColor={layer.bottom} />
-                    </linearGradient>
-                ))}
-            </defs>
-            {grassLayers.map((layer) => (
-                <g key={layer.id}>
-                    <path fill={`url(#abs-hill-${layer.id})`} d={layer.hillPath} />
-                    {layer.bladeBuckets.map((d, index) => (
-                        <path fill={layer.blades[index]} d={d} key={index} />
-                    ))}
-                </g>
-            ))}
-        </svg>
-    )
-}
-
 /* ---------- The page ---------- */
 
 const smallScreenQuery = "(max-width: 900px), (prefers-reduced-motion: reduce)"
 
+// The first screen has 5 steps: 0 is the hero, then 1 to 4 are the four tabs.
+// One scroll (wheel, swipe or arrow key) moves exactly one step. After step 4, the next
+// scroll carries the page down to "Who we are".
+const LAST_STEP = services.length
+const STEP_COOLDOWN = 750
+const SCROLL_TO_TIME = 900
+
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+
 export default function AboutServices() {
-    const trackRef = useRef(null)
     const sceneRef = useRef(null)
     const panelRef = useRef(null)
     const videoRefs = useRef([])
     const tabRefs = useRef([])
 
-    // Small screens and "reduce motion" get a plain stacked layout (no scroll animation).
+    // Small screens and "reduce motion" get a plain stacked layout (no pinned steps).
     const [isStatic, setIsStatic] = useState(() => window.matchMedia(smallScreenQuery).matches)
-    // 0 = full hero, 1 = hero is shrinking, 2 = shrunk and the tabs panel is showing.
-    const [stage, setStage] = useState(0)
-    // True while the tabs panel is on screen. Videos and the tab timer only run then.
-    const [isReady, setIsReady] = useState(false)
-    const [active, setActive] = useState(0)
-    const [isPaused, setIsPaused] = useState(false)
-
-    // index.css sets overflow-x: hidden on <body>, which stops position: sticky from working.
-    // This page switches that off while it is on screen (see "body.abs-page" in the CSS).
-    useEffect(() => {
-        document.body.classList.add("abs-page")
-        return () => document.body.classList.remove("abs-page")
-    }, [])
+    const [step, setStep] = useState(0)
+    const [staticActive, setStaticActive] = useState(0)
+    const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
         const query = window.matchMedia(smallScreenQuery)
@@ -366,56 +298,189 @@ export default function AboutServices() {
         return () => query.removeEventListener("change", update)
     }, [])
 
-    // Scroll animation: turn the scroll position into a number from 0 to 1 (--p) that the CSS uses.
+    const stepRef = useRef(0)
+    const changeStep = (value) => {
+        stepRef.current = value
+        setStep(value)
+    }
+
+    // Stepped scrolling. The scroll position is never turned into animation (that was the lag):
+    // a scroll only changes the step number, and CSS transitions do the moving.
     useEffect(() => {
-        const track = trackRef.current
+        if (isStatic) return
+
         const scene = sceneRef.current
-        const panel = panelRef.current
+        const previousRestoration = window.history.scrollRestoration
+        window.history.scrollRestoration = "manual"
 
-        if (isStatic) {
-            const observer = new IntersectionObserver(([entry]) => setIsReady(entry.isIntersecting), { threshold: 0.3 })
-            observer.observe(panel)
-            return () => observer.disconnect()
-        }
-
+        let lockedUntil = 0
+        let animating = false
         let frame
-        const update = () => {
-            frame = undefined
-            const rect = track.getBoundingClientRect()
-            const distance = track.offsetHeight - window.innerHeight
-            const p = Math.min(1, Math.max(0, -rect.top / distance))
+        let wheelSum = 0
+        let wheelDir = 0
+        let wheelTime = 0
+        let wheelSize = 0
+        let wheelStart = 0
+        let armed = true
 
-            scene.style.setProperty("--p", p.toFixed(3))
-            setStage(p > 0.9 ? 2 : p > 0.25 ? 1 : 0)
-            setIsReady(p > 0.9 && rect.bottom > window.innerHeight * 0.3)
-        }
-        const onScroll = () => {
-            if (frame === undefined) frame = requestAnimationFrame(update)
+        const tweenTo = (target) => {
+            const from = window.scrollY
+            const startTime = performance.now()
+            animating = true
+            const tick = (now) => {
+                const t = Math.min(1, (now - startTime) / SCROLL_TO_TIME)
+                window.scrollTo(0, from + (target - from) * easeInOut(t))
+                if (t < 1) {
+                    frame = requestAnimationFrame(tick)
+                } else {
+                    animating = false
+                    lockedUntil = performance.now() + 300
+                }
+            }
+            frame = requestAnimationFrame(tick)
         }
 
-        update()
-        window.addEventListener("scroll", onScroll, { passive: true })
-        window.addEventListener("resize", onScroll)
+        const inScene = (dir) => {
+            const height = scene.offsetHeight
+            const y = window.scrollY
+            return y < height - 2 || (dir < 0 && y <= height + 2)
+        }
+
+        // Returns true when the scroll was used here (so the browser should not scroll).
+        const handle = (dir) => {
+            const height = scene.offsetHeight
+            const y = window.scrollY
+            const now = performance.now()
+
+            if (animating || now < lockedUntil) return true
+
+            // Below the first screen: normal scrolling, except going back up into it.
+            if (y >= height - 2) {
+                if (dir < 0 && y <= height + 2) {
+                    tweenTo(0)
+                    return true
+                }
+                return false
+            }
+            // In between (for example after dragging the scrollbar): settle on one side.
+            if (y > 2) {
+                tweenTo(dir > 0 ? height : 0)
+                return true
+            }
+            // At the top: one scroll, one step.
+            if (dir > 0) {
+                if (stepRef.current < LAST_STEP) {
+                    lockedUntil = now + STEP_COOLDOWN
+                    changeStep(stepRef.current + 1)
+                } else {
+                    tweenTo(height)
+                }
+                return true
+            }
+            if (stepRef.current > 0) {
+                lockedUntil = now + STEP_COOLDOWN
+                changeStep(stepRef.current - 1)
+                return true
+            }
+            return false
+        }
+
+        const onWheel = (event) => {
+            if (event.ctrlKey) return
+            // Firefox reports wheel clicks in "lines": convert to pixels.
+            const delta = event.deltaY * (event.deltaMode === 1 ? 40 : event.deltaMode === 2 ? 800 : 1)
+            if (delta === 0) return
+            const dir = delta > 0 ? 1 : -1
+            if (!inScene(dir)) return
+            event.preventDefault()
+
+            const now = performance.now()
+            const size = Math.abs(delta)
+            const locked = now < lockedUntil || animating
+
+            // A trackpad keeps sending small, fading events for about a second after the finger
+            // lifts. Those must not count as a new scroll. A new scroll is a pause followed by
+            // events, a mouse-wheel click (big event), or a sudden jump in strength.
+            if (now - wheelTime > 100 || size >= 90 || (!locked && size > wheelSize * 2 + 10)) armed = true
+            wheelTime = now
+            wheelSize = size
+
+            if (locked) {
+                wheelSum = 0
+                return
+            }
+            if (!armed) return
+            // Add up the small events of one swipe (within a quarter of a second); a step needs
+            // a little push, not a big one. A long, weak tail never adds up to a step.
+            if (dir !== wheelDir || now - wheelStart > 250) {
+                wheelSum = 0
+                wheelStart = now
+            }
+            wheelDir = dir
+            wheelSum += size
+            if (wheelSum >= 30) {
+                wheelSum = 0
+                armed = false
+                handle(dir)
+            }
+        }
+
+        let touchY = null
+        const onTouchStart = (event) => {
+            touchY = event.touches[0].clientY
+        }
+        const onTouchMove = (event) => {
+            if (touchY === null) return
+            if (inScene(touchY - event.touches[0].clientY > 0 ? 1 : -1)) event.preventDefault()
+        }
+        const onTouchEnd = (event) => {
+            if (touchY === null) return
+            const delta = touchY - event.changedTouches[0].clientY
+            touchY = null
+            if (Math.abs(delta) > 40) handle(delta > 0 ? 1 : -1)
+        }
+
+        const onKeyDown = (event) => {
+            const tag = event.target.tagName
+            if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return
+            const down = event.key === "ArrowDown" || event.key === "PageDown" || (event.key === " " && tag !== "BUTTON" && tag !== "A")
+            const up = event.key === "ArrowUp" || event.key === "PageUp"
+            if (!down && !up) return
+            if (inScene(down ? 1 : -1) && handle(down ? 1 : -1)) event.preventDefault()
+        }
+
+        // Start at the top. The Services link in the nav (/services) opens on the first tab.
+        window.scrollTo(0, 0)
+        if (window.location.pathname.replace(/\/+$/, "") === "/services" && stepRef.current === 0) changeStep(1)
+
+        window.addEventListener("wheel", onWheel, { passive: false })
+        window.addEventListener("touchstart", onTouchStart, { passive: true })
+        window.addEventListener("touchmove", onTouchMove, { passive: false })
+        window.addEventListener("touchend", onTouchEnd, { passive: true })
+        window.addEventListener("keydown", onKeyDown)
         return () => {
-            if (frame !== undefined) cancelAnimationFrame(frame)
-            window.removeEventListener("scroll", onScroll)
-            window.removeEventListener("resize", onScroll)
+            cancelAnimationFrame(frame)
+            window.history.scrollRestoration = previousRestoration
+            window.removeEventListener("wheel", onWheel)
+            window.removeEventListener("touchstart", onTouchStart)
+            window.removeEventListener("touchmove", onTouchMove)
+            window.removeEventListener("touchend", onTouchEnd)
+            window.removeEventListener("keydown", onKeyDown)
         }
     }, [isStatic])
 
-    // The Services link in the nav goes to /services: jump straight to the tabs.
+    // Static layout only: play the video while the panel is on screen.
     useEffect(() => {
-        if (window.location.pathname.replace(/\/+$/, "") !== "/services") return
-        if (isStatic) {
-            panelRef.current.scrollIntoView()
-        } else {
-            const track = trackRef.current
-            const top = track.getBoundingClientRect().top + window.scrollY
-            window.scrollTo(0, top + track.offsetHeight - window.innerHeight)
-        }
-    }, [])
+        if (!isStatic) return
+        const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { threshold: 0.3 })
+        observer.observe(panelRef.current)
+        return () => observer.disconnect()
+    }, [isStatic])
 
-    // Only the video of the open tab plays, and only while the panel is on screen.
+    const active = isStatic ? staticActive : Math.max(0, step - 1)
+    const isReady = isStatic ? isVisible : step >= 1
+
+    // Only the video of the open tab plays, and only while the panel is showing.
     useEffect(() => {
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
         videoRefs.current.forEach((video, index) => {
@@ -428,9 +493,9 @@ export default function AboutServices() {
         })
     }, [active, isReady])
 
-    const goToNextTab = (index) => {
-        // The progress bar finishing is what moves to the next tab.
-        if (index === active) setActive((index + 1) % services.length)
+    const selectTab = (index) => {
+        if (isStatic) setStaticActive(index)
+        else changeStep(index + 1)
     }
 
     // Left and right arrow keys move between tabs.
@@ -438,7 +503,7 @@ export default function AboutServices() {
         if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return
         event.preventDefault()
         const next = (index + (event.key === "ArrowRight" ? 1 : -1) + services.length) % services.length
-        setActive(next)
+        selectTab(next)
         tabRefs.current[next]?.focus()
     }
 
@@ -447,18 +512,30 @@ export default function AboutServices() {
 
     return (
         <div className="abs">
-            <div className={`abs-track${isStatic ? " abs-track--static" : ""}`} ref={trackRef}>
+            <div className={`abs-track${isStatic ? " abs-track--static" : ""}`}>
                 <div
-                    className={`abs-scene${isStatic ? "" : ` abs-scene--stage-${stage}`}`}
+                    className={`abs-scene${isStatic ? "" : ` abs-scene--step-${Math.min(step, 1)}`}`}
                     ref={sceneRef}
                 >
                     <section className="abs-hero">
-                        {/* Soft clouds drift slowly across the sky. */}
-                        <div className="abs-sky" aria-hidden="true">
-                            <span className="abs-cloud abs-cloud--a" />
-                            <span className="abs-cloud abs-cloud--b" />
-                            <span className="abs-cloud abs-cloud--c" />
+                        {/* Everything in the stage shares the photo's own coordinates, so the board
+                            always lines up with the pile of blocks, whatever the screen shape. */}
+                        <div className="abs-stage" aria-hidden="true">
+                            {/* Back layer: the construction site photo. */}
+                            <div className="abs-photo" />
+
+                            {/* The board sits between the two photo layers. */}
+                            <div className="abs-card-wrap">
+                                <div className="abs-card">
+                                    <ProjectBoard />
+                                </div>
+                            </div>
+
+                            {/* Front layer: the same photo, cut out to just the pile of blocks. It covers the
+                                bottom right of the board, so the board looks like it is behind the pile. */}
+                            <div className="abs-photo abs-photo--pile" />
                         </div>
+                        <div className="abs-shade" aria-hidden="true" />
 
                         <div className="abs-hero-first">
                             <span className="abs-badge"><i /> Jutem Global Resources</span>
@@ -474,26 +551,16 @@ export default function AboutServices() {
                             <h2>Four services.<span> One dependable team.</span></h2>
                         </div>
 
-                        {/* The board rises up from behind the grass when the page loads. */}
-                        <div className="abs-card-wrap" aria-hidden="true">
-                            <div className="abs-card">
-                                <ProjectBoard />
-                            </div>
-                        </div>
-
-                        {/* The grass sits in front of the board. */}
-                        <Grass />
+                        <button type="button" className="abs-scroll-cue" onClick={() => changeStep(1)} aria-label="Scroll to our services">
+                            Scroll <Icon name="down" size={14} />
+                        </button>
                     </section>
 
                     <div
-                        className={`abs-panel${isReady ? " is-ready" : ""}${isPaused ? " is-paused" : ""}`}
+                        className={`abs-panel${isReady ? " is-ready" : ""}`}
                         ref={panelRef}
                     >
-                        <div
-                            className="abs-panel-text"
-                            onMouseEnter={() => setIsPaused(true)}
-                            onMouseLeave={() => setIsPaused(false)}
-                        >
+                        <div className="abs-panel-text">
                             <div className="abs-tabs" role="tablist">
                                 {services.map((service, index) => (
                                     <button
@@ -502,14 +569,14 @@ export default function AboutServices() {
                                         aria-selected={index === active}
                                         tabIndex={index === active ? 0 : -1}
                                         className={`abs-tab${index === active ? " is-active" : ""}`}
-                                        onClick={() => setActive(index)}
+                                        onClick={() => selectTab(index)}
                                         onKeyDown={(event) => onTabKeyDown(event, index)}
                                         ref={(el) => { tabRefs.current[index] = el }}
                                         key={service.id}
                                     >
                                         <span className="abs-tab-title">{service.short}</span>
                                         <span className="abs-tab-label">{service.label}</span>
-                                        <span className="abs-tab-bar" onAnimationEnd={() => goToNextTab(index)} />
+                                        <span className="abs-tab-bar" />
                                     </button>
                                 ))}
                             </div>

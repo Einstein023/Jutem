@@ -8,7 +8,12 @@ import EnquiryPage from "./components/EnquiryPage"
 function App() {
   const path = window.location.pathname.replace(/\/+$/, "")
 
+  // The About/Services page does its own stepped scrolling, so smooth-scroll stays off there.
+  const hasOwnScroll = path === "/about" || path === "/services"
+
   useEffect(() => {
+    if (hasOwnScroll) return
+
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)")
     let lenis
     let animationFrame
@@ -55,7 +60,7 @@ function App() {
       motionPreference.removeEventListener("change", updateMotionPreference)
       stopLenis()
     }
-  }, [])
+  }, [hasOwnScroll])
 
   return (
     <main>

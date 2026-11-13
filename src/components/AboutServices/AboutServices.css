@@ -10,16 +10,12 @@
   --abs-serif: "Instrument Serif", Georgia, serif;
   --abs-radius: 28px;
   --abs-gap: 12px;
+  --abs-band: 30dvh;
   --abs-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   width: 100%;
   background-color: #fff;
 }
 
-/* index.css sets overflow-x: hidden on body, which breaks position: sticky.
-   The page already hides sideways overflow on <html>, so body can safely be left visible. */
-body.abs-page {
-  overflow: visible;
-}
 
 .abs h1,
 .abs h2 {
@@ -70,105 +66,104 @@ body.abs-page {
   background-color: #34383d;
 }
 
-/* ---------- Scroll scene ----------
-   The track is tall. The scene sticks to the screen while you scroll through the track.
-   --p goes from 0 to 1 as you scroll, and the hero and panel are drawn from it. */
+/* ---------- Pinned scene ----------
+   The scene is exactly one screen tall. The script moves between steps (hero, then the four
+   tabs) and only swaps a class, so every movement here is a CSS transition on transform,
+   opacity or clip-path, which is what keeps it smooth. */
 
 .abs-track {
-  height: 300vh;
+  --step-ease: cubic-bezier(0.65, 0, 0.2, 1);
+  --step-time: 0.85s;
 }
 
 .abs-scene {
-  --p: 0;
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
   background-color: #fff;
 }
 
-/* The hero is a rounded card from the very start, with a white border around it.
-   Scrolling shrinks it into the band at the top. */
+/* The hero fills the whole screen and never changes size, so it is painted once.
+   On the first scroll the tabs panel slides up over it, leaving a band of sky at the top. */
 .abs-hero {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  height: calc((100% - var(--abs-gap) * 2) - var(--p) * ((100% - var(--abs-gap) * 2) - 34vh));
-  margin: var(--abs-gap) var(--abs-gap) 0;
-  border-radius: var(--abs-radius);
+  inset: 0;
   overflow: hidden;
   text-align: center;
-  /* Sky: deeper blue at the top (so the nav text stays readable) fading to a pale horizon. */
-  background:
-    radial-gradient(60% 45% at 78% 62%, rgba(255, 255, 255, 0.55), transparent 70%),
-    linear-gradient(180deg, #2a64a6 0%, #4a86c2 30%, #86b9de 60%, #c3dff0 82%, #e6f2f6 100%);
+  background-color: #2f6fb0;
+  isolation: isolate;
+  z-index: 0;
 }
 
-/* ---------- Sky and clouds ---------- */
+/* ---------- Photo stage ----------
+   A box with the same shape as the photo (3:2), sized and placed exactly like
+   "background-size: cover; background-position: center 70%". Percentages inside it
+   are percentages of the photo. */
+.abs-stage {
+  --stage-w: max(100vw, calc(100dvh * 1.5));
+  position: absolute;
+  width: var(--stage-w);
+  height: calc(var(--stage-w) / 1.5);
+  left: calc((100vw - var(--stage-w)) / 2);
+  top: calc((100dvh - var(--stage-w) / 1.5) * 0.7);
+}
 
-.abs-sky {
+.abs-photo {
   position: absolute;
   inset: 0;
+  background: url("/about/site-hero.webp") center / 100% 100% no-repeat;
+}
+
+/* Only the pile of blocks (bottom right of the photo) is kept on the front layer. */
+.abs-photo--pile {
+  z-index: 3;
+  clip-path: polygon(71% 68.4%, 78% 67.4%, 85.2% 66.2%, 87.2% 81.8%, 80% 83.2%, 73.2% 83.4%);
   pointer-events: none;
-  transform: translateX(calc(var(--p) * -90px));
 }
 
-.abs-cloud {
+/* Darkens the top of the sky a little so the white text and the nav stay readable. */
+.abs-shade {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.7);
-  filter: blur(34px);
-  animation: abs-drift 60s linear infinite alternate;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 24, 48, 0.55) 0%, rgba(8, 24, 48, 0.1) 38%, rgba(8, 24, 48, 0) 55%);
+  pointer-events: none;
 }
 
-.abs-cloud--a {
-  top: 30%;
-  left: -6%;
-  width: 46%;
-  height: 12%;
+.abs-scroll-cue {
+  position: absolute;
+  z-index: 4;
+  bottom: 2.2vh;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background-color: rgba(8, 24, 48, 0.35);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  color: #fff;
+  translate: -50% 0;
+  transition: opacity 0.4s ease;
 }
 
-.abs-cloud--b {
-  top: 48%;
-  right: -8%;
-  width: 52%;
-  height: 14%;
-  animation-duration: 80s;
-  animation-direction: alternate-reverse;
-  opacity: 0.8;
-}
-
-.abs-cloud--c {
-  top: 16%;
-  left: 32%;
-  width: 30%;
-  height: 8%;
-  animation-duration: 95s;
-  opacity: 0.45;
-}
-
-@keyframes abs-drift {
-  from {
-    translate: -4vw 0;
-  }
-  to {
-    translate: 6vw 0;
-  }
+.abs-scene--step-1 .abs-scroll-cue {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ---------- Hero text ---------- */
 
 .abs-hero-first {
   position: relative;
+  z-index: 1;
   max-width: 54rem;
-  padding: calc(80px + 2vh) 24px 0;
-  opacity: calc(1 - var(--p) * 4);
-  transform: translateY(calc(var(--p) * -60px));
+  margin-inline: auto;
+  padding: calc(80px + 3vh) 24px 0;
+  transition: opacity 0.6s ease, transform var(--step-time) var(--step-ease);
 }
 
 .abs-hero-first > * {
@@ -189,7 +184,6 @@ body.abs-page {
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 999px;
   background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
   font-family: var(--font-heading);
   font-size: 0.75rem;
   font-weight: var(--font-weight-semibold);
@@ -206,9 +200,9 @@ body.abs-page {
 
 .abs-hero-first h1 {
   margin-bottom: 1.1rem;
-  font-size: clamp(2.5rem, 5.6vw, 5rem);
+  font-size: clamp(2.5rem, 5.4vw, 4.8rem);
   color: #fff;
-  text-shadow: 0 2px 30px rgba(15, 40, 80, 0.25);
+  text-shadow: 0 2px 30px rgba(8, 24, 48, 0.35);
 }
 
 .abs-hero-first p {
@@ -216,77 +210,84 @@ body.abs-page {
   margin: 0 auto 1.5rem;
   font-size: 1.0625rem;
   color: var(--color-primary-50);
+  text-shadow: 0 1px 12px rgba(8, 24, 48, 0.4);
 }
 
 /* The headline that replaces it once the hero has shrunk. The last line is softer. */
 .abs-hero-second {
   position: absolute;
-  inset: 0;
+  z-index: 1;
+  top: 88px;
+  right: 0;
+  left: 0;
+  height: calc(var(--abs-band) - 88px);
   display: grid;
   place-items: center;
   padding: 0 24px;
-  opacity: calc((var(--p) - 0.3) * 4);
-  transform: translateY(calc((1 - var(--p)) * 30px));
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform var(--step-time) var(--step-ease);
 }
 
 .abs-hero-second h2 {
   margin: 0;
-  max-width: 17ch;
-  font-size: clamp(2.2rem, 4.8vw, 4rem);
+  font-size: clamp(1.7rem, 3.4vw, 3rem);
   text-wrap: balance;
   color: #fff;
-  text-shadow: 0 2px 30px rgba(15, 40, 80, 0.25);
+  text-shadow: 0 2px 24px rgba(8, 24, 48, 0.4);
 }
 
 .abs-hero-second h2 span {
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.66);
 }
 
-/* Short screens: drop the small paragraph and sit the board a little lower. */
-@media (max-height: 780px) {
+.abs-scene--step-1 .abs-hero-first {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-40px);
+  transition: opacity 0.4s ease, transform var(--step-time) var(--step-ease), visibility 0s 0.4s;
+}
+
+.abs-scene--step-1 .abs-hero-second {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.35s;
+}
+
+/* Short screens: drop the small paragraph. */
+@media (max-height: 900px) {
   .abs-hero-first p {
     display: none;
   }
-
-  .abs-card-wrap {
-    bottom: -1vh;
-  }
 }
 
-/* Once the hero has shrunk, its big text can't be clicked. */
-.abs-scene--stage-1 .abs-hero-first,
-.abs-scene--stage-2 .abs-hero-first {
-  visibility: hidden;
-}
+/* ---------- Project board, between the two photo layers ---------- */
 
-/* ---------- Project board behind the grass ---------- */
-
+/* Placed in photo coordinates: its bottom right corner is anchored inside the pile of blocks
+   (the pile spans 71% to 87% across the photo), and the pile layer covers that corner. */
 .abs-card-wrap {
   position: absolute;
-  bottom: 2vh;
-  left: 0;
-  right: 0;
-  width: min(720px, 88%);
-  margin-inline: auto;
-  opacity: calc(1 - var(--p) * 4);
-  transform: translateY(calc(var(--p) * 80px));
+  z-index: 2;
+  right: 20%;
+  bottom: 24%;
+  width: 40%;
+  min-width: 460px;
 }
 
 .abs-card {
-  padding: 0.8rem;
+  padding: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 26px;
-  background-color: rgba(255, 255, 255, 0.62);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 30px 80px rgba(10, 30, 60, 0.28);
+  border-radius: 28px;
+  background-color: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 30px 80px rgba(10, 30, 60, 0.3);
   text-align: left;
-  animation: abs-card-rise 1.4s var(--abs-ease) 0.45s both;
+  animation: abs-card-rise 1.3s var(--abs-ease) 0.4s both;
 }
 
 @keyframes abs-card-rise {
   from {
     opacity: 0;
-    transform: translateY(75%);
+    transform: translateY(60px);
   }
 }
 
@@ -462,33 +463,33 @@ body.abs-page {
   color: #3d7a22;
 }
 
-/* ---------- Grass ---------- */
-
-.abs-grass {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: max(27vh, 160px);
-  opacity: calc(1 - var(--p) * 4);
-  transform: translateY(calc(var(--p) * 140px));
-}
-
-/* ---------- Tabs panel ---------- */
+/* ---------- Tabs panel ----------
+   A white sheet with rounded top corners. It starts below the screen and slides up
+   over the hero (a transform only, so it stays smooth). */
 
 .abs-panel {
   position: absolute;
-  top: calc(34vh + var(--abs-gap) * 2);
+  z-index: 5;
+  top: var(--abs-band);
   right: 0;
   bottom: 0;
   left: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--abs-gap);
-  padding: 0 var(--abs-gap) var(--abs-gap);
-  opacity: calc((var(--p) - 0.5) * 4);
-  transform: translateY(calc((1 - var(--p)) * 80px));
+  padding: var(--abs-gap);
+  border-radius: var(--abs-radius) var(--abs-radius) 0 0;
+  background-color: #fff;
+  transform: translate3d(0, 105%, 0);
+  visibility: hidden;
+  transition: transform var(--step-time) var(--step-ease), visibility 0s var(--step-time);
+  will-change: transform;
+}
+
+.abs-panel.is-ready {
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 .abs-panel-text {
@@ -545,7 +546,7 @@ body.abs-page {
   color: var(--color-gray-700);
 }
 
-/* The thin line under the open tab fills up, then the next tab opens. */
+/* The thin line under the open tab. */
 .abs-tab-bar {
   position: absolute;
   right: 0;
@@ -555,21 +556,11 @@ body.abs-page {
   background-color: var(--color-tangerine);
   transform: scaleX(0);
   transform-origin: left;
+  transition: transform 0.7s var(--abs-ease);
 }
 
 .abs-tab.is-active .abs-tab-bar {
-  animation: abs-fill 7s linear forwards;
-}
-
-.abs-panel:not(.is-ready) .abs-tab-bar,
-.abs-panel.is-paused .abs-tab-bar {
-  animation-play-state: paused;
-}
-
-@keyframes abs-fill {
-  to {
-    transform: scaleX(1);
-  }
+  transform: scaleX(1);
 }
 
 /* Title, text and button sit at the bottom of the card. When the tab changes they
@@ -590,7 +581,6 @@ body.abs-page {
 @keyframes abs-rise {
   from {
     opacity: 0;
-    filter: blur(6px);
     transform: translateY(16px);
   }
 }
@@ -719,7 +709,6 @@ body.abs-page {
 .abs-tile {
   border: 1px solid rgba(255, 255, 255, 0.7);
   background-color: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(14px);
   box-shadow: 0 18px 50px rgba(8, 20, 40, 0.22);
 }
 
@@ -952,10 +941,6 @@ body.abs-page {
 
 /* ---------- Plain stacked layout (small screens and "reduce motion") ---------- */
 
-.abs-track--static {
-  height: auto;
-}
-
 .abs-track--static .abs-scene {
   position: static;
   height: auto;
@@ -964,21 +949,37 @@ body.abs-page {
 
 .abs-track--static .abs-hero {
   position: relative;
-  height: auto;
-  min-height: 90vh;
-  padding-bottom: 25rem;
+  inset: auto;
+  min-height: 92vh;
+  padding-bottom: 22rem;
+}
+
+/* Small screens: photo fills the hero, board is centred at the bottom, no cut-out. */
+.abs-track--static .abs-stage {
+  display: contents;
+}
+
+.abs-track--static .abs-photo {
+  background-size: cover;
+  background-position: 62% 70%;
+}
+
+.abs-track--static .abs-photo--pile,
+.abs-track--static .abs-scroll-cue {
+  display: none;
+}
+
+.abs-track--static .abs-card-wrap {
+  top: auto;
+  bottom: 7vh;
+  left: 0;
+  right: 0;
+  width: min(760px, 88%);
+  margin-inline: auto;
 }
 
 .abs-track--static .abs-hero-first {
-  opacity: 1;
-  transform: none;
-}
-
-.abs-track--static .abs-card-wrap,
-.abs-track--static .abs-grass,
-.abs-track--static .abs-sky {
-  opacity: 1;
-  transform: none;
+  padding-top: calc(88px + 4vh);
 }
 
 .abs-track--static .abs-hero-first p {
@@ -991,10 +992,13 @@ body.abs-page {
 
 .abs-track--static .abs-panel {
   position: static;
+  border-radius: 0;
+  visibility: visible;
   min-height: 30rem;
   padding-top: var(--abs-gap);
   opacity: 1;
   transform: none;
+  pointer-events: auto;
 }
 
 /* ---------- Who we are ---------- */
@@ -1140,17 +1144,15 @@ body.abs-page {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .abs-tab.is-active .abs-tab-bar {
-    animation: none;
-    transform: scaleX(1);
-  }
-
   .abs-card,
   .abs-cloud,
   .abs-float,
   .abs-pop,
   .abs-bar i,
   .abs-hero-first > *,
+  .abs-hero,
+  .abs-panel,
+  .abs-card-wrap,
   .abs-detail > *,
   .abs-detail h2,
   .abs-video,
