@@ -46,37 +46,7 @@ function Icon({ name, size = 16 }) {
 
 /* ---------- Floating cards on the right-hand side of each tab ---------- */
 // Each one is an illustration, like the little app windows in the reference video.
-
-function StagesCard() {
-    const stages = [
-        { name: "Planning", value: 100 },
-        { name: "Foundation", value: 100 },
-        { name: "Structure", value: 72 },
-        { name: "Roofing", value: 28 },
-    ]
-    return (
-        <>
-            <div className="abs-pop abs-mock-card" style={{ "--i": 0 }}>
-                <div className="abs-mock-head">
-                    <span className="abs-mock-icon"><Icon name="building" /></span>
-                    <span><strong>Project stages</strong><small>Sample project</small></span>
-                </div>
-                <ul className="abs-stages">
-                    {stages.map((stage) => (
-                        <li key={stage.name}>
-                            <span>{stage.name}</span>
-                            <span className="abs-bar"><i style={{ "--w": `${stage.value}%` }} /></span>
-                            <b>{stage.value}%</b>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className="abs-pop abs-chip abs-chip--right" style={{ "--i": 3 }}>
-                <span className="abs-dot" /> Handover ready
-            </div>
-        </>
-    )
-}
+// The Building tab has no card: its video plays clean.
 
 function GridCard() {
     const tiles = [
@@ -178,7 +148,7 @@ const services = [
         intro: "Residential and commercial buildings, delivered from planning to completion.",
         video: "/slider-assets/Construction.mp4",
         points: ["Residential buildings", "Commercial buildings", "Project management"],
-        Mock: StagesCard,
+        Mock: null,
     },
     {
         id: "interior",
@@ -533,7 +503,9 @@ export default function AboutServices() {
 
                             {/* Front layer: the same photo, cut out to just the pile of blocks. It covers the
                                 bottom right of the board, so the board looks like it is behind the pile. */}
-                            <div className="abs-photo abs-photo--pile" />
+                            <div className="abs-pile">
+                                <div className="abs-photo abs-photo--pile" />
+                            </div>
                         </div>
                         <div className="abs-shade" aria-hidden="true" />
 
@@ -611,12 +583,15 @@ export default function AboutServices() {
                             ))}
                             <div className="abs-media-shade" aria-hidden="true" />
 
-                            {/* The floating cards change with the tab and slide in one after another. */}
-                            <div className={`abs-mock abs-mock--${current.id}`} key={current.id} aria-hidden="true">
-                                <div className="abs-float">
-                                    <Mock />
+                            {/* The floating cards change with the tab and slide in one after another.
+                                The Building tab has none, so its video plays clean. */}
+                            {Mock && (
+                                <div className={`abs-mock abs-mock--${current.id}`} key={current.id} aria-hidden="true">
+                                    <div className="abs-float">
+                                        <Mock />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <div className="abs-media-caption" aria-hidden="true">
                                 <span>{current.short}</span>

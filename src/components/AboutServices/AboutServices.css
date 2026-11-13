@@ -116,10 +116,18 @@
 }
 
 /* Only the pile of blocks (bottom right of the photo) is kept on the front layer. */
-.abs-photo--pile {
+.abs-pile {
+  position: absolute;
+  inset: 0;
   z-index: 3;
-  clip-path: polygon(71% 68.4%, 78% 67.4%, 85.2% 66.2%, 87.2% 81.8%, 80% 83.2%, 73.2% 83.4%);
   pointer-events: none;
+  /* A soft shadow on the pile's edge, falling onto the board, so the board reads as being behind it. */
+  filter: drop-shadow(-8px 6px 10px rgba(8, 20, 40, 0.38));
+}
+
+/* The outline follows the pile itself (near-vertical left edge), so no stray ground shows over the board. */
+.abs-photo--pile {
+  clip-path: polygon(71% 68.3%, 78% 67.4%, 85.4% 66.4%, 87% 81.4%, 80% 83%, 73.3% 83.6%, 71.7% 81.2%);
 }
 
 /* Darkens the top of the sky a little so the white text and the nav stay readable. */
@@ -264,14 +272,15 @@
 /* ---------- Project board, between the two photo layers ---------- */
 
 /* Placed in photo coordinates: its bottom right corner is anchored inside the pile of blocks
-   (the pile spans 71% to 87% across the photo), and the pile layer covers that corner. */
+   (the pile spans 71% to 87% across the photo), and the pile layer covers that corner.
+   The width is NOT a percentage of the photo: the board's text is a fixed size, so a
+   percentage width stretched the card into a flat strip on wide screens. */
 .abs-card-wrap {
   position: absolute;
   z-index: 2;
-  right: 20%;
-  bottom: 24%;
-  width: 40%;
-  min-width: 460px;
+  right: 17%;
+  bottom: 21%;
+  width: clamp(440px, 26vw, 520px);
 }
 
 .abs-card {
@@ -964,7 +973,7 @@
   background-position: 62% 70%;
 }
 
-.abs-track--static .abs-photo--pile,
+.abs-track--static .abs-pile,
 .abs-track--static .abs-scroll-cue {
   display: none;
 }
@@ -974,7 +983,7 @@
   bottom: 7vh;
   left: 0;
   right: 0;
-  width: min(760px, 88%);
+  width: min(520px, 88%);
   margin-inline: auto;
 }
 
