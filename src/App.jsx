@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import Lenis from "lenis"
 import Home from "./components/Home/Home"
-import About from "./components/About"
+import AboutServices from "./components/AboutServices/AboutServices"
 import Nav from "./components/Home/Nav"
 import EnquiryPage from "./components/EnquiryPage"
 
@@ -60,8 +60,8 @@ function App() {
   return (
     <main>
     <Nav />
-      {path === "/about" ? (
-        <About />
+      {path === "/about" || path === "/services" ? (
+        <AboutServices />
       ) : path === "/contact" ? (
         <EnquiryPage />
       ) : (

@@ -1,0 +1,570 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap");
+
+/* ==========================================
+   ABOUT + SERVICES PAGE
+   Every class starts with "abs-" so it can't clash with other files.
+   Colours and fonts come from the variables in index.css.
+   ================================---------- */
+
+.abs {
+  --abs-serif: "Instrument Serif", Georgia, serif;
+  --abs-radius: 28px;
+  --abs-gap: 14px;
+  width: 100%;
+  background-color: #fff;
+}
+
+/* index.css sets overflow-x: hidden on body, which breaks position: sticky.
+   The page already hides sideways overflow on <html>, so body can safely be left visible. */
+body.abs-page {
+  overflow: visible;
+}
+
+.abs h1,
+.abs h2 {
+  font-family: var(--abs-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+/* ---------- Buttons ---------- */
+
+.abs-button {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.abs-button:focus-visible {
+  outline: 3px solid var(--color-primary-500);
+  outline-offset: 3px;
+}
+
+.abs-button--orange {
+  background-color: var(--color-tangerine);
+  color: var(--color-primary-900);
+}
+
+.abs-button--orange:hover {
+  background-color: #ffa033;
+}
+
+.abs-button--dark {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-50);
+}
+
+.abs-button--dark:hover {
+  background-color: var(--color-primary-600);
+}
+
+/* ---------- Scroll scene ----------
+   The track is tall. The scene sticks to the screen while you scroll through the track.
+   --p goes from 0 to 1 as you scroll, and the hero and panel are drawn from it. */
+
+.abs-track {
+  height: 280vh;
+}
+
+.abs-scene {
+  --p: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.abs-hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: calc(100% - var(--p) * (100% - 34vh));
+  margin: calc(var(--p) * var(--abs-gap)) calc(var(--p) * var(--abs-gap)) 0;
+  border-radius: calc(var(--p) * var(--abs-radius));
+  overflow: hidden;
+  text-align: center;
+  /* Sky: deep blue at the top (so the nav text stays readable) fading to pale blue. */
+  background-image: linear-gradient(180deg, #1d4a7e 0%, #3f79b8 38%, #8fbbe0 72%, #cfe3f0 100%);
+}
+
+.abs-hero-first {
+  max-width: 54rem;
+  padding: calc(88px + 5vh) 24px 0;
+  opacity: calc(1 - var(--p) * 4);
+  transform: translateY(calc(var(--p) * -60px));
+}
+
+.abs-hero-first h1 {
+  font-size: clamp(2.5rem, 5.4vw, 4.75rem);
+  color: #fff;
+}
+
+.abs-hero-first p {
+  max-width: 34rem;
+  margin: 0 auto 1.5rem;
+  font-size: 1.0625rem;
+  color: var(--color-primary-50);
+}
+
+.abs-hero-second {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  opacity: calc((var(--p) - 0.3) * 4);
+  transform: translateY(calc((1 - var(--p)) * 30px));
+}
+
+.abs-hero-second h2 {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  color: #fff;
+}
+
+/* ---------- Card behind the grass ---------- */
+
+.abs-card-wrap {
+  position: absolute;
+  bottom: 9vh;
+  left: 0;
+  right: 0;
+  width: min(640px, 86%);
+  margin-inline: auto;
+  opacity: calc(1 - var(--p) * 4);
+  transform: translateY(calc(var(--p) * 80px));
+}
+
+.abs-card {
+  padding: 1.1rem;
+  border-radius: 22px;
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 20px 60px rgba(8, 17, 29, 0.25);
+  text-align: left;
+  animation: abs-card-rise 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+
+@keyframes abs-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+}
+
+.abs-card-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+}
+
+.abs-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.abs-card-tile {
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  background-color: #f1f5f9;
+}
+
+.abs-card-tile strong,
+.abs-card-tile span {
+  display: block;
+}
+
+.abs-card-tile strong {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  color: var(--color-gray-900);
+}
+
+.abs-card-tile span {
+  font-size: 0.75rem;
+  color: var(--color-gray-600);
+}
+
+.abs-grass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: max(26vh, 150px);
+  opacity: calc(1 - var(--p) * 4);
+  transform: translateY(calc(var(--p) * 140px));
+}
+
+/* Short screens: drop the small paragraph so the card has room. */
+@media (max-height: 780px) {
+  .abs-hero-first p {
+    display: none;
+  }
+}
+
+/* Once the hero has shrunk, its big text can't be clicked. */
+.abs-scene--stage-1 .abs-hero-first,
+.abs-scene--stage-2 .abs-hero-first {
+  visibility: hidden;
+}
+
+/* ---------- Tabs panel ---------- */
+
+.abs-panel {
+  position: absolute;
+  top: calc(34vh + var(--abs-gap) * 2);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--abs-gap);
+  padding: 0 var(--abs-gap) var(--abs-gap);
+  opacity: calc((var(--p) - 0.5) * 4);
+  transform: translateY(calc((1 - var(--p)) * 80px));
+}
+
+.abs-panel-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--abs-radius);
+  background-color: #f6f6f3;
+}
+
+.abs-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid #e2e2dc;
+}
+
+.abs-tab {
+  position: relative;
+  padding: 1rem 1rem 0.9rem;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.abs-tab:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: -2px;
+}
+
+.abs-tab-title,
+.abs-tab-label {
+  display: block;
+}
+
+.abs-tab-title {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+}
+
+.abs-tab-label {
+  font-size: 0.75rem;
+  color: var(--color-gray-500);
+}
+
+.abs-tab:not(.is-active) .abs-tab-title {
+  color: var(--color-gray-500);
+}
+
+/* The thin line under the open tab fills up, then the next tab opens. */
+.abs-tab-bar {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background-color: var(--color-tangerine);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.abs-tab.is-active .abs-tab-bar {
+  animation: abs-fill 7s linear forwards;
+}
+
+.abs-panel:not(.is-ready) .abs-tab-bar,
+.abs-panel.is-paused .abs-tab-bar {
+  animation-play-state: paused;
+}
+
+@keyframes abs-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.abs-detail {
+  padding: 1.5rem 1.75rem 1.75rem;
+  animation: abs-rise 0.45s ease both;
+}
+
+@keyframes abs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.abs-detail h2 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--color-gray-900);
+}
+
+.abs-detail p {
+  max-width: 28rem;
+  margin-bottom: 1rem;
+  color: var(--color-gray-700);
+}
+
+.abs-points {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  color: var(--color-gray-700);
+  font-size: 0.9375rem;
+}
+
+.abs-points li {
+  padding: 0.25rem 0;
+  border-top: 1px solid #e2e2dc;
+}
+
+.abs-panel-media {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--abs-radius);
+  background-color: var(--color-primary-800);
+}
+
+.abs-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.abs-video.is-active {
+  opacity: 1;
+}
+
+@media (max-height: 700px) {
+  .abs-points {
+    display: none;
+  }
+}
+
+/* ---------- Plain stacked layout (small screens and "reduce motion") ---------- */
+
+.abs-track--static {
+  height: auto;
+}
+
+.abs-track--static .abs-scene {
+  position: static;
+  height: auto;
+  overflow: visible;
+}
+
+.abs-track--static .abs-hero {
+  position: relative;
+  height: auto;
+  min-height: 90vh;
+  padding-bottom: 20rem;
+  margin: 0;
+  border-radius: 0;
+}
+
+.abs-track--static .abs-hero-first {
+  opacity: 1;
+  transform: none;
+}
+
+.abs-track--static .abs-card-wrap,
+.abs-track--static .abs-grass {
+  opacity: 1;
+  transform: none;
+}
+
+.abs-track--static .abs-hero-first p {
+  display: block;
+}
+
+.abs-track--static .abs-hero-second {
+  display: none;
+}
+
+.abs-track--static .abs-panel {
+  position: static;
+  min-height: 30rem;
+  padding-top: var(--abs-gap);
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Who we are ---------- */
+
+.abs-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 7rem) clamp(24px, 5vw, 64px);
+}
+
+.abs-story-text h2,
+.abs-md-text h2,
+.abs-closing-inner h2 {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  color: var(--color-gray-900);
+}
+
+.abs-story-text p,
+.abs-md-text p {
+  max-width: 36rem;
+  color: var(--color-gray-700);
+}
+
+.abs-values {
+  display: grid;
+  gap: 1.5rem;
+  align-content: center;
+}
+
+.abs-value {
+  padding-top: 1rem;
+  border-top: 3px solid var(--color-tangerine);
+}
+
+.abs-value h3 {
+  font-size: 1.25rem;
+}
+
+.abs-value p {
+  margin: 0;
+  color: var(--color-gray-700);
+}
+
+/* ---------- Managing Director ---------- */
+
+.abs-md {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 0 clamp(24px, 5vw, 64px) clamp(3rem, 8vw, 7rem);
+}
+
+.abs-md-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--abs-radius);
+}
+
+.abs-md-role {
+  margin-bottom: 0.25rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-500);
+}
+
+/* ---------- Closing ---------- */
+
+.abs-closing {
+  background-color: var(--color-primary-800);
+}
+
+.abs-closing-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 5rem) clamp(24px, 5vw, 64px);
+}
+
+.abs-closing-inner h2 {
+  margin-bottom: 0.5rem;
+  color: var(--color-primary-50);
+}
+
+.abs-closing-inner p {
+  margin: 0;
+  color: var(--color-primary-200);
+}
+
+/* ---------- Tablet and mobile ---------- */
+
+@media (max-width: 900px) {
+  .abs-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .abs-panel-media {
+    min-height: 18rem;
+  }
+
+  .abs-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .abs-story,
+  .abs-md {
+    grid-template-columns: 1fr;
+  }
+
+  .abs-closing-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .abs-tab.is-active .abs-tab-bar {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .abs-card,
+  .abs-detail,
+  .abs-video,
+  .abs-button {
+    animation: none;
+    transition: none;
+  }
+}
