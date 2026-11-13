@@ -70,7 +70,7 @@ export default function Hero() {
                 {/* <Button /> */}
                 <p className="hero-content-p">
                     We bring skilled teams together to handle residential and commercial construction
-                     across Nigeria — focusing
+                     across Nigeria - focusing
                      on clean execution, solid materials, and zero guesswork from start to finish.
                 </p>
             </div>
