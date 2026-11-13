@@ -502,6 +502,9 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
 .hero-wrapper{
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
   grid-column-gap: 4rem;
     grid-row-gap: 4rem;
     flex-flow: column;
