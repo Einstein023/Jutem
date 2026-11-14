@@ -26,7 +26,7 @@ import BlockBuild from "./BlockBuild"
    ========================================================================== */
 
 const BUILD_END = 0.7 // share of the pinned scroll used for building; the rest is the spin
-const SPEED = 0.3 // fastest the house animates, in "whole animations" per second (lower = slower)
+const SPEED = 0.14 // fastest the house animates, in "whole animations" per second (lower = slower)
 const EASE = 5 // how softly it slows down as it reaches the goal
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
@@ -440,6 +440,7 @@ function buildHouse(THREE, track, box, canvas) {
     let visible = false
     let frame = 0
     let lastTime = performance.now()
+    let started = false
 
     const resize = () => {
         const rect = box.getBoundingClientRect()
@@ -458,7 +459,12 @@ function buildHouse(THREE, track, box, canvas) {
             const now = performance.now()
             const dt = Math.min((now - lastTime) / 1000, 0.05)
             lastTime = now
-            const goal = readScroll()
+            // Starts when the section is well into view and then plays by itself (no more scrolling
+            // needed). It resets only once the section is fully off the bottom, so it replays.
+            const top = track.getBoundingClientRect().top
+            if (top < window.innerHeight * 0.55) started = true
+            else if (top > window.innerHeight) started = false
+            const goal = started ? 1 : 0
             const gap = goal - shown
             const step = Math.sign(gap) * Math.min(Math.abs(gap) * EASE * dt, SPEED * dt)
             shown = Math.abs(gap) < 0.0005 ? goal : shown + step
