@@ -66,12 +66,12 @@ export default function About() {
                         <span className="abs-rule" aria-hidden="true" />
                         <p>We are a homegrown team of young builders. We stay with you until it is done right.</p>
                     </div>
-                    <h1 className="abs-title"><RiseText text="ABOUT" /></h1>
+                    <h2 className="abs-title"><RiseText text="ABOUT" /></h2>
                 </div>
 
-                <button type="button" className="abs-scroll-cue" onClick={scrollDown} aria-label="Scroll to who we are">
+                {/* <button type="button" className="abs-scroll-cue" onClick={scrollDown} aria-label="Scroll to who we are">
                     Scroll <Icon name="down" size={14} />
-                </button>
+                </button> */}
             </section>
 
             <section className="abs-story" id="who-we-are">

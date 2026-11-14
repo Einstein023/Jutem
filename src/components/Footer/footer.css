@@ -4,7 +4,7 @@
    ========================================== */
 
 .foot {
-  background-color: var(--panel-ink);
+  background-color: var(--color-primary-300);
   color: var(--panel-text);
 }
 
@@ -20,7 +20,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: clamp(2rem, 6vw, 5rem);
-  padding-bottom: clamp(3rem, 8vw, 6rem);
+  /* padding-bottom: clamp(3rem, 8vw, 0rem); */
 }
 
 .foot-statement {
@@ -47,6 +47,27 @@
   text-transform: uppercase;
   color: var(--panel-text-dim);
 }
+.footer-mid{
+  margin: 0;
+  padding: 0;
+  height: fit-content;
+  text-align: center;
+  min-width: 100%;
+  display: flex;
+  /* gap: 2rem; */
+  align-items: center;
+  justify-content: center;
+
+}
+
+.footer-mid span{
+  font-size: 15rem;
+  letter-spacing: -0.04em;
+  /* margin-right: 1rem; */
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+  color: var(--color-primary-600);
+}
 
 .foot-columns ul {
   margin: 0;
@@ -67,7 +88,7 @@
 
 .foot-columns nav a:hover,
 .foot-columns nav a:focus-visible {
-  color: var(--color-primary-300);
+  color: var(--color-primary-900);
 }
 
 /* Same button as the rest of the site, in blue. */
@@ -78,8 +99,8 @@
   padding: 14px 28px;
   border-radius: 999px;
   corner-shape: squircle;
-  background-color: var(--panel-brand);
-  color: var(--panel-text);
+  background-color: var(--color-primary-600);
+  color: var(--color-primary-100);
   font-family: var(--font-body);
   text-transform: uppercase;
   text-decoration: none;
@@ -93,8 +114,8 @@
 
 .foot-button:hover,
 .foot-button:focus-visible {
-  background-color: var(--panel-text);
-  color: var(--panel-ink);
+  background-color: var(--color-primary-700);
+  /* color: var(--panel-ink); */
 }
 
 .foot-button:hover svg {
@@ -124,11 +145,12 @@
 .foot-brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 4rem;
   font-family: var(--font-heading);
   font-weight: var(--font-weight-semibold);
-  color: var(--panel-text);
+  /* color: var(--panel-text); */
   text-decoration: none;
+  height: fit-content;
 }
 
 .foot-top-link {

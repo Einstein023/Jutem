@@ -144,7 +144,7 @@ export default function EnquiryPage() {
     <div className="contact" ref={pageRef}>
       <section className="contact-main" id="get-in-touch">
         <div className="contact-info">
-          <p className="contact-eyebrow contact-reveal">LET'S TALK ABOUT YOUR PROJECT</p>
+          {/* <p className="contact-eyebrow contact-reveal">LET'S TALK ABOUT YOUR PROJECT</p> */}
           <h2 className="contact-title"><RiseText text="Make an enquiry" /></h2>
           <p className="contact-lead contact-reveal" style={{ "--d": "0.16s" }}>
             Tell us what you have in mind and our team will be in touch.

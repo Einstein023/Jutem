@@ -127,11 +127,11 @@
 
 .abs .abs-title {
   margin: 0;
-  font-size: clamp(5rem, 21vw, 19rem);
-  font-weight: var(--font-weight-semibold);
+  font-size: clamp(5rem, 21vw, 9rem);
+  font-weight: var(--font-weight-normal) !important;
   letter-spacing: -0.02em;
   line-height: 0.95;
-  color: var(--color-primary-100);
+  color: var(--color-primary-300);
   text-shadow: 0 6px 50px rgb(17 34 57 / 0.35);
 }
 
@@ -165,8 +165,9 @@
 .abs-story-top p {
   margin: 0;
   font-size: clamp(2rem, min(4.8vw, 7.4vh), 4.8rem);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.32;
+  font-weight: var(--font-weight-normal);
+  line-height: 1.2;
+  max-width: 800px;
   letter-spacing: -0.015em;
   color: var(--color-primary-50);
   text-shadow: 0 2px 12px rgb(8 17 29 / 0.4), 0 1px 32px rgb(8 17 29 / 0.45);
