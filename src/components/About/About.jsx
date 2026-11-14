@@ -1,4 +1,5 @@
 import Footer from "../Footer/Footer"
+import BlockBuild from "./BlockBuild"
 import "./About.css"
 
 /* ==========================================================================
@@ -85,18 +86,21 @@ export default function About() {
                         With our dedicated and collaborative corporate culture, we come together
                         to provide services and structures that meet the highest standards.
                     </p>
-                </div>
-                <div className="abs-values">
-                    {values.map((value, index) => (
-                        <div className="abs-value" key={value.title}>
-                            <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
-                            <div>
-                                <h3>{value.title}</h3>
-                                <p>{value.text}</p>
+
+                    <div className="abs-values">
+                        {values.map((value, index) => (
+                            <div className="abs-value" key={value.title}>
+                                <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
+                                <div>
+                                    <h3>{value.title}</h3>
+                                    <p>{value.text}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+
+                <BlockBuild />
             </section>
 
             <section className="abs-md">
@@ -121,6 +125,19 @@ export default function About() {
                     </p>
                 </div>
             </section>
+
+            <section className="abs-closing">
+                <div className="abs-closing-inner">
+                    <div>
+                        <h2>Have a project in mind?</h2>
+                        <p>Talk to us and let's build something that lasts.</p>
+                    </div>
+                    <a className="abs-button" href="/contact">
+                        Make an enquiry <Icon name="arrow" size={15} />
+                    </a>
+                </div>
+            </section>
+
             <Footer />
         </div>
     )
