@@ -80,8 +80,8 @@ export default function About() {
                 <div className="abs-story-left">
                     <div className="abs-pin">
                         <div className="abs-story-text">
-                            <p className="abs-eyebrow">Who we are</p>
-                            <h2>A homegrown team, built to build</h2>
+                            <p className="abs-eyebrow">About Jutem</p>
+                            <h2>Who we are</h2>
                             <p className="abs-lead">
                                 We are a purely indigenous company of young, enterprising professionals
                                 in the building and construction industry, coming together to deliver

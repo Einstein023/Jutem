@@ -223,7 +223,7 @@
    scroll so the house can build and then turn; --abs-track sets how long that takes. */
 
 .abs-story {
-  --abs-track: 260svh;
+  --abs-track: 190svh;
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: stretch;
@@ -243,7 +243,7 @@
 }
 
 .abs-story-text {
-  max-width: 32rem;
+  max-width: 36rem;
 }
 
 .abs-eyebrow {
@@ -269,8 +269,8 @@
 
 .abs-story-text h2 {
   margin-bottom: clamp(1.1rem, 3vh, 1.75rem);
-  font-size: clamp(2.25rem, min(3.8vw, 7.5vh), 3.75rem);
-  letter-spacing: -0.05em;
+  font-size: clamp(3rem, min(6vw, 11vh), 5.5rem);
+  letter-spacing: -0.06em;
   line-height: 1.05;
   color: var(--panel-deep);
 }
@@ -456,7 +456,7 @@
 
 @media (max-width: 900px) {
   .abs-story {
-    --abs-track: 220svh;
+    --abs-track: 170svh;
     grid-template-columns: 1fr;
     gap: 0;
     padding: clamp(3rem, 10vw, 5rem) 24px 0;
@@ -478,7 +478,7 @@
   }
 
   .abs-story-text h2 {
-    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-size: clamp(2.75rem, 13vw, 4rem);
   }
 
   .abs-build-box {

@@ -25,7 +25,7 @@ import BlockBuild from "./BlockBuild"
    Sizes are in metres. To change the house, edit the "THE HOUSE" block in buildHouse().
    ========================================================================== */
 
-const BUILD_END = 0.6 // share of the pinned scroll used for building; the rest is the spin
+const BUILD_END = 0.7 // share of the pinned scroll used for building; the rest is the spin
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
 const phase = (p, from, to) => clamp01((p - from) / (to - from))
