@@ -61,7 +61,7 @@ const project = (x, y, z) => ({ sx: (x - y) * COS, sy: (x + y) * SIN - z })
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 
-export default function BlockBuild() {
+export default function BlockBuild({ trackRef, buildEnd = 0.55 }) {
     const boxRef = useRef(null)
     const canvasRef = useRef(null)
 
@@ -175,6 +175,13 @@ export default function BlockBuild() {
         // How far through the build we are, from where the box sits on screen:
         // starts as it enters the bottom of the screen, finished a little before it is centred.
         const readScroll = () => {
+            const track = trackRef && trackRef.current
+            if (track) {
+                // pinned layout: how far we are through the tall track, then the build finishes at buildEnd
+                const rect = track.getBoundingClientRect()
+                const range = rect.height - window.innerHeight
+                return range <= 0 ? 1 : clamp01(-rect.top / range / buildEnd)
+            }
             const rect = box.getBoundingClientRect()
             const vh = window.innerHeight
             const start = vh * 0.92
@@ -225,7 +232,6 @@ export default function BlockBuild() {
             <div className="abs-build-box" ref={boxRef}>
                 <canvas ref={canvasRef} role="img" aria-label="A house going up block by block as you scroll" />
             </div>
-            <figcaption>Built block by block.</figcaption>
         </figure>
     )
 }

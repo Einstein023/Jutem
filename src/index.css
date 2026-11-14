@@ -1,7 +1,7 @@
 /* ==========================================
-     MONTSERRAT & NUNITO IMPORT
-     ================================---------- */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&family=Abril-Fatface&display=swap');
+   FONTS: Montserrat (headings) + Nunito (body)
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
 
 @import "tailwindcss";
 
@@ -13,19 +13,15 @@ html {
 }
 
 :root {
-
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-
   /* ==========================================
-     TYPOGRAPHY SYSTEM
-     ================================---------- */
+   TYPOGRAPHY SYSTEM
+   ========================================== */
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Nunito', sans-serif;
 
   /* Font Weights */
   --font-weight-regular: 400;
+  --font-weight-normal: 400; /* alias, the hero h1 already asks for this name */
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
@@ -33,8 +29,8 @@ html {
   --font-weight-black: 900;
 
   /* ==========================================
-     COLOR SYSTEM: Primary Blue (#2b558c)
-     ================================---------- */
+   COLOR SYSTEM: Primary Blue (#2b558c)
+   ========================================== */
   --color-primary-50:  #f0f4f9;
   --color-primary-100: #d9e4f1;
   --color-primary-200: #b3c9e4;
@@ -46,8 +42,22 @@ html {
   --color-primary-800: #112239;
   --color-primary-900: #08111d;
 
-  /* Brand Accent */
+  /* Brand Accent (homepage focus rings + contact page only) */
   --color-tangerine: #fe8500;
+
+  /* ==========================================
+     MONOCHROME BLUE PANELS
+     One hue, stepped from deepest to lightest. Use these for any
+     panel / section background so pages stay in the same family.
+     ================================---------- */
+  --panel-ink:   var(--color-primary-900); /* deepest: hero, page base      */
+  --panel-deep:  var(--color-primary-800); /* main panels                   */
+  --panel-mid:   var(--color-primary-700); /* raised panels, hover          */
+  --panel-soft:  var(--color-primary-600); /* lines, quiet fills            */
+  --panel-brand: var(--color-primary-500); /* buttons, active marks         */
+  --panel-mist:  var(--color-primary-100); /* light section (page bg)       */
+  --panel-text:  var(--color-primary-50);  /* text on dark panels           */
+  --panel-text-dim: var(--color-primary-300);
 
   /* ==========================================
      COLOR SYSTEM: Neutral Grays (Cool Slate Tone)
@@ -78,7 +88,8 @@ html {
    ================================---------- */
 body {
   min-height: 100%;
-  overflow-x: hidden;
+  /* clip (not hidden): same look, but it does not turn the body into a scroll box, which would break position: sticky */
+  overflow-x: clip;
   font-family: var(--font-body);
   font-weight: var(--font-weight-regular);
   color: var(--text-main);
@@ -159,14 +170,14 @@ button { cursor: pointer; }
   flex-shrink: 0;
 }
 
-  .company-name{
-    display: none;
-  }
+.company-name {
+  display: none;
+}
 
 .logo-text {
   display: flex;
   align-items: center;
-  font-family: abril-fatface, var(--font-heading);
+  font-family: var(--font-heading);
 }
 
 .nav-links {
@@ -502,9 +513,6 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
 .hero-wrapper{
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: 1440px;
-  margin-inline: auto;
   grid-column-gap: 4rem;
     grid-row-gap: 4rem;
     flex-flow: column;
@@ -547,7 +555,7 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
   align-self: flex-end;
   margin-left: 40rem;
   max-width: 32rem;
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   /* font-size: clamp(1.125rem, 2vw, 1.35rem); */
   line-height: 1.45;
   font-weight: 400;

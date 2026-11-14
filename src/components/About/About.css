@@ -217,45 +217,90 @@
   }
 }
 
-/* ---------- Who we are (light blue, same as the homepage background) ---------- */
+/* ---------- Who we are + the 3D house ----------
+   A calm "side dish": a narrow section, modest type, and the house inside a rounded card
+   (same corner as the services video card). The section still pins while you scroll so the
+   house can build and then turn; --abs-track sets how long that takes (bigger = slower). */
 
 .abs-story {
+  --abs-track: 260svh;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: clamp(2rem, 6vw, 6rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(2rem, 4.5vw, 4.5rem);
   width: 100%;
-  max-width: 1440px;
+  max-width: 1180px;
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 7rem) clamp(24px, 5vw, 64px);
+  padding: 0 clamp(24px, 5vw, 64px);
 }
 
-.abs-story-text h2,
-.abs-md-text h2,
-.abs-closing-inner h2 {
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-  margin-bottom: 1.5rem;
+.abs-pin {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100svh;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.abs-story-text {
+  max-width: 30rem;
+}
+
+.abs-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--panel-brand);
+}
+
+.abs-eyebrow::before {
+  content: "";
+  width: 2rem;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.abs-story-text h2 {
+  margin-bottom: clamp(0.9rem, 2.4vh, 1.4rem);
+  font-size: clamp(2.1rem, min(3.6vw, 7vh), 3.25rem);
+  letter-spacing: -0.045em;
+  line-height: 1.05;
   color: var(--panel-deep);
 }
 
-.abs-story-text p,
-.abs-md-text p {
-  max-width: 36rem;
-  margin: 0 0 1rem;
-  font-size: 1.0625rem;
+.abs-story-text .abs-lead {
+  margin: 0 0 clamp(0.7rem, 1.6vh, 1rem);
+  font-size: clamp(1rem, min(1.25vw, 2.3vh), 1.1875rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.55;
+  color: var(--panel-deep);
+}
+
+.abs-story-text > p:not(.abs-lead):not(.abs-eyebrow) {
+  margin: 0;
+  font-size: clamp(0.9rem, min(1.05vw, 2vh), 1rem);
+  line-height: 1.65;
   color: var(--color-primary-700);
 }
 
 .abs-values {
   display: grid;
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  margin-top: clamp(1.25rem, 3.5vh, 2rem);
 }
 
 .abs-value {
   display: grid;
-  grid-template-columns: 3.5rem 1fr;
-  gap: 1rem;
-  padding: 1.1rem 0;
+  grid-template-columns: 2.25rem 1fr;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: clamp(0.6rem, 1.6vh, 0.9rem) 0;
   border-top: 1px solid var(--color-primary-300);
 }
 
@@ -265,35 +310,45 @@
 
 .abs-value-number {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 0.875rem;
   font-weight: var(--font-weight-extrabold);
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
   color: var(--panel-brand);
 }
 
 .abs-value h3 {
-  margin-bottom: 0.25rem;
-  font-size: 1.25rem;
-  letter-spacing: -0.03em;
+  margin-bottom: 0.1rem;
+  font-size: clamp(0.95rem, 2vh, 1.0625rem);
+  letter-spacing: -0.02em;
   color: var(--panel-deep);
 }
 
 .abs-value p {
   margin: 0;
+  font-size: clamp(0.8125rem, 1.7vh, 0.9375rem);
   color: var(--color-primary-700);
 }
 
-/* ---------- Block house (right of "Who we are") ---------- */
+/* The house: a tall track with a pinned rounded card inside it. */
+.abs-build-track {
+  height: var(--abs-track);
+}
 
 .abs-build {
+  width: 100%;
   margin: 0;
 }
 
 .abs-build-box {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  max-height: 38rem;
+  height: min(68svh, 33rem);
+  overflow: hidden;
+  border-radius: var(--abs-radius);
+  corner-shape: squircle;
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--color-primary-50), var(--color-primary-200) 100%);
+  box-shadow: 0 24px 60px -28px rgb(17 34 57 / 0.35);
 }
 
 .abs-build-box canvas {
@@ -302,17 +357,6 @@
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.abs-build figcaption {
-  margin-top: 0.5rem;
-  text-align: center;
-  font-family: var(--font-heading);
-  font-size: 0.8125rem;
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--panel-brand);
 }
 
 /* ---------- Managing Director ---------- */
@@ -379,13 +423,34 @@
 /* ---------- Tablet and mobile ---------- */
 
 @media (max-width: 900px) {
-  .abs-story,
+  .abs-story {
+    --abs-track: 220svh;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: clamp(3rem, 10vw, 5rem);
+  }
+
   .abs-md {
     grid-template-columns: 1fr;
   }
 
+  /* On phones the text scrolls normally, then the house gets the whole screen. */
+  .abs-story-left .abs-pin {
+    position: static;
+    height: auto;
+    padding-bottom: 2.5rem;
+  }
+
+  .abs-story-text {
+    max-width: none;
+  }
+
+  .abs-story-text h2 {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+
   .abs-build-box {
-    aspect-ratio: 5 / 4;
+    height: min(60svh, 26rem);
   }
 
   .abs-closing-inner {
@@ -406,6 +471,26 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* no pinning: the finished house just sits beside the text */
+  .abs-story {
+    --abs-track: auto;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .abs-pin,
+  .abs-story-left .abs-pin {
+    position: static;
+    height: auto;
+  }
+
+  .abs-build-track {
+    align-self: center;
+  }
+
+  .abs-build-box {
+    height: min(56svh, 26rem);
+  }
+
   .abs-letter,
   .abs-rule,
   .abs-story-top p,

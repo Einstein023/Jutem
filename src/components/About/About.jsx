@@ -1,5 +1,5 @@
 import Footer from "../Footer/Footer"
-import BlockBuild from "./BlockBuild"
+import House3D from "./House3D"
 import "./About.css"
 
 /* ==========================================================================
@@ -74,33 +74,40 @@ export default function About() {
                 </button>
             </section>
 
+            {/* The left text and the 3D house are both pinned on screen while you scroll through this
+                section: the house builds, then keeps turning, then the page carries on. */}
             <section className="abs-story" id="who-we-are">
-                <div className="abs-story-text">
-                    <h2>Who we are</h2>
-                    <p>
-                        We are a purely indigenous company of young, enterprising professionals
-                        in the building and construction industry, coming together to deliver
-                        products and services at edge-cutting standards.
-                    </p>
-                    <p>
-                        With our dedicated and collaborative corporate culture, we come together
-                        to provide services and structures that meet the highest standards.
-                    </p>
+                <div className="abs-story-left">
+                    <div className="abs-pin">
+                        <div className="abs-story-text">
+                            <p className="abs-eyebrow">About Jutem</p>
+                            <h2>Who we are</h2>
+                            <p className="abs-lead">
+                                We are a purely indigenous company of young, enterprising professionals
+                                in the building and construction industry, coming together to deliver
+                                products and services at edge-cutting standards.
+                            </p>
+                            <p>
+                                With our dedicated and collaborative corporate culture, we come together
+                                to provide services and structures that meet the highest standards.
+                            </p>
 
-                    <div className="abs-values">
-                        {values.map((value, index) => (
-                            <div className="abs-value" key={value.title}>
-                                <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
-                                <div>
-                                    <h3>{value.title}</h3>
-                                    <p>{value.text}</p>
-                                </div>
+                            <div className="abs-values">
+                                {values.map((value, index) => (
+                                    <div className="abs-value" key={value.title}>
+                                        <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
+                                        <div>
+                                            <h3>{value.title}</h3>
+                                            <p>{value.text}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        </div>
                     </div>
                 </div>
 
-                <BlockBuild />
+                <House3D />
             </section>
 
             <section className="abs-md">
