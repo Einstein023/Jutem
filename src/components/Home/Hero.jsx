@@ -28,7 +28,7 @@ export default function Hero() {
 
         const intervalId = window.setInterval(() => {
             setActiveSlide(current => (current + 1) % slideshowImages.length);
-        }, 10000);
+        }, 5000);
 
         return () => window.clearInterval(intervalId);
     }, []);
