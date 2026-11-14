@@ -1,0 +1,162 @@
+/* ==========================================
+   FOOTER
+   Deep blue from the --panel-* tokens in index.css. Montserrat headings, Nunito body.
+   ========================================== */
+
+.foot {
+  background-color: var(--panel-ink);
+  color: var(--panel-text);
+}
+
+.foot-inner {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 3vw, 3rem) 1.5rem;
+}
+
+.foot-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.foot-statement {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  color: var(--panel-text);
+}
+
+.foot-columns {
+  display: flex;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.foot-columns h2 {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--panel-text-dim);
+}
+
+.foot-columns ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.foot-columns li + li {
+  margin-top: 0.6rem;
+}
+
+.foot-columns nav a {
+  font-size: 1.125rem;
+  color: var(--panel-text);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.foot-columns nav a:hover,
+.foot-columns nav a:focus-visible {
+  color: var(--color-primary-300);
+}
+
+/* Same button as the rest of the site, in blue. */
+.foot-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 14px 28px;
+  border-radius: 999px;
+  corner-shape: squircle;
+  background-color: var(--panel-brand);
+  color: var(--panel-text);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.foot-button svg {
+  transition: transform 0.25s ease;
+}
+
+.foot-button:hover,
+.foot-button:focus-visible {
+  background-color: var(--panel-text);
+  color: var(--panel-ink);
+}
+
+.foot-button:hover svg {
+  transform: translateX(3px);
+}
+
+.foot a:focus-visible {
+  outline: 2px solid var(--color-primary-300);
+  outline-offset: 3px;
+}
+
+.foot-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgb(140 174 214 / 0.22);
+  font-size: 0.875rem;
+  color: var(--panel-text-dim);
+}
+
+.foot-bottom p {
+  margin: 0;
+}
+
+.foot-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  color: var(--panel-text);
+  text-decoration: none;
+}
+
+.foot-top-link {
+  color: var(--panel-text-dim);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.foot-top-link:hover,
+.foot-top-link:focus-visible {
+  color: var(--panel-text);
+}
+
+@media (max-width: 900px) {
+  .foot-top {
+    flex-direction: column;
+  }
+
+  .foot-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foot a,
+  .foot-button svg {
+    transition: none;
+  }
+}

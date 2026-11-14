@@ -1,263 +1,313 @@
-.services-container {
-    height: 100svh;
-    min-height: 100svh;
-    width: 100%;
-    padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 3rem);
-    display: flex;
-    margin: 150px 0 0;
+/* ==========================================
+   HOME PAGE: SERVICES SECTION
+   Same look as the page it came from: light panel, bold 01 to 04 tabs, big rounded
+   video card. The panel runs edge to edge and fills the screen height.
+   Fonts and colours come from index.css.
+   ========================================== */
+
+.svc {
+  --svc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  margin: 150px 0 0;
+  padding-top: clamp(1.5rem, 4vh, 3rem);
+  scroll-margin-top: 0;
 }
 
-.services-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.75rem, 2vh, 1.25rem);
-    width: min(100%, 1600px);
-    margin-inline: auto;
+.svc-header {
+  margin: 0 0 1.5rem;
+  padding-inline: clamp(1rem, 3vw, 3rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-align: center;
 }
 
-.services-header {
-    align-self: flex-end;
-    width: auto;
-    max-width: 100%;
-    margin: 0;
-    margin-bottom: 1.5rem;
-    font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-    font-weight: var(--font-weight-semibold);
-    line-height: 1;
-    letter-spacing: -0.06em;
-    text-align: right;
+.svc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.service-container {
-    position: relative;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 0;
+/* Letters that rise in: each sits in a mask, hidden below it until the heading arrives. */
+.svc-word {
+  display: inline-block;
+  white-space: nowrap;
 }
 
-.slider {
-    position: relative;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
+.svc-mask {
+  display: inline-block;
+  vertical-align: bottom;
+  /* Clip only the bottom edge (that hides the letter before it rises); the sides stay open. */
+  clip-path: inset(-0.2em -0.5em 0 -0.5em);
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
 }
 
-.slide {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: min(96%, 84rem);
-    height: calc(100% - 1rem);
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    isolation: isolate;
-    background: var(--color-primary-700);
-    cursor: auto;
-    will-change: transform, opacity;
+.svc-letter {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
 }
 
-.slide::after {
-    position: absolute;
-    z-index: 1;
-    inset: 30% 0 0;
-    background: linear-gradient(transparent, rgb(8 17 29 / 0.78));
-    content: "";
-    pointer-events: none;
+.svc-header.is-in .svc-letter {
+  transform: translateY(0);
+  transition: transform 0.9s var(--svc-ease) calc(var(--i) * 0.045s);
 }
 
-.slider-image {
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* One surface, edge to edge, down to the bottom of the screen. */
+.svc-panel {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 12px;
+  min-height: 34rem;
+  padding: 12px;
 }
 
-.slide-title {
-    position: relative;
-    z-index: 2;
-    max-width: 18ch;
-    margin: 0;
-    padding: clamp(1rem, 3vw, 2.5rem);
-    color: var(--color-primary-50);
-    font-family: var(--font-heading);
-    font-size: clamp(1.75rem, 4.4vw, 3.75rem);
-    font-weight: var(--font-weight-bold);
-    line-height: 1.08;
-    letter-spacing: -0.04em;
-    text-shadow: 0 2px 16px rgb(8 17 29 / 0.4);
+.svc-text {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.slide-title-mask {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
+/* ---------- Tabs: 01 02 03 04 ---------- */
+
+.svc-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--color-primary-300);
 }
 
-.slide-title-word {
-    display: inline-block;
-    will-change: transform;
+.svc-tab {
+  position: relative;
+  padding: clamp(1.1rem, 2.6vh, 1.75rem) clamp(1rem, 2vw, 1.75rem);
+  border: 0;
+  background: none;
+  text-align: left;
 }
 
-.service-controls {
-    position: relative;
-    z-index: 5;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: clamp(0.75rem, 2vw, 1.5rem);
-    min-height: 3.5rem;
-    color: var(--color-primary-800);
-    font-family: var(--font-heading);
-    font-size: 0.875rem;
-    font-weight: var(--font-weight-semibold);
+.svc-tab:focus-visible {
+  outline: 2px solid var(--panel-brand);
+  outline-offset: -4px;
 }
 
-.service-controls button {
-    min-height: 2.75rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--color-primary-500);
-    border-radius: 0.25rem;
-    color: var(--color-primary-800);
-    background: transparent;
-    font: inherit;
-    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+.svc-tab-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: var(--color-primary-300);
+  transition: color 0.3s ease;
 }
 
-.service-controls button:hover {
-    color: var(--color-primary-50);
-    background: var(--color-primary-700);
+.svc-tab:hover .svc-tab-number {
+  color: var(--panel-brand);
 }
 
-.service-controls button:disabled {
-    border-color: var(--color-gray-400);
-    color: var(--color-gray-500);
-    cursor: not-allowed;
+.svc-tab.is-active .svc-tab-number {
+  color: var(--panel-deep);
 }
 
-.service-controls button:disabled:hover {
-    color: var(--color-gray-500);
-    background: transparent;
+/* The line under the open tab. */
+.svc-tab-bar {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background-color: var(--panel-brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--svc-ease);
 }
 
-.service-controls button:active {
-    transform: translateY(1px);
+.svc-tab.is-active .svc-tab-bar {
+  transform: scaleX(1);
 }
 
-.service-controls button:focus-visible {
-    outline: 3px solid var(--color-tangerine);
-    outline-offset: 3px;
+/* ---------- Title, sentence and button sit at the bottom; they rise in when the tab changes ---------- */
+
+.svc-detail {
+  margin-top: auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.service-scroll-cursor {
-    position: fixed;
-    z-index: 30;
-    top: 0;
-    left: 0;
-    display: grid;
-    width: 5.5rem;
-    aspect-ratio: 1;
-    place-items: center;
-    border-radius: 50%;
-    color: var(--color-primary-50);
-    background: var(--color-primary-500);
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: var(--font-weight-semibold);
-    text-transform: uppercase;
+.svc-detail > * {
+  animation: svc-rise 0.7s var(--svc-ease) both;
+}
+
+.svc-detail > :nth-child(2) { animation-delay: 0.08s; }
+.svc-detail > :nth-child(3) { animation-delay: 0.16s; }
+
+@keyframes svc-rise {
+  from {
     opacity: 0;
-    pointer-events: none;
-    will-change: transform;
+    transform: translateY(16px);
+  }
 }
 
-.service-scroll-cursor[data-visible="true"] {
-    opacity: 1;
+.svc-detail h3 {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 4.4vw, 4rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--panel-deep);
+}
+
+.svc-detail p {
+  max-width: 28rem;
+  margin: 0 0 1.75rem;
+  font-size: 1.0625rem;
+  color: var(--color-primary-700);
+}
+
+/* Same button as the rest of the site, in blue. */
+.svc-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 14px 28px;
+  border-radius: 999px;
+  corner-shape: squircle;
+  background-color: var(--panel-brand);
+  color: var(--panel-text);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.svc-button svg {
+  transition: transform 0.25s ease;
+}
+
+.svc-button:hover,
+.svc-button:focus-visible {
+  background-color: var(--panel-deep);
+  color: var(--panel-text);
+}
+
+.svc-button:hover svg {
+  transform: translateX(3px);
+}
+
+.svc-button:focus-visible {
+  outline: 2px solid var(--panel-brand);
+  outline-offset: 3px;
+}
+
+/* ---------- Video side: the video and nothing else ---------- */
+
+.svc-media {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background-color: var(--panel-ink);
+  isolation: isolate;
+}
+
+.svc-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.svc-video.is-active {
+  opacity: 1;
+}
+
+/* ---------- Round "Scroll" label that follows the pointer over the video ---------- */
+
+.svc-cursor {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-primary-500);
+  color: var(--color-primary-50);
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+
+.svc-cursor[data-visible="true"] {
+  opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
-    .slide {
-        cursor: none;
-    }
+  .svc-media {
+    cursor: none;
+  }
 }
 
-@media (max-width: 767px) {
-    .services-container {
-        height: auto;
-        min-height: auto;
-        padding: 3rem 1rem 2rem;
-    }
+/* ---------- Tablet and mobile ---------- */
 
-    .service-scroll-cursor {
-        display: none;
-    }
+@media (max-width: 900px) {
+  .svc {
+    min-height: 0;
+  }
 
-    .services-wrapper {
-        gap: 1.25rem;
-    }
+  .svc-cursor {
+    display: none;
+  }
 
-    .services-header {
-        font-size: clamp(2.25rem, 10vw, 3.5rem);
-    }
+  .svc-panel {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
+  }
 
-    .service-container {
-        min-height: 36rem;
-    }
+  .svc-media {
+    min-height: 24rem;
+    margin-top: 1rem;
+  }
 
-    .slider {
-        min-height: 32rem;
-    }
+  .svc-detail {
+    padding-top: 2rem;
+  }
 
-    .slide {
-        width: 96%;
-        height: calc(100% - 1rem);
-        border-radius: 0.375rem;
-    }
-
-    .slide-title {
-        max-width: 15ch;
-        font-size: clamp(1.75rem, 8vw, 2.75rem);
-    }
-}
-
-@media (max-width: 374px) {
-    .services-container {
-        padding-inline: 0.75rem;
-    }
-
-    .slide-title {
-        font-size: 1.65rem;
-    }
-
-    .service-controls {
-        gap: 0.5rem;
-    }
-
-    .service-controls button {
-        padding-inline: 0.7rem;
-    }
-}
-
-@media (hover: none), (pointer: coarse) {
-    .service-scroll-cursor {
-        display: none;
-    }
+  .svc-detail h3 {
+    font-size: 2.5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .service-controls button {
-        transition: none;
-    }
+  .svc-letter {
+    transform: none;
+  }
 
-    .service-scroll-cursor {
-        display: none;
-    }
-
-    .slide,
-    .slide-title-word {
-        will-change: auto;
-    }
+  .svc-detail > *,
+  .svc-tab-bar,
+  .svc-video,
+  .svc-button,
+  .svc-button svg {
+    animation: none;
+    transition: none;
+  }
 }
