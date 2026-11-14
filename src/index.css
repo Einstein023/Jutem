@@ -557,7 +557,7 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
   align-self: flex-end;
   margin-left: 40rem;
   max-width: 32rem;
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   /* font-size: clamp(1.125rem, 2vw, 1.35rem); */
   line-height: 1.45;
   font-weight: 400;
