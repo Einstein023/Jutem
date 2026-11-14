@@ -9,8 +9,8 @@ import BlockBuild from "./BlockBuild"
 
    The section is PINNED on screen (see .abs-build-track in About.css), so the house stays
    in view while you scroll. How far you are through the section decides everything:
-     0% to BUILD_END   the house is built, and the camera turns slowly around it
-     BUILD_END to 100% the house is finished and keeps turning one full circle as you scroll on
+     Scrolling down into the section: the house builds itself, slowly, then turns ONE full circle.
+     Scrolling on past the section: the house takes itself apart. Scrolling back up rebuilds it.
    Then the page carries on. To make the build slower or faster, change --abs-track in About.css
    (the scroll length) or BUILD_END below (how much of it is the build).
    Move the mouse over the house and it tilts a little.
@@ -25,8 +25,9 @@ import BlockBuild from "./BlockBuild"
    Sizes are in metres. To change the house, edit the "THE HOUSE" block in buildHouse().
    ========================================================================== */
 
-const BUILD_END = 0.7 // share of the pinned scroll used for building; the rest is the spin
-const SPEED = 0.07 // fastest the house animates, in "whole animations" per second (lower = slower)
+const BUILD_END = 0.7 // only used by the flat fallback (BlockBuild), which is still scroll-driven
+const SPIN_SECONDS = 7 // the one full turn after the house is finished
+const SPEED = 0.14 // fastest the house animates, in "whole animations" per second (lower = slower)
 const EASE = 5 // how softly it slows down as it reaches the goal
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
@@ -377,9 +378,8 @@ function buildHouse(THREE, track, box, canvas) {
     }
 
     const render = (p, pointer) => {
-        const b = clamp01(p / BUILD_END) // build progress
-        const spin = phase(p, BUILD_END, 1) // turning after the build
-        const smooth = spin * spin * (3 - 2 * spin)
+        const b = clamp01(p) // build progress
+        const smooth = spinShown * spinShown * (3 - 2 * spinShown) // the one turn after the build
         const slabT = easeOut(phase(b, 0, 0.08))
         slab.scale.set(8.3 * (0.85 + 0.15 * slabT), 0.3 * slabT + 0.0001, 6.3 * (0.85 + 0.15 * slabT))
         slab.position.set(0, -0.3 + 0.15 * slabT, 0)
@@ -440,7 +440,8 @@ function buildHouse(THREE, track, box, canvas) {
     let visible = false
     let frame = 0
     let lastTime = performance.now()
-    let started = false
+    let goal = 0
+    let spinShown = 0
 
     const resize = () => {
         const rect = box.getBoundingClientRect()
@@ -459,18 +460,27 @@ function buildHouse(THREE, track, box, canvas) {
             const now = performance.now()
             const dt = Math.min((now - lastTime) / 1000, 0.05)
             lastTime = now
-            // Starts when the section is well into view and then plays by itself (no more scrolling
-            // needed). It resets only once the section is fully off the bottom, so it replays.
-            const top = track.getBoundingClientRect().top
-            if (top < window.innerHeight * 0.55) started = true
-            else if (top > window.innerHeight) started = false
-            const goal = started ? 1 : 0
+            // The house FOLLOWS your scroll position, so it always matches where you are:
+            //   arriving  (section top rises from 50% to -10% of the screen)  -> 0 to 1, builds
+            //   leaving   (section bottom drops from 100% to 40% of the screen) -> 1 to 0, comes apart
+            // Scroll back the other way and the very same path plays in reverse.
+            // It never jumps: it catches up at a limited speed (SPEED), so the build stays slow.
+            const rect = track.getBoundingClientRect()
+            const vh = window.innerHeight
+            const arriving = clamp01((vh * 0.5 - rect.top) / (vh * 0.6))
+            const leaving = clamp01((rect.bottom - vh * 0.4) / (vh * 0.6))
+            goal = Math.min(arriving, leaving)
             const gap = goal - shown
-            const step = Math.sign(gap) * Math.min(Math.abs(gap) * EASE * dt, SPEED * dt)
+            const speed = gap < 0 ? SPEED * 2.5 : SPEED // coming apart is quicker, so you see it as you scroll past
+            const step = Math.sign(gap) * Math.min(Math.abs(gap) * EASE * dt, speed * dt)
             shown = Math.abs(gap) < 0.0005 ? goal : shown + step
+            // one turn once the house is finished; resets (same view) when it starts coming apart
+            if (shown >= 1) spinShown = Math.min(1, spinShown + dt / SPIN_SECONDS)
+            else if (spinShown >= 1) spinShown = 0
+            else spinShown = Math.max(0, spinShown - dt * 0.5)
             pointerShown += (pointer - pointerShown) * 0.08
         }
-        const key = `${shown.toFixed(4)}|${pointerShown.toFixed(3)}`
+        const key = `${shown.toFixed(4)}|${spinShown.toFixed(4)}|${pointerShown.toFixed(3)}`
         if (key !== lastKey) {
             render(shown, pointerShown)
             lastKey = key
@@ -494,6 +504,8 @@ function buildHouse(THREE, track, box, canvas) {
 
     const visibility = new IntersectionObserver(([entry]) => {
         visible = entry.isIntersecting
+        // Once it has left the bottom of the screen the house is simply gone, so start fresh next time.
+        if (!visible && goal <= 0 && shown > 0) { shown = 0; spinShown = 0; lastKey = "" }
         if (visible) begin()
     }, { rootMargin: "200px 0px" })
     visibility.observe(track)

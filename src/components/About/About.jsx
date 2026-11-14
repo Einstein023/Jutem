@@ -15,6 +15,7 @@ import "./About.css"
 
 const ICONS = {
     arrow: ["M5 12h14", "m12 5 7 7-7 7"],
+    check: ["m5 12.5 4.5 4.5L19 7.5"],
     down: ["M12 5v14", "m19 12-7 7-7-7"],
 }
 
@@ -75,12 +76,11 @@ export default function About() {
             </section>
 
             {/* The left text and the 3D house are both pinned on screen while you scroll through this
-                section: the house builds, then keeps turning, then the page carries on. */}
+                section: the house builds, turns once, then comes apart as you scroll past. */}
             <section className="abs-story" id="who-we-are">
                 <div className="abs-story-left">
                     <div className="abs-pin">
                         <div className="abs-story-text">
-                            <p className="abs-eyebrow">About Jutem</p>
                             <h2>Who we are</h2>
                             <p className="abs-lead">
                                 We are a purely indigenous company of young, enterprising professionals
@@ -92,22 +92,19 @@ export default function About() {
                                 to provide services and structures that meet the highest standards.
                             </p>
 
-                            <div className="abs-values">
-                                {values.map((value, index) => (
-                                    <div className="abs-value" key={value.title}>
-                                        <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
-                                        <div>
-                                            <h3>{value.title}</h3>
-                                            <p>{value.text}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
                             <a className="abs-link" href="/contact">
                                 Talk to us
-                                <span className="abs-link-dot"><Icon name="arrow" size={14} /></span>
+                                <span className="abs-link-dot"><Icon name="arrow" size={18} /></span>
                             </a>
+
+                            <ul className="abs-checks">
+                                {values.map((value) => (
+                                    <li key={value.title}>
+                                        <span className="abs-check" aria-hidden="true"><Icon name="check" size={13} /></span>
+                                        <span><strong>{value.title}.</strong> {value.text}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
