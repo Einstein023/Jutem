@@ -26,7 +26,7 @@ import BlockBuild from "./BlockBuild"
    ========================================================================== */
 
 const BUILD_END = 0.7 // share of the pinned scroll used for building; the rest is the spin
-const SPEED = 0.14 // fastest the house animates, in "whole animations" per second (lower = slower)
+const SPEED = 0.07 // fastest the house animates, in "whole animations" per second (lower = slower)
 const EASE = 5 // how softly it slows down as it reaches the goal
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
