@@ -1,0 +1,386 @@
+/* ==========================================
+   ABOUT + SERVICES PAGE
+   Every class starts with "abs-" so it can't clash with other files.
+   Fonts and colours come from index.css (Montserrat + Nunito, --panel-* blues),
+   so this page looks like the homepage. Nothing here uses another hue.
+   ========================================== */
+
+.abs {
+  --abs-radius: 20px;
+  --abs-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  width: 100%;
+  background-color: var(--panel-mist);
+}
+
+/* Same heading voice as the homepage: Montserrat, tight tracking. */
+.abs h1,
+.abs h2 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.abs-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Button (same look as the homepage button, in blue only) ---------- */
+
+.abs-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 14px 28px;
+  border-radius: 999px;
+  corner-shape: squircle;
+  background-color: var(--panel-brand);
+  color: var(--panel-text);
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.abs-button svg {
+  transition: transform 0.25s ease;
+}
+
+.abs-button:hover,
+.abs-button:focus-visible {
+  background-color: var(--panel-deep);
+  color: var(--panel-text);
+}
+
+.abs-button:hover svg {
+  transform: translateX(3px);
+}
+
+.abs-button:focus-visible {
+  outline: 2px solid var(--panel-brand);
+  outline-offset: 3px;
+}
+
+/* ---------- Hero ---------- */
+
+/* The site photo with the SAME overlay as the homepage hero (50% dark, deeper at the top and
+   bottom), plus a faint blue so it reads cool and calm instead of bright. */
+.abs-hero {
+  position: relative;
+  min-height: max(100svh, 38rem);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(0deg, rgb(25 51 85 / 0.18), rgb(25 51 85 / 0.18)),
+    linear-gradient(0deg, #00000080, #0000 37%),
+    linear-gradient(#00000080, #0000 16%),
+    linear-gradient(#00000080, #00000080),
+    url("/about/site-hero.webp") center 70% / cover no-repeat;
+  background-color: var(--panel-ink);
+}
+
+/* ---------- Letters that rise in ---------- */
+
+.abs-mask {
+  display: inline-block;
+  vertical-align: bottom;
+  /* Clip only the bottom edge (that is what hides the letter before it rises).
+     The sides stay open because glyphs can overhang their box. */
+  clip-path: inset(-0.2em -0.5em 0 -0.5em);
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.abs-letter {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+  animation: abs-letter 1.1s var(--abs-ease) calc(0.2s + var(--i) * 0.08s) both;
+}
+
+@keyframes abs-letter {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- ABOUT (bottom right) + story (top left) ---------- */
+
+.abs-hero-first {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 88px clamp(24px, 5vw, 64px) clamp(4rem, 11vh, 7rem);
+}
+
+.abs .abs-title {
+  margin: 0;
+  font-size: clamp(5rem, 21vw, 19rem);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--color-primary-100);
+  text-shadow: 0 6px 50px rgb(17 34 57 / 0.35);
+}
+
+/* A short line draws, then the sentence comes in. */
+.abs-story-top {
+  position: absolute;
+  top: calc(88px + clamp(1rem, 5vh, 3rem));
+  left: clamp(24px, 5vw, 64px);
+  max-width: min(54rem, 90vw);
+  text-align: left;
+}
+
+.abs-rule {
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  margin-bottom: 1.25rem;
+  background-color: var(--color-primary-200);
+  transform-origin: left;
+  animation: abs-draw 1s var(--abs-ease) 0.95s both;
+}
+
+@keyframes abs-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* Size follows the smaller of screen width / height, so it never runs into ABOUT on short screens.
+   Roomy line spacing and a soft shadow keep it easy to read over the photo. */
+.abs-story-top p {
+  margin: 0;
+  font-size: clamp(2rem, min(4.8vw, 7.4vh), 4.8rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--color-primary-50);
+  text-shadow: 0 2px 12px rgb(8 17 29 / 0.4), 0 1px 32px rgb(8 17 29 / 0.45);
+  animation: abs-rise 0.9s var(--abs-ease) 1.25s both;
+}
+
+@keyframes abs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* ---------- Scroll cue (plain text, bottom left) ---------- */
+
+.abs-scroll-cue {
+  position: absolute;
+  z-index: 4;
+  bottom: 3vh;
+  left: clamp(16px, 4.5vw, 56px);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 0;
+  background: none;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary-100);
+  animation: abs-rise 0.9s var(--abs-ease) 1.6s both;
+  transition: color 0.3s ease;
+}
+
+.abs-scroll-cue:hover {
+  color: #fff;
+}
+
+.abs-scroll-cue svg {
+  animation: abs-nudge 1.8s ease-in-out infinite;
+}
+
+@keyframes abs-nudge {
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* ---------- Who we are (light blue, same as the homepage background) ---------- */
+
+.abs-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 7rem) clamp(24px, 5vw, 64px);
+}
+
+.abs-story-text h2,
+.abs-md-text h2,
+.abs-closing-inner h2 {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  margin-bottom: 1.5rem;
+  color: var(--panel-deep);
+}
+
+.abs-story-text p,
+.abs-md-text p {
+  max-width: 36rem;
+  margin: 0 0 1rem;
+  font-size: 1.0625rem;
+  color: var(--color-primary-700);
+}
+
+.abs-values {
+  display: grid;
+  align-content: center;
+}
+
+.abs-value {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--color-primary-300);
+}
+
+.abs-value:last-child {
+  border-bottom: 1px solid var(--color-primary-300);
+}
+
+.abs-value-number {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: -0.06em;
+  color: var(--panel-brand);
+}
+
+.abs-value h3 {
+  margin-bottom: 0.25rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+  color: var(--panel-deep);
+}
+
+.abs-value p {
+  margin: 0;
+  color: var(--color-primary-700);
+}
+
+/* ---------- Managing Director ---------- */
+
+.abs-md {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 0 clamp(24px, 5vw, 64px) clamp(3rem, 8vw, 7rem);
+}
+
+.abs-md-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--abs-radius);
+}
+
+.abs-md-role {
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--panel-brand);
+}
+
+/* ---------- Closing ---------- */
+
+.abs-closing {
+  background:
+    linear-gradient(90deg, rgb(8 17 29 / 0.82), rgb(8 17 29 / 0.35)),
+    url("/slideshow-image/hero-bg5.webp") center / cover no-repeat;
+  background-color: var(--panel-deep);
+}
+
+.abs-closing-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(5rem, 14vw, 10rem) clamp(24px, 5vw, 64px);
+}
+
+.abs-closing-inner h2 {
+  margin-bottom: 0.5rem;
+  color: var(--panel-text);
+}
+
+.abs-closing-inner p {
+  margin: 0;
+  color: var(--panel-text-dim);
+}
+
+/* ---------- Tablet and mobile ---------- */
+
+@media (max-width: 900px) {
+  .abs-story,
+  .abs-md {
+    grid-template-columns: 1fr;
+  }
+
+  .abs-closing-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* a touch more blue on small screens, the white building sits behind the story text */
+  .abs-hero {
+    background:
+      linear-gradient(0deg, rgb(25 51 85 / 0.3), rgb(25 51 85 / 0.3)),
+      linear-gradient(0deg, #00000080, #0000 37%),
+      linear-gradient(#00000080, #0000 16%),
+      linear-gradient(#00000080, #00000080),
+      url("/about/site-hero.webp") 62% 70% / cover no-repeat;
+    background-color: var(--panel-ink);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .abs-letter,
+  .abs-rule,
+  .abs-story-top p,
+  .abs-scroll-cue,
+  .abs-scroll-cue svg,
+  .abs-button,
+  .abs-button svg {
+    animation: none;
+    transition: none;
+  }
+
+  .abs-letter {
+    transform: none;
+  }
+}

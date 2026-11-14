@@ -1,339 +1,340 @@
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react"
-import gsap from "gsap"
+import { useEffect, useRef, useState } from "react"
 import "./services.css"
 
-const slideData = [
-    { title: "Building Construction", image: "/slider-assets/Construction.mp4", type: "video" },
-    { title: "Interior Finishing", image: "/slider-assets/Interior-Finishing-Video.mp4", type: "video" },
-    { title: "Maintenance & Renovation", image: "/slider-assets/Renovation-Video.mp4", type: "video" },
-    { title: "General Civil Works", image: "/slider-assets/Civil.mp4", type: "video" },
+/* ==========================================================================
+   HOME PAGE: SERVICES
+
+   Four tabs (01 to 04). Each tab shows the service title, one sentence, an enquiry
+   button, and a video in a big rounded card. The panel runs edge to edge and fills
+   the screen. Only the open tab's video plays, and only while the section is on screen.
+
+   SCROLL TO SWITCH: while the pointer is over the panel, the mouse wheel (or a swipe on
+   a phone) moves to the next / previous tab. After tab 04 (or before tab 01) the page
+   scrolls on as normal, so the visitor is never trapped.
+
+   The nav "Services" link (and the /services address) lands here.
+   ========================================================================== */
+
+const services = [
+    {
+        id: "building",
+        title: "Building Construction",
+        intro: "Residential and commercial buildings, delivered from planning to completion.",
+        video: "/slider-assets/Construction.mp4",
+    },
+    {
+        id: "interior",
+        title: "Interior Finishing",
+        intro: "Quality finishing work that turns a structure into a space you can live and work in.",
+        video: "/slider-assets/Interior-Finishing-Video.mp4",
+    },
+    {
+        id: "renovation",
+        title: "Maintenance & Renovation",
+        intro: "Keeping existing buildings in shape and giving them a fresh new look.",
+        video: "/slider-assets/Renovation-Video.mp4",
+    },
+    {
+        id: "civil",
+        title: "General Civil Works",
+        intro: "Civil engineering works handled with professional care.",
+        video: "/slider-assets/Civil.mp4",
+    },
 ]
 
-const WHEEL_THRESHOLD = 100
-const TOUCH_THRESHOLD = 50
+const ARROW = ["M5 12h14", "m12 5 7 7-7 7"]
+
+const WHEEL_THRESHOLD = 100 // how much wheel movement counts as one step
+const TOUCH_THRESHOLD = 50 // how far a swipe must travel
+const STEP_COOLDOWN = 800 // ms to wait after a step, so one flick = one tab
+
+/* Heading that rises in letter by letter. Each letter sits in a mask and slides up;
+   the order comes from --i and the timing is set in services.css. */
+function RiseText({ text }) {
+    let count = 0
+    return (
+        <>
+            <span className="svc-sr">{text}</span>
+            <span aria-hidden="true">
+                {text.split(" ").map((word, wordIndex, words) => (
+                    <span className="svc-word" key={`${word}-${wordIndex}`}>
+                        {word.split("").map((letter) => {
+                            const index = count++
+                            return (
+                                <span className="svc-mask" key={index}>
+                                    <span className="svc-letter" style={{ "--i": index }}>{letter}</span>
+                                </span>
+                            )
+                        })}
+                        {wordIndex < words.length - 1 ? "\u00a0" : ""}
+                    </span>
+                ))}
+            </span>
+        </>
+    )
+}
 
 export default function Services() {
-    const [frontSlideIndex, setFrontSlideIndex] = useState(0)
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState(
-        () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    )
-    const frontSlideIndexRef = useRef(0)
-    const serviceContainerRef = useRef(null)
-    const slideRefs = useRef([])
+    const [active, setActive] = useState(0)
+    const [inView, setInView] = useState(false)
+    const [cursorVisible, setCursorVisible] = useState(false)
+    const [headingIn, setHeadingIn] = useState(false)
+    const headingRef = useRef(null)
+    const sectionRef = useRef(null)
+    const panelRef = useRef(null)
+    const cursorRef = useRef(null)
+    const tabRefs = useRef([])
     const videoRefs = useRef([])
-    const scrollCursorRef = useRef(null)
-    const previousSlideIndexRef = useRef(null)
-    const slideDirectionRef = useRef("down")
-    const isAnimatingRef = useRef(false)
-    const wheelAccumulatorRef = useRef(0)
+    const activeRef = useRef(0)
+    const lockedRef = useRef(false)
+    const wheelTotalRef = useRef(0)
     const wheelDirectionRef = useRef(null)
     const touchStartRef = useRef(null)
-    const [isScrollCursorVisible, setIsScrollCursorVisible] = useState(false)
 
+    const tabNumber = (index) => String(index + 1).padStart(2, "0")
+
+    // Arriving from the nav (/#services) or from the old /services address: jump to this section.
     useEffect(() => {
-        const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)")
-        const updateMotionPreference = (event) => setPrefersReducedMotion(event.matches)
-
-        motionPreference.addEventListener("change", updateMotionPreference)
-        return () => motionPreference.removeEventListener("change", updateMotionPreference)
+        const path = window.location.pathname.replace(/\/+$/, "")
+        if (path !== "/services" && window.location.hash !== "#services") return
+        const frame = requestAnimationFrame(() => {
+            sectionRef.current?.scrollIntoView({ block: "start" })
+        })
+        return () => cancelAnimationFrame(frame)
     }, [])
 
-    useLayoutEffect(() => {
-        const slides = slideRefs.current.filter(Boolean)
-        const getPosition = (index, activeIndex = frontSlideIndex) => (
-            (index - activeIndex + slideData.length) % slideData.length
-        )
-        const setStackPosition = (slide, index) => {
-            const depth = getPosition(index)
-
-            gsap.set(slide, {
-                xPercent: -50 + depth * 1.2,
-                yPercent: -50 + depth * 2.5,
-                scale: 1 - depth * 0.025,
-                opacity: 1,
-            })
+    // Know when the section is on screen so videos only play while they can be seen.
+    useEffect(() => {
+        const node = sectionRef.current
+        if (!node || !("IntersectionObserver" in window)) {
+            setInView(true)
+            return
         }
+        const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.15 })
+        observer.observe(node)
+        return () => observer.disconnect()
+    }, [])
 
-        const previousIndex = previousSlideIndexRef.current
-        const incomingSlide = slides[frontSlideIndex]
-        if (!incomingSlide) return undefined
-
-        if (previousIndex === null || previousIndex === frontSlideIndex || prefersReducedMotion) {
-            slides.forEach((slide, index) => setStackPosition(slide, index))
-            previousSlideIndexRef.current = frontSlideIndex
-            isAnimatingRef.current = false
-            return undefined
+    // The heading's letters rise in the first time it scrolls into view.
+    useEffect(() => {
+        const node = headingRef.current
+        if (!node || !("IntersectionObserver" in window)) {
+            setHeadingIn(true)
+            return
         }
-
-        gsap.set(incomingSlide, {
-            xPercent: -50,
-            yPercent: slideDirectionRef.current === "down" ? -150 : 50,
-            scale: 0.94,
-            opacity: 1,
-        })
-
-        const timeline = gsap.timeline({
-            onComplete: () => {
-                previousSlideIndexRef.current = frontSlideIndex
-                isAnimatingRef.current = false
-            },
-        })
-
-        slides.forEach((slide, index) => {
-            const depth = getPosition(index)
-
-            timeline.to(slide, {
-                xPercent: -50 + depth * 1.2,
-                yPercent: -50 + depth * 2.5,
-                scale: 1 - depth * 0.025,
-                opacity: 1,
-                duration: 0.95,
-                ease: "power3.inOut",
-            }, 0)
-        })
-
-        const activeTitleWords = incomingSlide.querySelectorAll(".slide-title-word")
-        if (activeTitleWords?.length) {
-            timeline.fromTo(activeTitleWords,
-                { yPercent: 100 },
-                {
-                    yPercent: 0,
-                    duration: 0.65,
-                    ease: "power4.out",
-                    stagger: 0.06,
-                },
-                0.15,
-            )
-        }
-
-        return () => timeline.kill()
-    }, [frontSlideIndex, prefersReducedMotion])
-
-    const moveScrollCursor = (event) => {
-        if (event.pointerType === "touch" || !scrollCursorRef.current) return
-
-        scrollCursorRef.current.style.transform = (
-            `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
-        )
-    }
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setHeadingIn(true)
+                observer.disconnect()
+            }
+        }, { threshold: 0.6 })
+        observer.observe(node)
+        return () => observer.disconnect()
+    }, [])
 
     useEffect(() => {
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
         videoRefs.current.forEach((video, index) => {
             if (!video) return
-
-            if (index === frontSlideIndex && !prefersReducedMotion) {
-                video.play().catch((error) => {
-                    if (error.name !== "NotAllowedError") {
-                        console.error("Could not play the active service video.", error)
-                    }
-                })
+            if (index === active && inView && !reduceMotion) {
+                video.play().catch(() => {})
             } else {
                 video.pause()
-                video.currentTime = 0
             }
         })
-    }, [frontSlideIndex, prefersReducedMotion])
+    }, [active, inView])
 
-    const changeSlide = (direction) => {
-        if (isAnimatingRef.current) return false
+    const goTo = (index) => {
+        activeRef.current = index
+        setActive(index)
+    }
 
-        const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
-        if (nextIndex < 0 || nextIndex >= slideData.length) return false
-
-        isAnimatingRef.current = true
-        slideDirectionRef.current = direction
-        frontSlideIndexRef.current = nextIndex
-        setFrontSlideIndex(nextIndex)
+    // Moves one tab up or down. Returns false when there is no tab that way (or a step just happened).
+    const step = (direction) => {
+        if (lockedRef.current) return false
+        const next = activeRef.current + (direction === "down" ? 1 : -1)
+        if (next < 0 || next >= services.length) return false
+        lockedRef.current = true
+        setTimeout(() => { lockedRef.current = false }, STEP_COOLDOWN)
+        goTo(next)
         return true
     }
 
     useEffect(() => {
-        const container = serviceContainerRef.current
-        if (!container) return undefined
+        const panel = panelRef.current
+        if (!panel) return undefined
 
-        const handleWheel = (event) => {
+        const canMove = (direction) => {
+            const next = activeRef.current + (direction === "down" ? 1 : -1)
+            return next >= 0 && next < services.length
+        }
+
+        const onWheel = (event) => {
             if (event.deltaY === 0) return
-
             const direction = event.deltaY > 0 ? "down" : "up"
-            const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
-            const canChangeSlide = nextIndex >= 0 && nextIndex < slideData.length
 
-            if (isAnimatingRef.current) {
-                container.setAttribute("data-lenis-prevent", "")
+            // Mid-step: keep the page still until the tab has finished changing.
+            if (lockedRef.current) {
+                panel.setAttribute("data-lenis-prevent", "")
                 event.preventDefault()
                 return
             }
 
-            container.toggleAttribute("data-lenis-prevent", canChangeSlide)
-            if (!canChangeSlide) {
-                wheelAccumulatorRef.current = 0
+            // No tab left that way: stop holding the scroll and let the page move on.
+            const movable = canMove(direction)
+            panel.toggleAttribute("data-lenis-prevent", movable)
+            if (!movable) {
+                wheelTotalRef.current = 0
                 wheelDirectionRef.current = null
                 return
             }
 
             event.preventDefault()
             if (wheelDirectionRef.current !== direction) {
-                wheelAccumulatorRef.current = 0
+                wheelTotalRef.current = 0
                 wheelDirectionRef.current = direction
             }
-
-            wheelAccumulatorRef.current += Math.abs(event.deltaY)
-            if (wheelAccumulatorRef.current >= WHEEL_THRESHOLD) {
-                wheelAccumulatorRef.current = 0
+            wheelTotalRef.current += Math.abs(event.deltaY)
+            if (wheelTotalRef.current >= WHEEL_THRESHOLD) {
+                wheelTotalRef.current = 0
                 wheelDirectionRef.current = null
-                changeSlide(direction)
+                step(direction)
             }
         }
 
-        const handleTouchStart = (event) => {
+        const onTouchStart = (event) => {
             const touch = event.touches[0]
-            if (touch) {
-                touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-            }
+            if (touch) touchStartRef.current = { x: touch.clientX, y: touch.clientY }
         }
 
-        const handleTouchMove = (event) => {
+        const onTouchMove = (event) => {
             const start = touchStartRef.current
             const touch = event.touches[0]
             if (!start || !touch) return
-
-            const deltaY = start.y - touch.clientY
-            const deltaX = start.x - touch.clientX
-            if (Math.abs(deltaY) <= Math.abs(deltaX) || Math.abs(deltaY) <= 0) return
-
-            const direction = deltaY > 0 ? "down" : "up"
-            const nextIndex = frontSlideIndexRef.current + (direction === "down" ? 1 : -1)
-            const canChangeSlide = nextIndex >= 0 && nextIndex < slideData.length
-            container.toggleAttribute("data-lenis-prevent", isAnimatingRef.current || canChangeSlide)
-            if (isAnimatingRef.current || canChangeSlide) {
-                event.preventDefault()
-            }
+            const dy = start.y - touch.clientY
+            const dx = start.x - touch.clientX
+            if (Math.abs(dy) <= Math.abs(dx) || dy === 0) return
+            const hold = lockedRef.current || canMove(dy > 0 ? "down" : "up")
+            panel.toggleAttribute("data-lenis-prevent", hold)
+            if (hold) event.preventDefault()
         }
 
-        const handleTouchEnd = (event) => {
+        const onTouchEnd = (event) => {
             const start = touchStartRef.current
             const touch = event.changedTouches[0]
             touchStartRef.current = null
-
-            if (!start || !touch || isAnimatingRef.current) return
-
-            const deltaY = start.y - touch.clientY
-            const deltaX = start.x - touch.clientX
-            if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > TOUCH_THRESHOLD) {
-                changeSlide(deltaY > 0 ? "down" : "up")
+            if (!start || !touch) return
+            const dy = start.y - touch.clientY
+            const dx = start.x - touch.clientX
+            if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > TOUCH_THRESHOLD) {
+                step(dy > 0 ? "down" : "up")
             }
         }
 
-        container.addEventListener("wheel", handleWheel, { passive: false })
-        container.addEventListener("touchstart", handleTouchStart, { passive: true })
-        container.addEventListener("touchmove", handleTouchMove, { passive: false })
-        container.addEventListener("touchend", handleTouchEnd, { passive: true })
-
+        panel.addEventListener("wheel", onWheel, { passive: false })
+        panel.addEventListener("touchstart", onTouchStart, { passive: true })
+        panel.addEventListener("touchmove", onTouchMove, { passive: false })
+        panel.addEventListener("touchend", onTouchEnd, { passive: true })
         return () => {
-            container.removeEventListener("wheel", handleWheel)
-            container.removeEventListener("touchstart", handleTouchStart)
-            container.removeEventListener("touchmove", handleTouchMove)
-            container.removeEventListener("touchend", handleTouchEnd)
+            panel.removeEventListener("wheel", onWheel)
+            panel.removeEventListener("touchstart", onTouchStart)
+            panel.removeEventListener("touchmove", onTouchMove)
+            panel.removeEventListener("touchend", onTouchEnd)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    return (
-        <section className="services-container">
-            <div className="services-wrapper">
-                <h2 className="services-header">Our Services/</h2>
-                <div className="service-container" ref={serviceContainerRef}>
-                    <div className="slider">
-                        {slideData.map((slide, index) => {
-                            const titleWords = slide.title.split(" ")
-                            const position = (index - frontSlideIndex + slideData.length) % slideData.length
-                            const isActive = position === 0
+    // The round "Scroll" label that follows the pointer over the video (it tells people scrolling works).
+    const moveCursor = (event) => {
+        if (event.pointerType === "touch" || !cursorRef.current) return
+        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
+    }
 
-                            return (
-                                <article
-                                    className="slide"
-                                    key={slide.title}
-                                    ref={(element) => {
-                                        slideRefs.current[index] = element
-                                    }}
-                                    style={{
-                                        zIndex: slideData.length - position,
-                                        pointerEvents: isActive ? "auto" : "none",
-                                    }}
-                                    aria-label={slide.title}
-                                    aria-hidden={!isActive}
-                                    onPointerEnter={(event) => {
-                                        if (event.pointerType !== "touch") {
-                                            moveScrollCursor(event)
-                                            setIsScrollCursorVisible(true)
-                                        }
-                                    }}
-                                    onPointerMove={moveScrollCursor}
-                                    onPointerLeave={() => setIsScrollCursorVisible(false)}
-                                >
-                                    {slide.type === "video" ? (
-                                        <video
-                                            className="slider-image"
-                                            src={slide.image}
-                                            ref={(element) => {
-                                                videoRefs.current[index] = element
-                                            }}
-                                            autoPlay={isActive}
-                                            muted
-                                            loop
-                                            playsInline
-                                            preload="metadata"
-                                            aria-hidden="true"
-                                        />
-                                    ) : (
-                                        <img
-                                            className="slider-image"
-                                            src={slide.image}
-                                            alt=""
-                                        />
-                                    )}
-                                    <h3 className="slide-title">
-                                        {titleWords.map((word, wordIndex) => (
-                                            <Fragment key={`${word}-${wordIndex}`}>
-                                                <span className="slide-title-mask">
-                                                    <span className="slide-title-word">{word}</span>
-                                                </span>
-                                                {wordIndex < titleWords.length - 1 ? " " : ""}
-                                            </Fragment>
-                                        ))}
-                                    </h3>
-                                </article>
-                            )
-                        })}
+    const onTabKeyDown = (event, index) => {
+        const last = services.length - 1
+        let next = null
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") next = index === last ? 0 : index + 1
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = index === 0 ? last : index - 1
+        if (event.key === "Home") next = 0
+        if (event.key === "End") next = last
+        if (next === null) return
+        event.preventDefault()
+        goTo(next)
+        tabRefs.current[next]?.focus()
+    }
+
+    const current = services[active]
+
+    return (
+        <section className="svc" id="services" ref={sectionRef}>
+            <h2 className={`svc-header${headingIn ? " is-in" : ""}`} ref={headingRef}>
+                <RiseText text="Our Services" />
+            </h2>
+
+            <div className="svc-panel" ref={panelRef}>
+                <div className="svc-text">
+                    <div className="svc-tabs" role="tablist" aria-label="Our services">
+                        {services.map((service, index) => (
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={index === active}
+                                aria-label={`${tabNumber(index)}, ${service.title}`}
+                                title={service.title}
+                                tabIndex={index === active ? 0 : -1}
+                                className={`svc-tab${index === active ? " is-active" : ""}`}
+                                onClick={() => goTo(index)}
+                                onKeyDown={(event) => onTabKeyDown(event, index)}
+                                ref={(el) => { tabRefs.current[index] = el }}
+                                key={service.id}
+                            >
+                                <span className="svc-tab-number" aria-hidden="true">{tabNumber(index)}</span>
+                                <span className="svc-tab-bar" aria-hidden="true" />
+                            </button>
+                        ))}
                     </div>
-                    <div className="service-controls" aria-label="Service navigation">
-                        <button
-                            type="button"
-                            onClick={() => changeSlide("up")}
-                            aria-label="Previous service"
-                            disabled={frontSlideIndex === 0}
-                        >
-                            Previous
-                        </button>
-                        <span aria-live="polite">
-                            {String(frontSlideIndex + 1).padStart(2, "0")} / {String(slideData.length).padStart(2, "0")}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={() => changeSlide("down")}
-                            aria-label="Next service"
-                            disabled={frontSlideIndex === slideData.length - 1}
-                        >
-                            Next
-                        </button>
+
+                    <div className="svc-detail" key={current.id} role="tabpanel">
+                        <h3>{current.title}</h3>
+                        <p>{current.intro}</p>
+                        <a className="svc-button" href="/contact">
+                            Make an enquiry
+                            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                {ARROW.map((d) => <path d={d} key={d} />)}
+                            </svg>
+                        </a>
                     </div>
                 </div>
+
+                {/* The video side holds the video and nothing else. */}
+                <div
+                    className="svc-media"
+                    onPointerEnter={(event) => {
+                        if (event.pointerType !== "touch") {
+                            moveCursor(event)
+                            setCursorVisible(true)
+                        }
+                    }}
+                    onPointerMove={moveCursor}
+                    onPointerLeave={() => setCursorVisible(false)}
+                >
+                    {services.map((service, index) => (
+                        <video
+                            className={`svc-video${index === active ? " is-active" : ""}`}
+                            ref={(el) => { videoRefs.current[index] = el }}
+                            src={service.video}
+                            aria-label={`${service.title} at work`}
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                            key={service.id}
+                        />
+                    ))}
+                </div>
             </div>
-            <div
-                className="service-scroll-cursor"
-                ref={scrollCursorRef}
-                data-visible={isScrollCursorVisible}
-                aria-hidden="true"
-            >
+
+            <div className="svc-cursor" ref={cursorRef} data-visible={cursorVisible} aria-hidden="true">
                 Scroll
             </div>
         </section>

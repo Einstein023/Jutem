@@ -57,7 +57,7 @@ export default function Nav() {
             aria-label="Main navigation"
           >
             <a href="/about" onClick={closeMenu}>About</a>
-            <a href="/services" onClick={closeMenu}>Services</a>
+            <a href="/#services" onClick={closeMenu}>Services</a>
             <a href="/contact" onClick={closeMenu}>Contact Us</a>
           </nav>
 
