@@ -218,20 +218,19 @@
 }
 
 /* ---------- Who we are + the 3D house ----------
-   A calm "side dish": a narrow section, modest type, and the house inside a rounded card
-   (same corner as the services video card). The section still pins while you scroll so the
-   house can build and then turn; --abs-track sets how long that takes (bigger = slower). */
+   Layout like a classic editorial split: text on the left with generous margins, the house big
+   and free on the right (no card, no box), a thin ring behind it. The section pins while you
+   scroll so the house can build and then turn; --abs-track sets how long that takes. */
 
 .abs-story {
   --abs-track: 260svh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   align-items: stretch;
-  gap: clamp(2rem, 4.5vw, 4.5rem);
+  gap: clamp(3rem, 8vw, 10rem);
   width: 100%;
-  max-width: 1180px;
   margin-inline: auto;
-  padding: 0 clamp(24px, 5vw, 64px);
+  padding: 0 clamp(16px, 4vw, 72px) 0 clamp(24px, 12vw, 250px);
 }
 
 .abs-pin {
@@ -244,92 +243,117 @@
 }
 
 .abs-story-text {
-  max-width: 30rem;
+  max-width: 32rem;
 }
 
 .abs-eyebrow {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
   font-family: var(--font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--panel-brand);
 }
 
 .abs-eyebrow::before {
   content: "";
-  width: 2rem;
-  height: 2px;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
   background-color: currentColor;
 }
 
 .abs-story-text h2 {
-  margin-bottom: clamp(0.9rem, 2.4vh, 1.4rem);
-  font-size: clamp(2.1rem, min(3.6vw, 7vh), 3.25rem);
-  letter-spacing: -0.045em;
+  margin-bottom: clamp(1.1rem, 3vh, 1.75rem);
+  font-size: clamp(2.25rem, min(3.8vw, 7.5vh), 3.75rem);
+  letter-spacing: -0.05em;
   line-height: 1.05;
   color: var(--panel-deep);
 }
 
 .abs-story-text .abs-lead {
-  margin: 0 0 clamp(0.7rem, 1.6vh, 1rem);
-  font-size: clamp(1rem, min(1.25vw, 2.3vh), 1.1875rem);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.55;
-  color: var(--panel-deep);
+  margin: 0 0 1rem;
+  font-size: clamp(0.95rem, min(1.1vw, 2.1vh), 1.0625rem);
+  line-height: 1.75;
+  color: var(--color-primary-800);
 }
 
 .abs-story-text > p:not(.abs-lead):not(.abs-eyebrow) {
   margin: 0;
-  font-size: clamp(0.9rem, min(1.05vw, 2vh), 1rem);
-  line-height: 1.65;
+  font-size: clamp(0.95rem, min(1.1vw, 2.1vh), 1.0625rem);
+  line-height: 1.75;
   color: var(--color-primary-700);
 }
 
+/* Three short points, plain rows with a small mark, no boxes or rules. */
 .abs-values {
   display: grid;
-  margin-top: clamp(1.25rem, 3.5vh, 2rem);
+  gap: clamp(0.9rem, 2.4vh, 1.4rem);
+  margin-top: clamp(1.75rem, 5vh, 3rem);
 }
 
 .abs-value {
   display: grid;
-  grid-template-columns: 2.25rem 1fr;
+  grid-template-columns: 2.5rem 1fr;
   align-items: baseline;
-  gap: 0.75rem;
-  padding: clamp(0.6rem, 1.6vh, 0.9rem) 0;
-  border-top: 1px solid var(--color-primary-300);
-}
-
-.abs-value:last-child {
-  border-bottom: 1px solid var(--color-primary-300);
+  gap: 0.5rem;
 }
 
 .abs-value-number {
   font-family: var(--font-heading);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: var(--font-weight-extrabold);
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   color: var(--panel-brand);
 }
 
 .abs-value h3 {
-  margin-bottom: 0.1rem;
-  font-size: clamp(0.95rem, 2vh, 1.0625rem);
+  margin: 0;
+  font-size: clamp(1rem, 2vh, 1.125rem);
   letter-spacing: -0.02em;
   color: var(--panel-deep);
 }
 
 .abs-value p {
-  margin: 0;
-  font-size: clamp(0.8125rem, 1.7vh, 0.9375rem);
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
   color: var(--color-primary-700);
 }
 
-/* The house: a tall track with a pinned rounded card inside it. */
+/* Text link with a round arrow button, like the reference. */
+.abs-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: clamp(1.5rem, 4.5vh, 2.5rem);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--panel-brand);
+  text-decoration: none;
+}
+
+.abs-link-dot {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--panel-brand);
+  color: var(--panel-text);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.abs-link:hover .abs-link-dot,
+.abs-link:focus-visible .abs-link-dot {
+  background-color: var(--panel-deep);
+  transform: translateX(3px);
+}
+
+/* The house: a tall track with a pinned, open stage inside it. */
 .abs-build-track {
   height: var(--abs-track);
 }
@@ -342,13 +366,21 @@
 .abs-build-box {
   position: relative;
   width: 100%;
-  height: min(68svh, 33rem);
-  overflow: hidden;
-  border-radius: var(--abs-radius);
-  corner-shape: squircle;
-  background:
-    radial-gradient(120% 90% at 50% 0%, var(--color-primary-50), var(--color-primary-200) 100%);
-  box-shadow: 0 24px 60px -28px rgb(17 34 57 / 0.35);
+  height: min(84svh, 48rem);
+}
+
+/* a thin ring behind the house */
+.abs-build-box::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100%, 92svh);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--color-primary-300);
+  border-radius: 50%;
+  opacity: 0.7;
 }
 
 .abs-build-box canvas {
@@ -427,7 +459,7 @@
     --abs-track: 220svh;
     grid-template-columns: 1fr;
     gap: 0;
-    padding-top: clamp(3rem, 10vw, 5rem);
+    padding: clamp(3rem, 10vw, 5rem) 24px 0;
   }
 
   .abs-md {
@@ -450,7 +482,7 @@
   }
 
   .abs-build-box {
-    height: min(60svh, 26rem);
+    height: min(64svh, 30rem);
   }
 
   .abs-closing-inner {
@@ -488,7 +520,7 @@
   }
 
   .abs-build-box {
-    height: min(56svh, 26rem);
+    height: min(60svh, 28rem);
   }
 
   .abs-letter,
