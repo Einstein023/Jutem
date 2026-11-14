@@ -223,7 +223,7 @@
    scroll so the house can build and then turn; --abs-track sets how long that takes. */
 
 .abs-story {
-  --abs-track: 190svh;
+  --abs-track: 150svh;
   display: grid;
   grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
   align-items: stretch;
@@ -458,7 +458,7 @@
 
 @media (max-width: 900px) {
   .abs-story {
-    --abs-track: 170svh;
+    --abs-track: 150svh;
     grid-template-columns: 1fr;
     gap: 0;
     padding: clamp(3rem, 10vw, 5rem) 24px 0;

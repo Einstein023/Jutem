@@ -26,6 +26,8 @@ import BlockBuild from "./BlockBuild"
    ========================================================================== */
 
 const BUILD_END = 0.7 // share of the pinned scroll used for building; the rest is the spin
+const SPEED = 0.3 // fastest the house animates, in "whole animations" per second (lower = slower)
+const EASE = 5 // how softly it slows down as it reaches the goal
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
 const phase = (p, from, to) => clamp01((p - from) / (to - from))
@@ -437,6 +439,7 @@ function buildHouse(THREE, track, box, canvas) {
     let lastKey = ""
     let visible = false
     let frame = 0
+    let lastTime = performance.now()
 
     const resize = () => {
         const rect = box.getBoundingClientRect()
@@ -450,9 +453,15 @@ function buildHouse(THREE, track, box, canvas) {
 
     const tick = () => {
         if (!reduceMotion) {
+            // Scroll only SETS the goal. The house catches up at a calm, limited speed, so a short
+            // scroll still plays a slow build. SPEED = share of the whole animation per second.
+            const now = performance.now()
+            const dt = Math.min((now - lastTime) / 1000, 0.05)
+            lastTime = now
             const goal = readScroll()
-            shown += (goal - shown) * 0.1
-            if (Math.abs(goal - shown) < 0.0005) shown = goal
+            const gap = goal - shown
+            const step = Math.sign(gap) * Math.min(Math.abs(gap) * EASE * dt, SPEED * dt)
+            shown = Math.abs(gap) < 0.0005 ? goal : shown + step
             pointerShown += (pointer - pointerShown) * 0.08
         }
         const key = `${shown.toFixed(4)}|${pointerShown.toFixed(3)}`
@@ -465,6 +474,7 @@ function buildHouse(THREE, track, box, canvas) {
     const begin = () => {
         if (!visible) return
         cancelAnimationFrame(frame)
+        lastTime = performance.now()
         frame = requestAnimationFrame(tick)
     }
 
