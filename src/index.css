@@ -455,11 +455,13 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
   /* align-items: center; */
   /* min-height: calc(126dvh - 6rem); */
   min-height: 105svh;
+  min-height: 105vh;
   position: relative;
   isolation: isolate;
   padding-inline: clamp(8px, 5vw, 32px);
   padding-block: clamp(2rem, 7vh, 5rem);
   padding-top: calc(88px + clamp(1rem, 3vh, 2rem));
+  overflow: hidden;
 }
 .hero-background {
   z-index: -1;
@@ -513,8 +515,8 @@ background: linear-gradient(90deg, rgba(25, 51, 85, 0.4) 0%, rgba(25, 51, 85, 0.
     align-items: center;
     height: auto;
     display: flex;
-    height: 70vh;
-  min-height: 40rem;
+  height: 100%;
+  min-height: 0; /* Prevents flex item overflow */
 }
 .hero-content{
   grid-column-gap: 1.5rem;

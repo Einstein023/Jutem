@@ -95,12 +95,16 @@ export default function Services() {
 
     // Arriving from the nav (/#services) or from the old /services address: jump to this section.
     useEffect(() => {
-        const path = window.location.pathname.replace(/\/+$/, "")
-        if (path !== "/services" && window.location.hash !== "#services") return
-        const frame = requestAnimationFrame(() => {
-            sectionRef.current?.scrollIntoView({ block: "start" })
-        })
-        return () => cancelAnimationFrame(frame)
+        const jump = () => {
+            const path = window.location.pathname.replace(/\/+$/, "")
+            if (path !== "/services" && window.location.hash !== "#services") return
+            requestAnimationFrame(() => {
+                sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+            })
+        }
+        jump()
+        window.addEventListener("hashchange", jump)
+        return () => window.removeEventListener("hashchange", jump)
     }, [])
 
     // Know when the section is on screen so videos only play while they can be seen.

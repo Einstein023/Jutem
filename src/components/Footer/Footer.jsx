@@ -49,14 +49,11 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="footer-mid">
+                <div className="foot-bottom">
                 <a className="foot-brand" href="/" aria-label="Jutem home">
-                        <img src="/logo.svg" alt="" width="248" height="248" />
+                        <img src="/logo.svg" alt="" width="25" height="25" />
                         <span>Jutem</span>
                     </a>
-                </div>
-
-                <div className="foot-bottom">
                     <p>© {year} Jutem Global Resources. All rights reserved.</p>
                     <a className="foot-top-link" href="#top" onClick={(event) => { event.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}>
                         Back to top

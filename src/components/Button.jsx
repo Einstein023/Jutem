@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = () => {
+const Button = ({ href = "/contact" }) => {
   return (
     <StyledWrapper>
-      <button>
+      <a href={href} className="cta-btn">
         Talk To Us
         <div className="arrow-wrapper">
           <div className="arrow" />
         </div>
-      </button>
+      </a>
     </StyledWrapper>
   );
 }
 
 const StyledWrapper = styled.div`
-  button {
+  .cta-btn {
     --primary-color: #2b558c;
     --secondary-color: #f0f4f9;
     --hover-color: #242424;
@@ -30,19 +30,20 @@ const StyledWrapper = styled.div`
     background: var(--primary-color);
     display: flex;
     text-transform: uppercase;
+    text-decoration: none;
     transition: 0.3s background ease;
     align-items: center;
     gap: 0.6em;
     font-weight: normal;
   }
 
-  button .arrow-wrapper {
+  .cta-btn .arrow-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  button .arrow {
+  .cta-btn .arrow {
     margin-top: 1px;
     width: var(--arrow-width);
     background: var(--primary-color);
@@ -51,7 +52,7 @@ const StyledWrapper = styled.div`
     transition: 0.2s;
   }
 
-  button .arrow::before {
+  .cta-btn .arrow::before {
     content: "";
     box-sizing: border-box;
     position: absolute;
@@ -65,15 +66,15 @@ const StyledWrapper = styled.div`
     transform: rotate(-45deg);
   }
 
-  button:hover {
+  .cta-btn:hover {
     background-color: var(--hover-color);
   }
 
-  button:hover .arrow {
+  .cta-btn:hover .arrow {
     background: var(--secondary-color);
   }
 
-  button:hover .arrow:before {
+  .cta-btn:hover .arrow:before {
     right: 0;
   }`;
 

@@ -44,7 +44,7 @@ export default function Nav() {
           <div className="logo">
             <a href="/" aria-label="JUTEM home">
               <span className="logo-text">
-                <img src="logo.svg" alt="" />
+                <img src="/logo.svg" alt="" />
                 <span className="company-name">JUTEM CONSTRUCTION</span>
               </span>
             </a>

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Lenis from "lenis"
 import Home from "./components/Home/Home"
 import About from "./components/About/About"
@@ -6,7 +6,15 @@ import Nav from "./components/Home/Nav"
 import EnquiryPage from "./components/EnquiryPage"
 
 function App() {
-  const path = window.location.pathname.replace(/\/+$/, "")
+  const [path, setPath] = useState(() => window.location.pathname.replace(/\/+$/, ""))
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPath(window.location.pathname.replace(/\/+$/, ""))
+    }
+    window.addEventListener("popstate", handleLocationChange)
+    return () => window.removeEventListener("popstate", handleLocationChange)
+  }, [])
 
   useEffect(() => {
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)")
