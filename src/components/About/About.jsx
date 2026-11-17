@@ -4,18 +4,10 @@ import "./About.css"
 
 /* ==========================================================================
    ABOUT PAGE  (/about)
-
-   1. A construction photo with the same blue-dark overlay as the homepage hero.
-      ABOUT is big at the bottom right, a short story sits at the top left.
-      The letters rise in on load.
-   2. Who we are, the Managing Director, a closing call to action, and the same footer as the homepage.
-
-   The services (tabs 01 to 04) now live on the homepage, not here.
    ========================================================================== */
 
 const ICONS = {
     arrow: ["M5 12h14", "m12 5 7 7-7 7"],
-    down: ["M12 5v14", "m19 12-7 7-7-7"],
 }
 
 function Icon({ name, size = 16 }) {
@@ -26,27 +18,6 @@ function Icon({ name, size = 16 }) {
     )
 }
 
-/* Headline that rises in letter by letter. Each letter sits in a mask and slides up;
-   the order comes from --i and the timing is set in the CSS. */
-function RiseText({ text }) {
-    let count = 0
-    return (
-        <>
-            <span className="abs-sr">{text}</span>
-            <span aria-hidden="true">
-                {text.split("").map((letter) => {
-                    const index = count++
-                    return (
-                        <span className="abs-mask" key={index}>
-                            <span className="abs-letter" style={{ "--i": index }}>{letter}</span>
-                        </span>
-                    )
-                })}
-            </span>
-        </>
-    )
-}
-
 const values = [
     { title: "Purely Indigenous", text: "A wholly homegrown business built by Nigerians, for Nigeria." },
     { title: "Collaborative Culture", text: "A dedicated team that works together on every project." },
@@ -54,26 +25,45 @@ const values = [
 ]
 
 export default function About() {
-    const scrollDown = () => {
-        document.getElementById("who-we-are")?.scrollIntoView({ behavior: "smooth" })
-    }
-
     return (
         <div className="abs">
-            <section className="abs-hero">
-                <div className="abs-hero-first">
-                    <div className="abs-story-top">
-                        <span className="abs-rule" aria-hidden="true" />
-                        <p>We are a homegrown team of young builders. We stay with you until it is done right.</p>
-                    </div>
-                    <h2 className="abs-title"><RiseText text="ABOUT" /></h2>
-                </div>
+            {/* SECTION 1: Editorial Top Intro matching reference layout */}
+            <section className="abs-hero" aria-label="About Jutem Global Resources">
+                <div className="abs-hero-inner">
+                    <h1 className="abs-hero-headline">
+                        Solid Foundations.<br></br> Straightforward Service.
+                    </h1>
 
-                {/* <button type="button" className="abs-scroll-cue" onClick={scrollDown} aria-label="Scroll to who we are">
-                    Scroll <Icon name="down" size={14} />
-                </button> */}
+                    <div className="abs-hero-divider" aria-hidden="true" />
+
+                    <div className="abs-hero-grid">
+                        <div className="abs-hero-label-col">
+                            <span className="abs-tag">
+                                <span className="abs-tag-bullet" aria-hidden="true" />
+                                About us
+                            </span>
+                        </div>
+                        <div className="abs-hero-text-col">
+                            <p className="abs-hero-lead">
+                                Through meticulous planning and hands-on execution, we collaborate closely to bring ideas and blueprints into reality. Every project reflects our commitment to creating spaces that are not only visually striking but structurally sound.
+                            </p>
+                            <p className="abs-hero-lead">
+                                At Jutem, we don’t just build structures—we craft enduring spaces.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="abs-hero-banner">
+                        <img
+                            className="abs-hero-banner-img"
+                            src="/about/site-hero.webp"
+                            alt="Jutem modern construction site"
+                        />
+                    </div>
+                </div>
             </section>
 
+            {/* SECTION 2: Who we are & Values */}
             <section className="abs-story" id="who-we-are">
                 <div className="abs-story-text">
                     <h2>Who we are</h2>
@@ -103,6 +93,7 @@ export default function About() {
                 <BlockBuild />
             </section>
 
+            {/* SECTION 3: Managing Director */}
             <section className="abs-md">
                 <img
                     className="abs-md-photo"
@@ -126,6 +117,7 @@ export default function About() {
                 </div>
             </section>
 
+            {/* SECTION 4: Closing CTA */}
             <section className="abs-closing">
                 <div className="abs-closing-inner">
                     <div>

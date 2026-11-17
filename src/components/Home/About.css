@@ -17,7 +17,8 @@
   min-height: 100svh;
   background-color: var(--color-primary-50, #f4f7fa);
   overflow: hidden;
-  padding: clamp(1rem, 3vw, 3rem);
+  /* padding: clamp(0rem, 3vw, 3rem); */
+  padding: clamp(0rem, 3.5vw, 3rem) !important;
 }
 
 .jutem-about__card {
@@ -30,6 +31,8 @@
   will-change: transform, border-radius;
   transform-origin: center center;
   overflow: hidden;
+  /* border-radius: 3rem !important; */
+  /* corner-shape: squicle; */
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
 }
 
