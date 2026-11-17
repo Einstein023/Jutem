@@ -74,7 +74,7 @@ export default function About() {
 
             {/* SECTION 2: Who we are & Values */}
             <section className="abs-story" id="who-we-are">
-                {/* Row 1: Who we are intro (green circle) and Block house (red circle) aligned horizontally */}
+                {/* Row 1: Who we are intro and Block house aligned horizontally */}
                 <div className="abs-story-main">
                     <div className="abs-story-intro">
                         <h2>Who we are</h2>
@@ -94,11 +94,10 @@ export default function About() {
                     </div>
                 </div>
 
-                {/* Row 2: Values (orange circle) aligned horizontally across 3 columns */}
+                {/* Row 2: Values aligned horizontally across 3 columns without numbering */}
                 <div className="abs-values">
-                    {values.map((value, index) => (
+                    {values.map((value) => (
                         <div className="abs-value" key={value.title}>
-                            <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
                             <div className="abs-value-body">
                                 <h3>{value.title}</h3>
                                 <p>{value.text}</p>
@@ -112,7 +111,7 @@ export default function About() {
             <section className="abs-md">
                 <img
                     className="abs-md-photo"
-                    src="/md-julius-airhia.jpg"
+                    src="/image.png"
                     alt="Engr Julius Airhia, Managing Director of Jutem Global Resources"
                 />
                 <div className="abs-md-text">
@@ -133,7 +132,7 @@ export default function About() {
             </section>
 
             {/* SECTION 4: Closing CTA */}
-            <section className="abs-closing">
+            {/* <section className="abs-closing">
                 <div className="abs-closing-inner">
                     <div>
                         <h2>Have a project in mind?</h2>
@@ -143,7 +142,7 @@ export default function About() {
                         Make an enquiry <Icon name="arrow" size={15} />
                     </a>
                 </div>
-            </section>
+            </section> */}
 
             <Footer />
         </div>
