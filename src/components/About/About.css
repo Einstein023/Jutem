@@ -9,7 +9,8 @@
   --abs-radius: 20px;
   --abs-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   width: 100%;
-  background-color: var(--panel-mist);
+  min-height: 100vh;
+  background-color: var(--color-primary-50);
 }
 
 /* Same heading voice as the homepage: Montserrat, tight tracking. */
@@ -122,10 +123,7 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
 .abs-hero-grid {
   display: grid;
   grid-template-columns: clamp(140px, 18vw, 220px) minmax(0, 1fr);
-  /* gap: clamp(2rem, 5vw, 6rem); */
   gap: clamp(2rem, 12.02vw - 0.82rem, 10rem);
-  /* gap: 10rem; */
-  /* justify-self: space-between; */
   align-items: start;
 }
 
@@ -179,36 +177,77 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
 
 .abs-hero-banner {
   width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 520px;
   margin-top: clamp(3rem, 7vh, 5.5rem);
   border-radius: 4px;
   overflow: hidden;
-  /* height: 100dvh; */
-  /* box-shadow: 0 20px 45px -15px rgba(15, 23, 42, 0.15); */
+  background-color: var(--color-primary-100, #d9e4f1);
 }
 
 .abs-hero-banner-img {
   width: 100%;
   height: 100%;
-  /* height: clamp(300px, 46vh, 540px); */
   object-fit: cover;
-  /* object-position: center 65%; */
   display: block;
 }
 
 /* ---------- Who we are (light blue, same as the homepage background) ---------- */
 
 .abs-story {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: clamp(2rem, 6vw, 6rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 7vh, 6rem);
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 7rem) clamp(24px, 5vw, 64px);
+  padding: clamp(3.5rem, 8vw, 7rem) clamp(24px, 5vw, 64px);
 }
 
-.abs-story-text h2,
+/* Row 1: Who we are Intro + 3D Block House aligned horizontally */
+.abs-story-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: clamp(3rem, 6vw, 7rem);
+  width: 100%;
+}
+
+.abs-story-intro {
+  max-width: 44rem;
+}
+
+.abs-story-intro h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5.2vw, 4.25rem);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin-bottom: clamp(1.25rem, 3vh, 1.85rem);
+  color: var(--panel-deep, #112239);
+}
+
+.abs-story-p {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--color-gray-800, #1e293b);
+  max-width: 42rem;
+}
+
+.abs-story-p:last-child {
+  margin-bottom: 0;
+}
+
+.abs-story-visual {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 38rem;
+  display: flex;
+  justify-content: center;
+}
+
 .abs-md-text h2,
 .abs-closing-inner h2 {
   font-size: clamp(2.5rem, 5.5vw, 4.5rem);
@@ -216,7 +255,6 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
   color: var(--panel-deep);
 }
 
-.abs-story-text p,
 .abs-md-text p {
   max-width: 36rem;
   margin: 0 0 1rem;
@@ -224,47 +262,62 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
   color: var(--color-primary-700);
 }
 
+/* Row 2: Values (3 Horizontal Columns) */
 .abs-values {
   display: grid;
-  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3.5rem);
+  width: 100%;
+  padding-top: clamp(2.5rem, 5vh, 4rem);
+  border-top: 1px solid rgba(17, 34, 57, 0.14);
 }
 
 .abs-value {
-  display: grid;
-  grid-template-columns: 3.5rem 1fr;
-  gap: 1rem;
-  padding: 1.1rem 0;
-  border-top: 1px solid var(--color-primary-300);
-}
-
-.abs-value:last-child {
-  border-bottom: 1px solid var(--color-primary-300);
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  padding: 0;
 }
 
 .abs-value-number {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: var(--font-weight-extrabold);
-  letter-spacing: -0.06em;
-  color: var(--panel-brand);
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: var(--font-weight-bold, 700);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--panel-brand, #2b558c);
+}
+
+.abs-value-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 .abs-value h3 {
-  margin-bottom: 0.25rem;
-  font-size: 1.25rem;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+  font-weight: var(--font-weight-semibold, 600);
   letter-spacing: -0.03em;
-  color: var(--panel-deep);
+  line-height: 1.25;
+  color: var(--panel-deep, #112239);
 }
 
 .abs-value p {
   margin: 0;
-  color: var(--color-primary-700);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--color-gray-700, #334155);
 }
 
 /* ---------- Block house (right of "Who we are") ---------- */
 
 .abs-build {
   margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .abs-build-box {
@@ -357,13 +410,19 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
 /* ---------- Tablet and mobile ---------- */
 
 @media (max-width: 900px) {
-  .abs-story,
+  .abs-story-main,
   .abs-md {
     grid-template-columns: 1fr;
   }
 
+  .abs-values {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
   .abs-build-box {
     aspect-ratio: 5 / 4;
+    max-height: 28rem;
   }
 
   .abs-closing-inner {
@@ -377,7 +436,7 @@ body:has(.abs) .menu-toggle:not(.is-open) .menu-toggle-bar {
   }
 
   .abs-hero-banner-img {
-    height: clamp(240px, 36vh, 360px);
+    height: 100%;
   }
 }
 

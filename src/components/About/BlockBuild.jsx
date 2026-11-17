@@ -225,7 +225,6 @@ export default function BlockBuild() {
             <div className="abs-build-box" ref={boxRef}>
                 <canvas ref={canvasRef} role="img" aria-label="A house going up block by block as you scroll" />
             </div>
-            <figcaption>Built block by block.</figcaption>
         </figure>
     )
 }

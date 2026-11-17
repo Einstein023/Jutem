@@ -19,9 +19,18 @@ function Icon({ name, size = 16 }) {
 }
 
 const values = [
-    { title: "Purely Indigenous", text: "A wholly homegrown business built by Nigerians, for Nigeria." },
-    { title: "Collaborative Culture", text: "A dedicated team that works together on every project." },
-    { title: "Highest Standards", text: "Products and services delivered at edge-cutting standards." },
+    {
+        title: "Purely Indigenous",
+        text: "A proud, homegrown Nigerian enterprise built by local professionals, dedicated to delivering enduring spaces for Nigeria.",
+    },
+    {
+        title: "Collaborative Culture",
+        text: "A dedicated, multidisciplinary team collaborating closely on every build to eliminate friction and guesswork from start to finish.",
+    },
+    {
+        title: "Highest Standards",
+        text: "Rigorous engineering fidelity, premium materials, and edge-cutting structural craftsmanship delivered with absolute accountability on every site.",
+    },
 ]
 
 export default function About() {
@@ -65,32 +74,38 @@ export default function About() {
 
             {/* SECTION 2: Who we are & Values */}
             <section className="abs-story" id="who-we-are">
-                <div className="abs-story-text">
-                    <h2>Who we are</h2>
-                    <p>
-                        We are a purely indigenous company of young, enterprising professionals
-                        in the building and construction industry, coming together to deliver
-                        products and services at edge-cutting standards.
-                    </p>
-                    <p>
-                        With our dedicated and collaborative corporate culture, we come together
-                        to provide services and structures that meet the highest standards.
-                    </p>
+                {/* Row 1: Who we are intro (green circle) and Block house (red circle) aligned horizontally */}
+                <div className="abs-story-main">
+                    <div className="abs-story-intro">
+                        <h2>Who we are</h2>
+                        <p className="abs-story-p">
+                            We are a purely indigenous company of young, enterprising professionals
+                            in the building and construction industry, coming together to deliver
+                            products and services at edge-cutting standards.
+                        </p>
+                        <p className="abs-story-p">
+                            With our dedicated and collaborative corporate culture, we come together
+                            to provide services and structures that meet the highest standards.
+                        </p>
+                    </div>
 
-                    <div className="abs-values">
-                        {values.map((value, index) => (
-                            <div className="abs-value" key={value.title}>
-                                <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
-                                <div>
-                                    <h3>{value.title}</h3>
-                                    <p>{value.text}</p>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="abs-story-visual">
+                        <BlockBuild />
                     </div>
                 </div>
 
-                <BlockBuild />
+                {/* Row 2: Values (orange circle) aligned horizontally across 3 columns */}
+                <div className="abs-values">
+                    {values.map((value, index) => (
+                        <div className="abs-value" key={value.title}>
+                            <span className="abs-value-number">{String(index + 1).padStart(2, "0")}</span>
+                            <div className="abs-value-body">
+                                <h3>{value.title}</h3>
+                                <p>{value.text}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </section>
 
             {/* SECTION 3: Managing Director */}
