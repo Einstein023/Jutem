@@ -62,12 +62,12 @@ export default function Hero() {
 
         const letters = node.querySelectorAll(".hero-letter");
         const paragraph = node.querySelector(".hero-content-p");
+        const cta = node.querySelector(".hero-cta");
 
         const ctx = gsap.context(() => {
             const tl = gsap.timeline({ delay: 0.3 });
 
             if (letters.length) {
-                // GSAP sets the initial hidden state safely via JS
                 gsap.set(letters, { yPercent: 110 });
                 tl.to(
                     letters,
@@ -91,6 +91,20 @@ export default function Hero() {
                         ease: "power2.out",
                     },
                     "-=0.5"
+                );
+            }
+
+            if (cta && window.innerWidth <= 1023) {
+                tl.fromTo(
+                    cta,
+                    { opacity: 0, y: 16 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.7,
+                        ease: "power2.out",
+                    },
+                    "-=0.45"
                 );
             }
         }, heroRef);
@@ -138,6 +152,23 @@ export default function Hero() {
                             We bring skilled teams together to handle residential and commercial construction
                             across Nigeria - focusing on clean execution, solid materials, and zero guesswork from start to finish.
                         </p>
+                        <a className="hero-cta" href="/contact">
+                            Let&apos;s Talk
+                            <svg
+                                viewBox="0 0 24 24"
+                                width="16"
+                                height="16"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.8"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </section>

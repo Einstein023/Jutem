@@ -1,20 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import "./services.css"
 
-/* ==========================================================================
-   HOME PAGE: SERVICES
-
-   Four tabs (01 to 04). Each tab shows the service title, one sentence, an enquiry
-   button, and a video in a big rounded card. The panel runs edge to edge and fills
-   the screen. Only the open tab's video plays, and only while the section is on screen.
-
-   SCROLL TO SWITCH: while the pointer is over the panel, the mouse wheel (or a swipe on
-   a phone) moves to the next / previous tab. After tab 04 (or before tab 01) the page
-   scrolls on as normal, so the visitor is never trapped.
-
-   The nav "Services" link (and the /services address) lands here.
-   ========================================================================== */
-
 const services = [
     {
         id: "building",
@@ -44,12 +30,10 @@ const services = [
 
 const ARROW = ["M5 12h14", "m12 5 7 7-7 7"]
 
-const WHEEL_THRESHOLD = 100 // how much wheel movement counts as one step
-const TOUCH_THRESHOLD = 50 // how far a swipe must travel
-const STEP_COOLDOWN = 800 // ms to wait after a step, so one flick = one tab
+const WHEEL_THRESHOLD = 55
+const TOUCH_THRESHOLD = 45
+const STEP_COOLDOWN = 380
 
-/* Heading that rises in letter by letter. Each letter sits in a mask and slides up;
-   the order comes from --i and the timing is set in services.css. */
 function RiseText({ text }) {
     let count = 0
     return (
@@ -87,13 +71,13 @@ export default function Services() {
     const videoRefs = useRef([])
     const activeRef = useRef(0)
     const lockedRef = useRef(false)
+    const lockTimerRef = useRef(null)
     const wheelTotalRef = useRef(0)
     const wheelDirectionRef = useRef(null)
     const touchStartRef = useRef(null)
 
     const tabNumber = (index) => String(index + 1).padStart(2, "0")
 
-    // Arriving from the nav (/#services) or from the old /services address: jump to this section.
     useEffect(() => {
         const jump = () => {
             const path = window.location.pathname.replace(/\/+$/, "")
@@ -107,31 +91,35 @@ export default function Services() {
         return () => window.removeEventListener("hashchange", jump)
     }, [])
 
-    // Know when the section is on screen so videos only play while they can be seen.
     useEffect(() => {
         const node = sectionRef.current
         if (!node || !("IntersectionObserver" in window)) {
             setInView(true)
             return
         }
-        const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.15 })
+        const observer = new IntersectionObserver(
+            ([entry]) => setInView(entry.isIntersecting),
+            { threshold: 0.15 }
+        )
         observer.observe(node)
         return () => observer.disconnect()
     }, [])
 
-    // The heading's letters rise in the first time it scrolls into view.
     useEffect(() => {
         const node = headingRef.current
         if (!node || !("IntersectionObserver" in window)) {
             setHeadingIn(true)
             return
         }
-        const observer = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                setHeadingIn(true)
-                observer.disconnect()
-            }
-        }, { threshold: 0.6 })
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setHeadingIn(true)
+                    observer.disconnect()
+                }
+            },
+            { threshold: 0.5 }
+        )
         observer.observe(node)
         return () => observer.disconnect()
     }, [])
@@ -148,56 +136,90 @@ export default function Services() {
         })
     }, [active, inView])
 
+    useEffect(() => {
+        return () => {
+            if (lockTimerRef.current) clearTimeout(lockTimerRef.current)
+        }
+    }, [])
+
     const goTo = (index) => {
-        activeRef.current = index
-        setActive(index)
+        const clamped = Math.max(0, Math.min(services.length - 1, index))
+        activeRef.current = clamped
+        setActive(clamped)
     }
 
-    // Moves one tab up or down. Returns false when there is no tab that way (or a step just happened).
+    const canMove = (direction) => {
+        const next = activeRef.current + (direction === "down" ? 1 : -1)
+        return next >= 0 && next < services.length
+    }
+
     const step = (direction) => {
         if (lockedRef.current) return false
         const next = activeRef.current + (direction === "down" ? 1 : -1)
         if (next < 0 || next >= services.length) return false
+
         lockedRef.current = true
-        setTimeout(() => { lockedRef.current = false }, STEP_COOLDOWN)
+        if (lockTimerRef.current) clearTimeout(lockTimerRef.current)
+        lockTimerRef.current = setTimeout(() => {
+            lockedRef.current = false
+        }, STEP_COOLDOWN)
+
         goTo(next)
         return true
+    }
+
+    const releaseScroll = (panel) => {
+        panel?.removeAttribute("data-lenis-prevent")
+        wheelTotalRef.current = 0
+        wheelDirectionRef.current = null
+    }
+
+    // Only hijack wheel/arrow tab switching when the panel is substantially in view
+    const isPanelEngaged = (panel) => {
+        if (!panel) return false
+        const rect = panel.getBoundingClientRect()
+        const vh = window.innerHeight || document.documentElement.clientHeight
+        const visibleHeight = Math.min(rect.bottom, vh) - Math.max(rect.top, 0)
+        return visibleHeight >= Math.min(rect.height * 0.5, vh * 0.45)
     }
 
     useEffect(() => {
         const panel = panelRef.current
         if (!panel) return undefined
 
-        const canMove = (direction) => {
-            const next = activeRef.current + (direction === "down" ? 1 : -1)
-            return next >= 0 && next < services.length
-        }
-
         const onWheel = (event) => {
-            if (event.deltaY === 0) return
+            if (event.deltaY === 0 || event.ctrlKey) return
             const direction = event.deltaY > 0 ? "down" : "up"
 
-            // Mid-step: keep the page still until the tab has finished changing.
+            if (!isPanelEngaged(panel)) {
+                releaseScroll(panel)
+                return
+            }
+
             if (lockedRef.current) {
-                panel.setAttribute("data-lenis-prevent", "")
-                event.preventDefault()
+                if (canMove(direction)) {
+                    panel.setAttribute("data-lenis-prevent", "")
+                    event.preventDefault()
+                } else {
+                    releaseScroll(panel)
+                }
                 return
             }
 
-            // No tab left that way: stop holding the scroll and let the page move on.
             const movable = canMove(direction)
-            panel.toggleAttribute("data-lenis-prevent", movable)
             if (!movable) {
-                wheelTotalRef.current = 0
-                wheelDirectionRef.current = null
+                releaseScroll(panel)
                 return
             }
 
+            panel.setAttribute("data-lenis-prevent", "")
             event.preventDefault()
+
             if (wheelDirectionRef.current !== direction) {
                 wheelTotalRef.current = 0
                 wheelDirectionRef.current = direction
             }
+
             wheelTotalRef.current += Math.abs(event.deltaY)
             if (wheelTotalRef.current >= WHEEL_THRESHOLD) {
                 wheelTotalRef.current = 0
@@ -218,20 +240,50 @@ export default function Services() {
             const dy = start.y - touch.clientY
             const dx = start.x - touch.clientX
             if (Math.abs(dy) <= Math.abs(dx) || dy === 0) return
-            const hold = lockedRef.current || canMove(dy > 0 ? "down" : "up")
-            panel.toggleAttribute("data-lenis-prevent", hold)
-            if (hold) event.preventDefault()
+
+            const direction = dy > 0 ? "down" : "up"
+            const hold = isPanelEngaged(panel) && (lockedRef.current || canMove(direction))
+
+            if (hold) {
+                panel.setAttribute("data-lenis-prevent", "")
+                event.preventDefault()
+            } else {
+                panel.removeAttribute("data-lenis-prevent")
+            }
         }
 
         const onTouchEnd = (event) => {
             const start = touchStartRef.current
             const touch = event.changedTouches[0]
             touchStartRef.current = null
+            panel.removeAttribute("data-lenis-prevent")
             if (!start || !touch) return
+
             const dy = start.y - touch.clientY
             const dx = start.x - touch.clientX
-            if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > TOUCH_THRESHOLD) {
+            if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > TOUCH_THRESHOLD && isPanelEngaged(panel)) {
                 step(dy > 0 ? "down" : "up")
+            }
+        }
+
+        const onKeyDown = (event) => {
+            if (event.altKey || event.ctrlKey || event.metaKey) return
+            const target = event.target
+            if (target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable='true']")) {
+                return
+            }
+
+            const section = sectionRef.current
+            if (!section || !section.contains(document.activeElement) && !isPanelEngaged(panel)) {
+                return
+            }
+
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                const direction = event.key === "ArrowDown" ? "down" : "up"
+                if (canMove(direction)) {
+                    event.preventDefault()
+                    step(direction)
+                }
             }
         }
 
@@ -239,16 +291,19 @@ export default function Services() {
         panel.addEventListener("touchstart", onTouchStart, { passive: true })
         panel.addEventListener("touchmove", onTouchMove, { passive: false })
         panel.addEventListener("touchend", onTouchEnd, { passive: true })
+        window.addEventListener("keydown", onKeyDown)
+
         return () => {
+            releaseScroll(panel)
             panel.removeEventListener("wheel", onWheel)
             panel.removeEventListener("touchstart", onTouchStart)
             panel.removeEventListener("touchmove", onTouchMove)
             panel.removeEventListener("touchend", onTouchEnd)
+            window.removeEventListener("keydown", onKeyDown)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // The round "Scroll" label that follows the pointer over the video (it tells people scrolling works).
     const moveCursor = (event) => {
         if (event.pointerType === "touch" || !cursorRef.current) return
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
@@ -257,12 +312,17 @@ export default function Services() {
     const onTabKeyDown = (event, index) => {
         const last = services.length - 1
         let next = null
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") next = index === last ? 0 : index + 1
-        if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = index === 0 ? last : index - 1
-        if (event.key === "Home") next = 0
-        if (event.key === "End") next = last
+
+        if (event.key === "ArrowRight") next = index === last ? 0 : index + 1
+        else if (event.key === "ArrowLeft") next = index === 0 ? last : index - 1
+        else if (event.key === "ArrowDown") next = index < last ? index + 1 : null
+        else if (event.key === "ArrowUp") next = index > 0 ? index - 1 : null
+        else if (event.key === "Home") next = 0
+        else if (event.key === "End") next = last
+
         if (next === null) return
         event.preventDefault()
+        event.stopPropagation()
         goTo(next)
         tabRefs.current[next]?.focus()
     }
@@ -310,7 +370,6 @@ export default function Services() {
                     </div>
                 </div>
 
-                {/* The video side holds the video and nothing else. */}
                 <div
                     className="svc-media"
                     onPointerEnter={(event) => {
