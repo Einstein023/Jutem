@@ -142,10 +142,10 @@ export default function EnquiryPage() {
 
   return (
     <div className="contact" ref={pageRef}>
-      <section className="contact-main" id="get-in-touch">
+      <main id="main-content" className="contact-main">
         <div className="contact-info">
           {/* <p className="contact-eyebrow contact-reveal">LET'S TALK ABOUT YOUR PROJECT</p> */}
-          <h2 className="contact-title"><RiseText text="Make an enquiry" /></h2>
+          <h1 className="contact-title"><RiseText text="Make an enquiry" /></h1>
           <p className="contact-lead contact-reveal" style={{ "--d": "0.16s" }}>
             Tell us what you have in mind and our team will be in touch.
           </p>
@@ -215,7 +215,7 @@ export default function EnquiryPage() {
             </p>
           </form>
         </div>
-      </section>
+      </main>
 
       <Footer />
     </div>

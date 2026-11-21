@@ -1,17 +1,19 @@
 import About from "./About";
 import ConstructionTapePitch from "./ConstructionTape";
 import Hero from "./Hero";
-import Services from "./Services"
-import Footer from "../Footer/Footer"
+import Services from "./Services";
+import Footer from "../Footer/Footer";
 
 export default function Home() {
     return (
         <>
-        <Hero />
-        <About />
-        <ConstructionTapePitch />
-        <Services />
-        <Footer />
+            <main id="main-content">
+                <Hero />
+                <About />
+                <ConstructionTapePitch />
+                <Services />
+            </main>
+            <Footer />
         </>
-    )
+    );
 }

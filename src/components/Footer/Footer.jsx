@@ -51,7 +51,7 @@ export default function Footer() {
 
                 <div className="foot-bottom">
                 <a className="foot-brand" href="/" aria-label="Jutem home">
-                        <img src="/logo.svg" alt="" width="25" height="25" />
+                        <img src="/logo.svg" alt="JUTEM Global Resources Logo" width="25" height="25" />
                         <span>Jutem</span>
                     </a>
                     <p>© {year} Jutem Global Resources. All rights reserved.</p>

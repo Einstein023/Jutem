@@ -1,0 +1,85 @@
+# ==============================================================================
+# JUTEM Global Resources - Apache / LiteSpeed Configuration
+# Enforces SSL/HTTPS, Prevents Duplicate URLs, Enables HSTS & SPA Routing
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ----------------------------------------------------------------------
+  # 1. ENFORCE HTTPS / SSL (301 Permanent Redirect)
+  # ----------------------------------------------------------------------
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ----------------------------------------------------------------------
+  # 2. PREVENT DUPLICATE URLS: FORCE CANONICAL HOST (WWW -> NON-WWW)
+  # ----------------------------------------------------------------------
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+  # ----------------------------------------------------------------------
+  # 3. PREVENT DUPLICATE URLS: STRIP /index.html
+  # ----------------------------------------------------------------------
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP/
+  RewriteRule ^index\.html$ https://%{HTTP_HOST}/ [R=301,L]
+
+  # ----------------------------------------------------------------------
+  # 4. PREVENT DUPLICATE URLS: REMOVE TRAILING SLASHES (EXCEPT DIRECTORIES)
+  # ----------------------------------------------------------------------
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} (.+)/$
+  RewriteRule ^ %1 [R=301,L]
+
+  # ----------------------------------------------------------------------
+  # 5. SPA ROUTE REWRITES (SERVE index.html FOR CLIENT-SIDE ROUTES)
+  # ----------------------------------------------------------------------
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 6. SECURITY & SSL HEADERS (HSTS, CLICKJACKING & SNIFFING PROTECTION)
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+  # HTTP Strict Transport Security (HSTS) - 1 Year with Subdomains & Preload
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+  
+  # Prevent MIME type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+  
+  # Clickjacking protection
+  Header always set X-Frame-Options "SAMEORIGIN"
+  
+  # Referrer policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # Restrict unauthorized browser features
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 7. PERFORMANCE & COMPRESSION (BROTLI / GZIP)
+# ----------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ----------------------------------------------------------------------
+# 8. BROWSER CACHING FOR CORE WEB VITALS
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+</IfModule>

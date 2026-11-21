@@ -124,7 +124,7 @@ export default function About() {
           {/* Left Column: Section Tag & Context */}
           <div className="jutem-about__left-col">
             <span className="jutem-about__tag">Who We Are</span>
-            <h3 className="jutem-about__lower-heading">Solid Foundations. Straightforward Service.</h3>
+            <h2 className="jutem-about__lower-heading">Solid Foundations. Straightforward Service.</h2>
           </div>
           
           {/* Right Column: Editorial Narrative */}

@@ -6,17 +6,7 @@ import "./About.css"
    ABOUT PAGE  (/about)
    ========================================================================== */
 
-const ICONS = {
-    arrow: ["M5 12h14", "m12 5 7 7-7 7"],
-}
 
-function Icon({ name, size = 16 }) {
-    return (
-        <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            {ICONS[name].map((d) => <path d={d} key={d} />)}
-        </svg>
-    )
-}
 
 const values = [
     {
@@ -35,8 +25,9 @@ const values = [
 
 export default function About() {
     return (
-        <div className="abs">
-            {/* SECTION 1: Editorial Top Intro matching reference layout */}
+        <>
+            <main id="main-content" className="abs">
+                {/* SECTION 1: Editorial Top Intro matching reference layout */}
             <section className="abs-hero" aria-label="About Jutem Global Resources">
                 <div className="abs-hero-inner">
                     <h1 className="abs-hero-headline">
@@ -144,7 +135,8 @@ export default function About() {
                 </div>
             </section> */}
 
+            </main>
             <Footer />
-        </div>
+        </>
     )
 }

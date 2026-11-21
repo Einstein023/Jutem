@@ -65,7 +65,8 @@ export default function Hero() {
         const cta = node.querySelector(".hero-cta");
 
         const ctx = gsap.context(() => {
-            const tl = gsap.timeline({ delay: 0.3 });
+            const hasCurtain = Boolean(document.getElementById("initial-curtain"));
+            const tl = gsap.timeline({ delay: hasCurtain ? 0.75 : 0.2 });
 
             if (letters.length) {
                 gsap.set(letters, { yPercent: 110 });

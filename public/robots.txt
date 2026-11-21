@@ -1,0 +1,45 @@
+# ==============================================================================
+# Robots.txt for JUTEM Global Resources
+# Website: https://www.jutemglobal.com/
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /src/
+
+# Allow access to public media for search indexing and social cards
+Allow: /logo.svg
+Allow: /about/site-hero.webp
+Allow: /slideshow-image/
+Allow: /slider-assets/
+Allow: /trail-images/
+
+# Specific major search engine crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# XML Sitemap Location
+Sitemap: https://www.jutemglobal.com/sitemap.xml

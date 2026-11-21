@@ -1,15 +1,431 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Essential Character Set & Viewport -->
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- SEO Primary Meta Tags -->
+    <title>JUTEM Global Resources | Building &amp; Civil Engineering Construction in Nigeria</title>
+    <meta name="title" content="JUTEM Global Resources | Building &amp; Civil Engineering Construction in Nigeria" />
+    <meta name="description" content="JUTEM Global Resources is a premier Nigerian building and civil engineering construction firm. Specializing in residential &amp; commercial construction, interior finishing, renovations, and civil works with transparent execution and solid craftsmanship." />
+    <meta name="keywords" content="Jutem Global Resources, Jutem Construction, building construction Nigeria, civil engineering contractor Lagos Abuja Nigeria, residential construction, commercial construction, renovation, interior finishing, Engr Julius Airhia, COREN registered engineer" />
+    <meta name="author" content="JUTEM Global Resources" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#08111d" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Canonical URL (Duplicate Prevention) -->
+    <link rel="canonical" href="https://www.jutemglobal.com/" />
+
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_NG" />
+    <meta property="og:site_name" content="JUTEM Global Resources" />
+    <meta property="og:url" content="https://www.jutemglobal.com/" />
+    <meta property="og:title" content="JUTEM Global Resources | Solid Foundations. Straightforward Service." />
+    <meta property="og:description" content="Premier Nigerian building and civil engineering construction firm. Delivering residential &amp; commercial builds, interior finishing, renovations, and civil works." />
+    <meta property="og:image" content="https://www.jutemglobal.com/about/site-hero.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jutem Global Resources modern construction site" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.jutemglobal.com/" />
+    <meta name="twitter:title" content="JUTEM Global Resources | Building &amp; Civil Engineering Construction" />
+    <meta name="twitter:description" content="Solid foundations. Straightforward service. Residential and commercial construction across Nigeria." />
+    <meta name="twitter:image" content="https://www.jutemglobal.com/about/site-hero.webp" />
+
+    <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
+
+    <!-- Performance Preconnect & Preload Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&family=Abril-Fatface&display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="/slideshow-image/hero-bg1.webp" fetchpriority="high" />
+
+    <!-- Critical Inline Styles for Reveal Curtain & FOUC Prevention -->
+    <style>
+      :root {
+        --brand-bg: #d9e4f1;
+        --brand-blue: #2b558c;
+        --brand-tangerine: #fe8500;
+        --brand-text: #f0f4f9;
+        --brand-text-muted: #8caed6;
+        --font-heading: 'Montserrat', system-ui, -apple-system, sans-serif;
+        --font-body: 'Nunito', system-ui, -apple-system, sans-serif;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--brand-bg);
+        color: var(--brand-text);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        min-height: 100%;
+        overflow-x: hidden;
+      }
+
+      #root {
+        min-height: 100vh;
+        background-color: var(--brand-bg);
+      }
+
+      /* ==========================================================================
+         INITIAL REVEAL CURTAIN (Haven Constructions Style)
+         Blocks the viewport until assets & React are fully initialized
+         ========================================================================== */
+      #initial-curtain {
+        position: fixed;
+        inset: 0;
+        width: 100dvw;
+        height: 100vh;
+        height: 100dvh;
+        z-index: 999999;
+        background-color: #193355;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        pointer-events: all;
+        will-change: transform;
+      }
+
+      .curtain-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        text-align: center;
+        will-change: transform, opacity;
+      }
+
+      .curtain-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+      }
+
+      .curtain-logo img {
+        width: 6rem;
+        height: 6rem;
+        /* filter: drop-shadow(0 8px 24px rgba(43, 85, 140, 0.45));
+        animation: curtainPulse 2s ease-in-out infinite alternate; */
+      }
+
+      @keyframes curtainPulse {
+        0% { transform: scale(0.98); opacity: 0.9; }
+        100% { transform: scale(1.02); opacity: 1; }
+      }
+
+      .curtain-brand-name {
+        font-family: var(--font-heading);
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: 0.28em;
+        color: var(--brand-text);
+        text-transform: uppercase;
+        margin: 0;
+        padding-left: 0.28em; /* Optically centers letter-spacing */
+      }
+
+      .curtain-tagline {
+        font-family: var(--font-heading);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.35em;
+        color: var(--brand-text-muted);
+        text-transform: uppercase;
+        margin: 0;
+        padding-left: 0.35em;
+      }
+
+      .curtain-loader-track {
+        width: 160px;
+        height: 2px;
+        background-color: rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+        margin-top: 0.25rem;
+      }
+
+      .curtain-loader-bar {
+        width: 25%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--brand-blue), var(--brand-tangerine));
+        border-radius: 999px;
+        transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      /* Crawler extended content accessible clipping */
+      .seo-crawler-content {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+
     <link rel="stylesheet" href="/src/index.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>jutem</title>
+
+    <!-- Schema.org JSON-LD Structured Data Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["ConstructionBusiness", "GeneralContractor"],
+          "@id": "https://www.jutemglobal.com/#organization",
+          "name": "JUTEM Global Resources",
+          "alternateName": "Jutem Construction",
+          "url": "https://www.jutemglobal.com/",
+          "logo": "https://www.jutemglobal.com/logo.svg",
+          "image": "https://www.jutemglobal.com/about/site-hero.webp",
+          "description": "JUTEM Global Resources is a full-service construction and civil works firm in Nigeria built on transparent timelines, rigorous engineering, and absolute accountability on every site.",
+          "email": "uhunomaof@gmail.com",
+          "priceRange": "$$$",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "NG",
+            "addressLocality": "Lagos"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "Nigeria"
+          },
+          "founder": {
+            "@type": "Person",
+            "name": "Engr Julius Airhia",
+            "jobTitle": "Managing Director",
+            "honorificPrefix": "Engr",
+            "alumniOf": "Nnamdi Azikiwe University",
+            "knowsAbout": ["Civil Engineering", "Structural Construction", "Project Management"],
+            "memberOf": {
+              "@type": "Organization",
+              "name": "Council for the Regulation of Engineering in Nigeria (COREN)"
+            }
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Construction and Civil Engineering Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Building Construction",
+                  "description": "Residential and commercial buildings delivered from planning to completion."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Interior Finishing",
+                  "description": "Quality finishing work turning structures into functional and elegant spaces to live and work in."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Maintenance & Renovation",
+                  "description": "Keeping existing buildings in pristine shape and giving them an enduring, modern aesthetic."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "General Civil Works",
+                  "description": "Civil engineering infrastructure works handled with professional care and structural integrity."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.jutemglobal.com/#website",
+          "url": "https://www.jutemglobal.com/",
+          "name": "JUTEM Global Resources",
+          "description": "Official website of JUTEM Global Resources - Building Construction and Civil Engineering in Nigeria",
+          "publisher": {
+            "@id": "https://www.jutemglobal.com/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://www.jutemglobal.com/#breadcrumbs",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.jutemglobal.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "About",
+              "item": "https://www.jutemglobal.com/about"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Contact",
+              "item": "https://www.jutemglobal.com/contact"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- 
+      Initial Luxury Reveal Curtain (Inspired by Haven Constructions):
+      Blocks the screen completely with zero FOUC while React and assets initialize.
+      When ready, it smoothly sweeps upward revealing the interactive experience.
+    -->
+    <div id="initial-curtain" class="initial-curtain" aria-hidden="true">
+      <div class="curtain-inner">
+        <div class="curtain-logo">
+          <img src="/logo.svg" alt="" width="68" height="68" />
+          <!-- <span class="curtain-brand-name">Jutem</span>
+          <span class="curtain-tagline">Construction &amp; Civil Engineering</span> -->
+        </div>
+        <!-- <div class="curtain-loader-track">
+          <div class="curtain-loader-bar"></div>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- 
+      Pre-rendered Semantic HTML Document inside #root:
+      Allows search bots, social preview scrapers (WhatsApp, Twitter, LinkedIn, Facebook), 
+      and AI crawlers to parse complete semantic content, headings, and links immediately (0ms latency).
+      When React executes, it cleanly takes over without hydration mismatch.
+    -->
+    <div id="root">
+      <header class="site-header">
+        <div class="logo">
+          <a href="/" aria-label="JUTEM home">
+            <span class="logo-text">
+              <img src="/logo.svg" alt="JUTEM Construction Logo" width="32" height="32" />
+              <span class="company-name">JUTEM CONSTRUCTION</span>
+            </span>
+          </a>
+        </div>
+        <nav aria-label="Main navigation">
+          <a href="/about">About</a>
+          <a href="/#services">Services</a>
+          <a href="/contact">Contact Us</a>
+        </nav>
+      </header>
+
+      <main id="main-content">
+        <section class="hero-seo-fallback">
+          <h1>Solid Foundations. Straightforward Service.</h1>
+          <p>
+            We bring skilled teams together to handle residential and commercial construction
+            across Nigeria — focusing on clean execution, solid materials, and zero guesswork from start to finish.
+          </p>
+          <a href="/contact">Let's Talk</a>
+        </section>
+
+        <!-- Crawler & Bot Extended Semantic Indexing -->
+        <div class="seo-crawler-content">
+          <section id="about">
+            <h2>About JUTEM Global Resources</h2>
+            <p>
+              At Jutem, we believe building should be clear, predictable, and dependable — eliminating friction and guesswork from contract to completion to deliver enduring spaces.
+            </p>
+            <p>
+              Jutem is a full-service construction and civil works firm built on transparent timelines,
+              rigorous engineering, and absolute accountability on every site.
+            </p>
+            <div>
+              <h3>Our Core Values</h3>
+              <ul>
+                <li><strong>Purely Indigenous:</strong> A proud, homegrown Nigerian enterprise built by local professionals, dedicated to delivering enduring spaces for Nigeria.</li>
+                <li><strong>Collaborative Culture:</strong> A dedicated, multidisciplinary team collaborating closely on every build to eliminate friction and guesswork from start to finish.</li>
+                <li><strong>Highest Standards:</strong> Rigorous engineering fidelity, premium materials, and edge-cutting structural craftsmanship delivered with absolute accountability on every site.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Leadership — Engr Julius Airhia</h3>
+              <p>
+                Engr Julius Airhia is the Managing Director of Jutem Global Resources. He holds a Bachelor's degree (with honours) in Civil Engineering from Nnamdi Azikiwe University and is a registered member of the Council for the Regulation of Engineering Practice in Nigeria (COREN), with over 17 years of professional construction experience.
+              </p>
+            </div>
+          </section>
+
+          <section id="services">
+            <h2>Our Construction Services</h2>
+            <article>
+              <h3>Building Construction</h3>
+              <p>Residential and commercial buildings, delivered from planning to completion with meticulous engineering standards.</p>
+            </article>
+            <article>
+              <h3>Interior Finishing</h3>
+              <p>Quality finishing work that turns a structure into a refined space you can live and work in.</p>
+            </article>
+            <article>
+              <h3>Maintenance &amp; Renovation</h3>
+              <p>Keeping existing buildings in pristine shape and giving them an enduring, fresh modern look.</p>
+            </article>
+            <article>
+              <h3>General Civil Works</h3>
+              <p>Civil engineering infrastructure and structural works handled with professional care.</p>
+            </article>
+          </section>
+
+          <section id="contact">
+            <h2>Make an Enquiry</h2>
+            <p>Tell us what you have in mind and our engineering team will be in touch.</p>
+            <p>Email: <a href="mailto:uhunomaof@gmail.com">uhunomaof@gmail.com</a></p>
+            <p>Serving residential and commercial projects across Nigeria.</p>
+          </section>
+
+          <footer class="foot">
+            <p>&copy; 2026 JUTEM Global Resources. All rights reserved.</p>
+            <nav aria-label="Footer Navigation">
+              <a href="/">Home</a> |
+              <a href="/about">About</a> |
+              <a href="/#services">Services</a> |
+              <a href="/contact">Contact Us</a>
+            </nav>
+          </footer>
+        </div>
+      </main>
+    </div>
+
+    <!-- Noscript: Bypasses curtain for bots/browsers without JS -->
+    <noscript>
+      <style>
+        #initial-curtain { display: none !important; }
+      </style>
+      <div style="padding: 2rem; background: #08111d; color: #f0f4f9; text-align: center;">
+        <p><strong>JUTEM Global Resources</strong> — Premier Building and Civil Engineering Construction across Nigeria.</p>
+        <p>For inquiries, please email <a href="mailto:uhunomaof@gmail.com" style="color: #fe8500;">uhunomaof@gmail.com</a>.</p>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

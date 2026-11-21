@@ -1,9 +1,28 @@
-/* ==========================================
-     MONTSERRAT & NUNITO IMPORT
-     ================================---------- */
+/* Fonts are preconnected and loaded asynchronously in index.html for high Core Web Vitals score */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Nunito:wght@400;600;700&family=Abril-Fatface&display=swap');
 
 @import "tailwindcss";
+
+/* Skip to content link for accessibility & SEO landmark navigation */
+.sr-skip-link {
+  position: absolute;
+  top: -999px;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary-500, #2b558c);
+  color: #ffffff;
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: top 0.2s ease-in-out;
+}
+
+.sr-skip-link:focus {
+  top: 1rem;
+}
 
 /* Keep horizontal overflow clipped while allowing normal vertical page scrolling. */
 html {
