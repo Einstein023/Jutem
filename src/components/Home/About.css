@@ -5,7 +5,7 @@
 }
 
 /* ----------------------------------------------------
-   1. PINNED SHRINKING STAGE
+1. PINNED SHRINKING STAGE
 ---------------------------------------------------- */
 .jutem-about__stage {
   position: relative;
@@ -17,8 +17,6 @@
   min-height: 100svh;
   background-color: var(--color-primary-50, #f4f7fa);
   overflow: hidden;
-  /* padding: clamp(0rem, 3vw, 3rem); */
-  /* padding: clamp(0rem, 3.5vw, 3rem) !important; */
 }
 
 .jutem-about__card {
@@ -28,12 +26,11 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-gray-900, #111317);
-  will-change: transform, border-radius;
+  border-radius: 1rem;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
   transform-origin: center center;
   overflow: hidden;
-  /* border-radius: 3rem !important; */
-  /* corner-shape: squicle; */
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
 }
 
 .jutem-about__card-inner {
@@ -52,14 +49,18 @@
   letter-spacing: -0.035em;
 }
 
+.jutem-about__word-wrap {
+  display: inline;
+}
+
 .jutem-about__word {
   display: inline-block;
-  opacity: 0.16;
-  will-change: opacity;
+  opacity: 0.2;
+  transform: translateZ(0);
 }
 
 /* ----------------------------------------------------
-   2. LOWER EDITORIAL BAND (Left-Right Layout Grid)
+2. LOWER EDITORIAL BAND (Left-Right Layout Grid)
 ---------------------------------------------------- */
 .jutem-about__lower {
   width: 100%;
@@ -114,7 +115,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-top: 1rem; /* Aligns visually with heading weight */
+  padding-top: 1rem;
 }
 
 .jutem-about__subcopy {
@@ -139,11 +140,11 @@
 
 @media (max-width: 767px) {
   .jutem-about__card {
-    border-radius: 0 !important;
-    scale: 1 !important;
+    border-radius: 0;
   }
 
   .jutem-about__card-inner {
+    padding: 2rem 1.25rem;
     text-align: left;
   }
 
@@ -154,12 +155,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .jutem-about__card {
-    scale: 1 !important;
-    border-radius: 0 !important;
+    transform: none !important;
+    will-change: auto;
   }
 
   .jutem-about__word {
     opacity: 1 !important;
-    will-change: auto;
   }
 }
