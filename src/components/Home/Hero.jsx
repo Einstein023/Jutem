@@ -44,7 +44,18 @@ function RiseHeading({ text }) {
 
 export default function Hero() {
     const [activeSlide, setActiveSlide] = useState(0);
+    const [isDesktop, setIsDesktop] = useState(() =>
+        typeof window !== "undefined" ? window.matchMedia("(min-width: 1024px)").matches : true
+    );
     const heroRef = useRef(null);
+
+    useEffect(() => {
+        const mq = window.matchMedia("(min-width: 1024px)");
+        const update = () => setIsDesktop(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
 
     useEffect(() => {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -125,25 +136,27 @@ export default function Hero() {
                         />
                     ))}
                 </div>
-                <div className="hero-trail" aria-hidden="true">
-                    <ImageTrail
-                        items={constructionImages}
-                        size={190}
-                        threshold={80}
-                        appearScale={1}
-                        zoom={1}
-                        flash={0}
-                        radius={15}
-                        lifetime={0.25}
-                        exitScale={0.2}
-                        drift={0}
-                        rotation={0}
-                        sizeVariance={0}
-                        alignToMotion={false}
-                        stack={0}
-                        tilt={0}
-                    />
-                </div>
+                {isDesktop && (
+                    <div className="hero-trail" aria-hidden="true">
+                        <ImageTrail
+                            items={constructionImages}
+                            size={190}
+                            threshold={80}
+                            appearScale={1}
+                            zoom={1}
+                            flash={0}
+                            radius={15}
+                            lifetime={0.25}
+                            exitScale={0.2}
+                            drift={0}
+                            rotation={0}
+                            sizeVariance={0}
+                            alignToMotion={false}
+                            stack={0}
+                            tilt={0}
+                        />
+                    </div>
+                )}
                 <div className="hero-wrapper">
                     <div className="hero-content">
                         <h1>

@@ -11,27 +11,27 @@
 }
 
 /* ----------------------------------------------------
-   1. KREISSON-STYLE OVERSIZED EDITORIAL MARQUEE
+1. KREISSON-STYLE OVERSIZED EDITORIAL MARQUEE
 ---------------------------------------------------- */
 .editorial-marquee {
   display: flex;
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   user-select: none;
 
   -webkit-mask-image: linear-gradient(
-    90deg, 
-    transparent 0%, 
-    rgba(0, 0, 0, 1) 15%, 
-    rgba(0, 0, 0, 1) 85%, 
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 88%,
     transparent 100%
   );
   mask-image: linear-gradient(
-    90deg, 
-    transparent 0%, 
-    rgba(0, 0, 0, 1) 15%, 
-    rgba(0, 0, 0, 1) 85%, 
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 1) 12%,
+    rgba(0, 0, 0, 1) 88%,
     transparent 100%
   );
 }
@@ -53,41 +53,37 @@
 
 .editorial-marquee__text {
   font-family: var(--font-heading);
-  /* Massive display size inspired by Awwwards architectural sites */
   font-size: clamp(3rem, 7vw, 6.5rem);
-  font-weight: 800;
-  /* text-transform: uppercase; */
+  font-weight: var(--font-weight-extrabold, 800);
   letter-spacing: -0.02em;
-  line-height: 0.9;
-  color: transparent;
-  /* color: rgba(15, 23, 42, 0.08); */
-  /* High-end outlined / stroked typography style */
-  -webkit-text-stroke: 1.5px var(--color-primary-200);
-  transition: color 0.5s ease-in-out, -webkit-text-stroke 0.4s ease;
+  line-height: 1;
+  color: var(--color-primary-100);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  transition: color 0.4s ease;
 }
 
-/* Fill effect on hover for interactivity */
+/* Subtle highlight shift on hover */
 .pitch-tape-section:hover .editorial-marquee__text {
-  color: var(--color-primary-100);
-  -webkit-text-stroke: 1.5px var(--color-primary-100);
+  color: var(--color-primary-50);
 }
 
 .editorial-marquee__dot {
   font-size: clamp(2rem, 5vw, 4rem);
-  color: var(--color-primary-400, #facc15);
+  color: var(--color-primary-400, #5587c4);
 }
 
 /* ----------------------------------------------------
-   2. BRANDED CONSTRUCTION TAPE (INTERSECTING ACCENT)
+2. BRANDED CONSTRUCTION TAPE (INTERSECTING ACCENT)
 ---------------------------------------------------- */
 .construction-tape__band {
   position: relative;
   left: 50%;
-  transform: translateX(-50%); /* Dynamic angle across the massive text */
-  width: calc(100vw + 6rem);
+  transform: translateX(-50%);
+  width: calc(100% + 6rem);
   height: clamp(3rem, 5vw, 4rem);
-  background-color: var(--color-primary-400, #facc15);
-  color: #0f1115;
+  background-color: var(--color-primary-400, #5587c4);
+  color: var(--color-primary-900, #08111d);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -106,7 +102,7 @@
 .construction-tape__word {
   font-family: var(--font-heading);
   font-size: clamp(0.9rem, 1.5vw, 1.25rem);
-  font-weight: 800;
+  font-weight: var(--font-weight-bold, 700);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 0 1.5rem;
@@ -122,13 +118,13 @@
    KEYFRAMES FOR SEAMLESS LOOPS
 ---------------------------------------------------- */
 @keyframes marquee-slide-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes marquee-slide-right {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
