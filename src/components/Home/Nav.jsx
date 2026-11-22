@@ -56,8 +56,8 @@ export default function Nav() {
             className={`nav-links${menuOpen ? " is-open" : ""}`}
             aria-label="Main navigation"
           >
+            <a href="/" onClick={closeMenu}>Home</a>
             <a href="/about" onClick={closeMenu}>About</a>
-            <a href="/#services" onClick={closeMenu}>Services</a>
             <a href="/contact" onClick={closeMenu}>Contact Us</a>
           </nav>
 

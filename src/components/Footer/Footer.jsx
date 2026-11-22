@@ -40,10 +40,9 @@ export default function Footer() {
                             <h2>Let's talk</h2>
                             <a className="foot-button" href="/contact">
                                 Make an enquiry
-                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                                    <path d="M5 12h14" />
-                                    <path d="m12 5 7 7-7 7" />
-                                </svg>
+                                <div className="foot-btn-arrow-wrapper" aria-hidden="true">
+                                    <div className="foot-btn-arrow" />
+                                </div>
                             </a>
                         </div>
                     </div>

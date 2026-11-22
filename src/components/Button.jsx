@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
   .cta-btn {
     --primary-color: #2b558c;
     --secondary-color: #f0f4f9;
-    --hover-color: #242424;
+    --hover-color: #193355;
     --arrow-width: 10px;
     --arrow-stroke: 2px;
     box-sizing: border-box;

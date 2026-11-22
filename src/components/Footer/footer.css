@@ -10,59 +10,45 @@
 
 .foot-inner {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1440px;
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 3vw, 3rem) 1.5rem;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) 1.5rem;
 }
 
 .foot-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: clamp(2rem, 6vw, 5rem);
-  /* padding-bottom: clamp(3rem, 8vw, 0rem); */
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .foot-statement {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+  font-size: clamp(1.75rem, 3.5vw, 3.25rem);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.02;
-  letter-spacing: -0.06em;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
   color: var(--panel-text);
+  max-width: 20ch;
 }
 
 .foot-columns {
   display: flex;
-  gap: clamp(2.5rem, 6vw, 5rem);
+  gap: clamp(2rem, 4vw, 4rem);
+  flex-shrink: 0;
 }
 
 .foot-columns h2 {
-  margin: 0 0 1.1rem;
+  margin: 0 0 1rem;
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--panel-text-dim);
-  }
-/* .footer-mid{
-  margin: 0;
-  padding: 0;
-  height: fit-content;
-  text-align: center;
-  min-width: 100%;
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  justify-content: center;
-} */
-/* .footer-mid span{
-  font-size: 15rem;
-  letter-spacing: -0.04em;
-  margin-right: 1rem;
-} */
+}
 
 .foot-columns ul {
   margin: 0;
@@ -71,11 +57,11 @@
 }
 
 .foot-columns li + li {
-  margin-top: 0.6rem;
+  margin-top: 0.55rem;
 }
 
 .foot-columns nav a {
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
   color: var(--panel-text);
   text-decoration: none;
   transition: color 0.25s ease;
@@ -86,39 +72,76 @@
   color: var(--color-primary-900);
 }
 
-/* Same button as the rest of the site, in blue. */
+/* ── "Make an enquiry" button (same animated arrow as the rest of the site) ── */
 .foot-button {
+  --foot-btn-primary: var(--color-primary-600, #224470);
+  --foot-btn-hover:   var(--color-primary-700, #193355);
+  --foot-btn-text:    var(--color-primary-100, #d9e4f1);
+  --foot-btn-arrow-w: 10px;
+  --foot-btn-arrow-s: 2px;
+
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
-  padding: 14px 28px;
+  gap: 0.65em;
+  padding: 13px 26px;
   border-radius: 999px;
   corner-shape: squircle;
-  background-color: var(--color-primary-600);
-  color: var(--color-primary-100);
+  background-color: var(--foot-btn-primary);
+  color: var(--foot-btn-text);
   font-family: var(--font-body);
+  font-size: 0.9rem;
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
-.foot-button svg {
-  transition: transform 0.25s ease;
+.foot-button .foot-btn-arrow-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.foot-button .foot-btn-arrow {
+  margin-top: 1px;
+  width: var(--foot-btn-arrow-w);
+  background: transparent;
+  height: var(--foot-btn-arrow-s);
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.foot-button .foot-btn-arrow::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  border: solid var(--foot-btn-text);
+  border-width: 0 var(--foot-btn-arrow-s) var(--foot-btn-arrow-s) 0;
+  display: inline-block;
+  top: -3px;
+  right: 3px;
+  padding: 3px;
+  transform: rotate(-45deg);
+  transition: right 0.2s ease;
 }
 
 .foot-button:hover,
 .foot-button:focus-visible {
-  background-color: var(--color-primary-700);
-  /* color: var(--panel-ink); */
+  background-color: var(--foot-btn-hover);
 }
 
-.foot-button:hover svg {
-  transform: translateX(3px);
+.foot-button:hover .foot-btn-arrow,
+.foot-button:focus-visible .foot-btn-arrow {
+  background: var(--foot-btn-text);
+}
+
+.foot-button:hover .foot-btn-arrow::before,
+.foot-button:focus-visible .foot-btn-arrow::before {
+  right: 0;
 }
 
 .foot a:focus-visible {
-  outline: 2px solid var(--color-primary-300);
+  outline: 2px solid var(--color-primary-800);
   outline-offset: 3px;
 }
 
@@ -126,10 +149,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1.25rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgb(140 174 214 / 0.22);
-  font-size: 0.875rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
   color: var(--panel-text-dim);
 }
 
@@ -140,18 +164,19 @@
 .foot-brand {
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.45rem;
   font-family: var(--font-heading);
   font-weight: var(--font-weight-semibold);
-  /* color: var(--panel-text); */
+  font-size: 0.875rem;
   text-decoration: none;
-  height: fit-content;
+  color: var(--panel-text);
 }
 
 .foot-top-link {
   color: var(--panel-text-dim);
   text-decoration: none;
   transition: color 0.25s ease;
+  white-space: nowrap;
 }
 
 .foot-top-link:hover,
@@ -159,21 +184,36 @@
   color: var(--panel-text);
 }
 
+/* ── Tablet / mobile ──────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .foot-top {
     flex-direction: column;
+    gap: 2rem;
+  }
+
+  .foot-statement {
+    font-size: clamp(1.5rem, 7vw, 2.25rem);
   }
 
   .foot-bottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.9rem;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .foot-columns {
+    flex-direction: column;
+    gap: 1.75rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .foot a,
-  .foot-button svg {
+  .foot-button,
+  .foot-button .foot-btn-arrow,
+  .foot-button .foot-btn-arrow::before {
     transition: none;
   }
 }
